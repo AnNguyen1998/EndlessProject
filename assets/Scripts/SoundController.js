@@ -50,8 +50,6 @@ const SoundController = cc.Class({
     },
 
     onDestroy() {
-        mEmitter.instance.removeEvent(Popup.TOGGLE_MUSIC, this.toggleMusic);
-        mEmitter.instance.removeEvent(Popup.TOGGLE_SOUNDFX, this.toggleSoundFX);
         mEmitter.instance.removeEvent(Popup.CHANGED_SLIDER, this.onVolumeChanged);
         mEmitter.instance.removeEvent(Game.START_GAME, this.onGameStart);
         mEmitter.instance.removeEvent(Game.END_GAME, this.onGameEnd);
@@ -107,7 +105,7 @@ const SoundController = cc.Class({
         cc.audioEngine.setVolume(this.currentMusicId, fadeIn ? 0 : finalVolume);
 
         if (fadeIn) {
-            this.fadeInMusic(finalVolume, 2.0); // 2 seconds fade in
+            this.fadeInMusic(finalVolume, 2.0); 
         }
         
     },
@@ -179,7 +177,6 @@ const SoundController = cc.Class({
             return;
         }
 
-        // Volume trực tiếp cho sound effect
         const finalVolume = this.soundEffectVolume * individualVolume;
         console.log(`Playing sound '${soundName}' with volume: ${finalVolume} (Sound Effect: ${this.soundEffectVolume} × Individual: ${individualVolume})`);
         
