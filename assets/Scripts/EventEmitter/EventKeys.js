@@ -4,8 +4,6 @@ export const Popup = {
     HIDE_SETTING_POPUP: 'hideSetting',
     HIDE_RANK_POPUP: 'hideRank',
     CHANGED_SLIDER: 'changedSlider',
-    TOGGLE_MUSIC: 'toggleMusic',
-    TOGGLE_SOUNDFX: 'toggleSound',
 }
 
 export const Game = {
@@ -15,6 +13,7 @@ export const Game = {
     RESUME_GAME: 'resumeGame',
     RESTART_GAME: 'restartGame',
     GAME_OVER: 'gameOver',
+    SCENE_CHANGE: 'sceneChange',
 }
 
 export const Player = {
