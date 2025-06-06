@@ -1,5 +1,5 @@
 const Emitter = require("Emitter");
-const EventKey = require("EventKeys");
+import { Game } from 'EventKeys'
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -14,7 +14,7 @@ cc.Class({
 
     init() {
         this.preLoadScene();
-        Emitter.instance.emit(EventKey.START_GAME);
+        Emitter.instance.emit(Game.START_GAME);
         this.blackBackground.opacity = 0;
     },
 
