@@ -1,5 +1,5 @@
 const mEmitter = require('./EventEmitter/Emitter');
-import { Popup, Game, Player, Monster } from './EventEmitter/EventsKey';
+import { Popup, Game, Player, Monster } from './EventEmitter/EventKeys';
 
 const SoundController = cc.Class({
     extends: cc.Component,
