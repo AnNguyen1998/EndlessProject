@@ -1,5 +1,5 @@
 const Emitter = require("Emitter");
-const EventType = require("EventsType");
+const EventKey = require("EventsKey");
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -13,7 +13,7 @@ cc.Class({
 
     init() {
         this.preLoadScene();
-        Emitter.instance.emit(EventType.START_GAME);
+        Emitter.instance.emit(EventKey.START_GAME);
     },
 
     preLoadScene() {
