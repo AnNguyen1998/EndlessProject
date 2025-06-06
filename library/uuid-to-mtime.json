@@ -494,6 +494,7 @@
     "meta": 1749183088384,
     "relativePath": "Sprites/Commons"
   },
+
   "4ef3af80-2ca3-4c31-b7a3-7558131bc521": {
     "asset": 1749185127374,
     "meta": 1749185190337,
@@ -509,6 +510,7 @@
     "meta": 1749185184167,
     "relativePath": "Scene/Room.fire"
   },
+
   "2210ca1c-5faf-466d-b107-1c065a076b50": {
     "asset": 1749190479506,
     "meta": 1749190528445,
@@ -558,5 +560,6 @@
     "asset": 1749191465350,
     "meta": 1749191467524,
     "relativePath": "Scripts/Loading/LoadingController.js"
+
   }
 }
