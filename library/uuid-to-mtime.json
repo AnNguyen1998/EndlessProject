@@ -419,109 +419,109 @@
     "meta": 1749183261264,
     "relativePath": "model/primitives.fbx"
   },
-  "a734f0d2-169c-4305-b241-dcd3b200380e": {
-    "asset": 1749183159352,
-    "meta": 1749177587061,
-    "relativePath": "Sprites"
-  },
-  "ada649b7-7f4f-4de2-b6d8-3e5cda1a9e65": {
-    "asset": 1749183159351,
-    "meta": 1749177587053,
-    "relativePath": "Scene"
-  },
-  "0c35f0fe-cade-4220-9471-73aeb48624c1": {
-    "asset": 1749183159351,
-    "meta": 1749177587054,
-    "relativePath": "Scripts"
-  },
   "02d204d2-f7ef-4821-8466-3a232cb5b324": {
     "asset": 1749177587051,
     "meta": 1749177587049,
     "relativePath": "Fonts"
   },
-  "4df8990c-c997-41e7-91f8-db94675fa03e": {
-    "asset": 1749177587051,
-    "meta": 1749183261307,
-    "relativePath": "Fonts/JosefinSans-Bold.ttf"
-  },
   "f7f90b81-20af-4bd9-acd1-ebd094adbc6a": {
     "asset": 1749177587050,
-    "meta": 1749183261306,
+    "meta": 1749193978291,
     "relativePath": "Fonts/Alata-Regular.ttf"
   },
-  "c2428e07-b166-48a4-a068-2caf3261f86a": {
-    "asset": 1749177587058,
-    "meta": 1749183261630,
-    "relativePath": "Spine/spineboy-pro_3.7_output.json"
-  },
-  "117ca02c-12cc-48db-9175-3a023cf293b2": {
-    "asset": 1749177587058,
-    "meta": 1749183261554,
-    "relativePath": "Spine/spineboy-pro_3.7_output.atlas"
-  },
-  "17c78179-efd9-44e9-9d10-53a133e0e12b": {
-    "asset": 1749177587061,
-    "meta": 1749183261594,
-    "relativePath": "Spine/spineboy-pro_3.7_output.png"
-  },
-  "fa098ee9-b568-4a32-b956-8b57ddcdf432": {
-    "asset": 1749177587061,
-    "meta": 1749177587057,
-    "relativePath": "Spine"
+  "4df8990c-c997-41e7-91f8-db94675fa03e": {
+    "asset": 1749177587051,
+    "meta": 1749193978291,
+    "relativePath": "Fonts/JosefinSans-Bold.ttf"
   },
   "2a1145db-2542-499d-9e9f-4741fd1c9362": {
     "asset": 1749183159350,
     "meta": 1749177587051,
     "relativePath": "Prefabs"
   },
+  "ada649b7-7f4f-4de2-b6d8-3e5cda1a9e65": {
+    "asset": 1749186017488,
+    "meta": 1749177587053,
+    "relativePath": "Scene"
+  },
+  "59b65725-9ab0-4803-9743-ea5188a3f479": {
+    "asset": 1749186017486,
+    "meta": 1749193978300,
+    "relativePath": "Scene/Chapter.fire"
+  },
+  "4edd491a-9350-41e7-8e3c-6838808ed37d": {
+    "asset": 1749186017487,
+    "meta": 1749193978300,
+    "relativePath": "Scene/Loading.fire"
+  },
+  "2210ca1c-5faf-466d-b107-1c065a076b50": {
+    "asset": 1749186017488,
+    "meta": 1749193978302,
+    "relativePath": "Scene/Portal.fire"
+  },
+  "4ef3af80-2ca3-4c31-b7a3-7558131bc521": {
+    "asset": 1749186017487,
+    "meta": 1749193978303,
+    "relativePath": "Scene/Lobby.fire"
+  },
+  "0c35f0fe-cade-4220-9471-73aeb48624c1": {
+    "asset": 1749192653548,
+    "meta": 1749177587054,
+    "relativePath": "Scripts"
+  },
   "feb554a5-9e11-40e8-b508-5f5a36b8791d": {
     "asset": 1749177587055,
     "meta": 1749177587055,
     "relativePath": "Scripts/EventEmitter"
   },
+  "fbb71222-6c4f-49b8-bfa2-763e51c22741": {
+    "asset": 1749186017488,
+    "meta": 1749193978394,
+    "relativePath": "Scene/Room.fire"
+  },
   "0754dc92-1f33-4962-b361-c209b198ca00": {
     "asset": 1749177587055,
-    "meta": 1749183261532,
+    "meta": 1749193978419,
     "relativePath": "Scripts/EventEmitter/Emitter.js"
   },
   "415fd0f2-4a8b-443e-9c0a-f1bc003245a5": {
     "asset": 1749177587055,
-    "meta": 1749183261532,
+    "meta": 1749193978518,
     "relativePath": "Scripts/EventEmitter/EventsKey.js"
+  },
+  "fa098ee9-b568-4a32-b956-8b57ddcdf432": {
+    "asset": 1749177587061,
+    "meta": 1749177587057,
+    "relativePath": "Spine"
+  },
+  "0321c88b-3b80-4818-8fe7-fdcc4ab11ceb": {
+    "asset": 1749193786105,
+    "meta": 1749193978533,
+    "relativePath": "Scripts/SoundController.js"
+  },
+  "117ca02c-12cc-48db-9175-3a023cf293b2": {
+    "asset": 1749177587058,
+    "meta": 1749193978562,
+    "relativePath": "Spine/spineboy-pro_3.7_output.atlas"
+  },
+  "a734f0d2-169c-4305-b241-dcd3b200380e": {
+    "asset": 1749183159352,
+    "meta": 1749177587061,
+    "relativePath": "Sprites"
   },
   "d4edb3c9-f0c6-4ef8-a392-f4eba7daba88": {
     "asset": 1749183159352,
     "meta": 1749183159352,
     "relativePath": "Sprites/Commons"
   },
-  "59b65725-9ab0-4803-9743-ea5188a3f479": {
-    "asset": 1749186017486,
-    "meta": 1749189976353,
-    "relativePath": "Scene/Chapter.fire"
+  "17c78179-efd9-44e9-9d10-53a133e0e12b": {
+    "asset": 1749177587061,
+    "meta": 1749193978636,
+    "relativePath": "Spine/spineboy-pro_3.7_output.png"
   },
-  "4edd491a-9350-41e7-8e3c-6838808ed37d": {
-    "asset": 1749186017487,
-    "meta": 1749189976355,
-    "relativePath": "Scene/Loading.fire"
-  },
-  "4ef3af80-2ca3-4c31-b7a3-7558131bc521": {
-    "asset": 1749186017487,
-    "meta": 1749189976357,
-    "relativePath": "Scene/Lobby.fire"
-  },
-  "2210ca1c-5faf-466d-b107-1c065a076b50": {
-    "asset": 1749186017488,
-    "meta": 1749189976357,
-    "relativePath": "Scene/Portal.fire"
-  },
-  "fbb71222-6c4f-49b8-bfa2-763e51c22741": {
-    "asset": 1749186017488,
-    "meta": 1749189976359,
-    "relativePath": "Scene/Room.fire"
-  },
-  "0321c88b-3b80-4818-8fe7-fdcc4ab11ceb": {
-    "asset": 1749193372575,
-    "meta": 1749193473242,
-    "relativePath": "Scripts/SoundController.js"
+  "c2428e07-b166-48a4-a068-2caf3261f86a": {
+    "asset": 1749177587058,
+    "meta": 1749193978665,
+    "relativePath": "Spine/spineboy-pro_3.7_output.json"
   }
 }

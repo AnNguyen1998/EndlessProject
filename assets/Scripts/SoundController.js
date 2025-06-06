@@ -8,27 +8,23 @@ const SoundController = cc.Class({
         musicClips: {
             default: [],
             type: [cc.AudioClip],
-            displayName: "Background Music Clips"
         },
         
         soundEffectClips: {
             default: [],
             type: [cc.AudioClip],
-            displayName: "Sound Effect Clips"
         },
 
         backgroundMusicVolume: {
             default: 0.8,
             range: [0, 1],
             step: 0.1,
-            displayName: "Background Music Volume",
         },
 
         soundEffectVolume: {
             default: 1.0,
             range: [0, 1],
             step: 0.1,
-            displayName: "Sound Effect Volume",
         }
     },
 
