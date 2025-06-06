@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-const EventKey = require('EventsKey');
+const EventKey = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
