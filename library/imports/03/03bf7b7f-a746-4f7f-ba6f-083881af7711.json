@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "icon_stopwatch",
+    "texture": "72d0181d-8649-4e27-b565-9e0e349a22fc",
+    "atlas": "",
+    "rect": [
+      19,
+      6,
+      90,
+      118
+    ],
+    "offset": [
+      0,
+      -1
+    ],
+    "originalSize": [
+      128,
+      128
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

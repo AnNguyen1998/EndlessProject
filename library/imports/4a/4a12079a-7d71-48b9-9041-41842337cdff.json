@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "Icon_Arrow_Fast",
+    "texture": "406fa3b5-4201-45a2-b813-75fca5907839",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      47,
+      32
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      47,
+      32
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

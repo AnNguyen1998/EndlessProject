@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "Slider_Border_EdgeDeco_03_Border",
+    "texture": "5be610da-4aa8-4ed4-b702-8cdda3efaa72",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      309,
+      81
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      309,
+      81
+    ],
+    "capInsets": [
+      74,
+      0,
+      78,
+      0
+    ]
+  }
+}

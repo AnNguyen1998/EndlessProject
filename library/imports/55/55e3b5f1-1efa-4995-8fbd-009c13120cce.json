@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "Button_Rectangle_01_Convex_Bluegray",
+    "texture": "62b46ce9-11ea-4ce0-a450-0d67bc7b1f3b",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      159,
+      104
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      159,
+      104
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "Button_Circle_01_Red",
+    "texture": "3bef597e-7874-4d03-a84b-73c2e593aaa9",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      148,
+      148
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      148,
+      148
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

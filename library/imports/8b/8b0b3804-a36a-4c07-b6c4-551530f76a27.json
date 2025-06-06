@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "CardFrame_01_BorderGray_DecoRight",
+    "texture": "91475adb-c2f6-462c-896f-c0da552e69e5",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      113,
+      113
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      113,
+      113
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "ItemFrame_01_Focus_Demo_Border",
+    "texture": "24fb99f9-cdc9-431b-b10a-e8c0ab406d2a",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      146,
+      146
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      146,
+      146
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
