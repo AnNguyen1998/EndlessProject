@@ -18,6 +18,9 @@
       },
       {
         "__id__": 17
+      },
+      {
+        "__id__": 19
       }
     ],
     "_active": true,
@@ -159,7 +162,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 623.5382907247958
+      "z": 407.8979651824706
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -722,7 +725,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "LoadController",
+    "_name": "Overlay",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -733,6 +736,96 @@
     "_components": [
       {
         "__id__": 18
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 1560,
+      "height": 720
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 780,
+      "y": 360,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "51XhBdU3tO0JwJ1K27cEQQ"
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 17
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "21bac6d4-a13b-4c84-b86b-25d910e5c926"
+    },
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": "c95uHP7rRJtqzQG7YC6u0F"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "LoadController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 1,
+    "_components": [
+      {
+        "__id__": 20
       }
     ],
     "_prefab": null,
@@ -783,7 +876,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 17
+      "__id__": 19
     },
     "_enabled": true,
     "progressBar": {
@@ -791,6 +884,9 @@
     },
     "spineBoy": {
       "__id__": 13
+    },
+    "blackBackground": {
+      "__id__": 17
     },
     "_id": "a1c/HkPZFO3LbeuiOTcUGs"
   }
