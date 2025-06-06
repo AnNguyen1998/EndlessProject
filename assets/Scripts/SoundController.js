@@ -4,17 +4,6 @@ import { Popup, Game, Player, Monster } from './EventEmitter/EventsKey';
 const SoundController = cc.Class({
     extends: cc.Component,
 
-    statics: {
-        instance: null,
-        
-        getInstance() {
-            if (!this.instance) {
-                this.instance = new SoundController();
-            }
-            return this.instance;
-        }
-    },
-
     properties: {
         musicClips: {
             default: [],
@@ -48,11 +37,6 @@ const SoundController = cc.Class({
     },
 
     init() {
-        if (SoundController.instance) {
-            this.destroy();
-            return;
-        }
-        SoundController.instance = this;
         cc.game.addPersistRootNode(this.node);
 
         this.currentMusicId = -1;
@@ -70,12 +54,16 @@ const SoundController = cc.Class({
     },
 
     onDestroy() {
+        mEmitter.instance.removeEvent(Popup.TOGGLE_MUSIC, this.toggleMusic);
+        mEmitter.instance.removeEvent(Popup.TOGGLE_SOUNDFX, this.toggleSoundFX);
         mEmitter.instance.removeEvent(Popup.CHANGED_SLIDER, this.onVolumeChanged);
+        mEmitter.instance.removeEvent(Game.START_GAME, this.onGameStart);
+        mEmitter.instance.removeEvent(Game.END_GAME, this.onGameEnd);
+        mEmitter.instance.removeEvent(Game.PAUSE_GAME, this.onGamePause);
+        mEmitter.instance.removeEvent(Game.RESUME_GAME, this.onGameResume);
         
         this.stopMusic();
         this.stopAllSoundEffects();
-        
-        SoundController.instance = null;
     },
 
     setupAudioClips() {
@@ -212,7 +200,6 @@ const SoundController = cc.Class({
         cc.audioEngine.stopAllEffects();
     },
 
-    // Volume control methods - chỉ còn 2 methods
     setBackgroundMusicVolume(volume) {
         const oldVolume = this.backgroundMusicVolume;
         this.backgroundMusicVolume = cc.misc.clampf(volume, 0, 1);
@@ -229,16 +216,7 @@ const SoundController = cc.Class({
         
         this.saveSettings();
     },
-
-    updateBackgroundMusicVolume() {
-        if (this.currentMusicId !== -1) {
-            const finalVolume = this.backgroundMusicVolume;
-            cc.audioEngine.setVolume(this.currentMusicId, finalVolume);
-            console.log(`Updated current music volume to: ${finalVolume}`);
-        }
-    },
-
-
+    
     onVolumeChanged(data) {
         switch(data.type) {
             case 'backgroundMusic':
@@ -268,8 +246,8 @@ const SoundController = cc.Class({
     },
 
     loadSettings() {
-        const backgroundMusicVol = cc.sys.localStorage.getItem('background_music_volume') || cc.sys.localStorage.getItem('music_volume'); // Backward compatibility
-        const soundEffectVol = cc.sys.localStorage.getItem('sound_effect_volume') || cc.sys.localStorage.getItem('sound_volume'); // Backward compatibility
+        const backgroundMusicVol = cc.sys.localStorage.getItem('background_music_volume');
+        const soundEffectVol = cc.sys.localStorage.getItem('sound_effect_volume'); 
 
         if (backgroundMusicVol !== null) this.backgroundMusicVolume = parseFloat(backgroundMusicVol);
         if (soundEffectVol !== null) this.soundEffectVolume = parseFloat(soundEffectVol);
