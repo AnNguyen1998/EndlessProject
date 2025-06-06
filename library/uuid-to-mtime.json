@@ -494,16 +494,6 @@
     "meta": 1749183088384,
     "relativePath": "Sprites/Commons"
   },
-  "2210ca1c-5faf-466d-b107-1c065a076b50": {
-    "asset": 1749185098774,
-    "meta": 1749185187299,
-    "relativePath": "Scene/Portal.fire"
-  },
-  "4edd491a-9350-41e7-8e3c-6838808ed37d": {
-    "asset": 1749185116327,
-    "meta": 1749185193584,
-    "relativePath": "Scene/Loading.fire"
-  },
   "4ef3af80-2ca3-4c31-b7a3-7558131bc521": {
     "asset": 1749185127374,
     "meta": 1749185190337,
@@ -518,5 +508,55 @@
     "asset": 1749185173256,
     "meta": 1749185184167,
     "relativePath": "Scene/Room.fire"
+  },
+  "2210ca1c-5faf-466d-b107-1c065a076b50": {
+    "asset": 1749190479506,
+    "meta": 1749190528445,
+    "relativePath": "Scene/Portal.fire"
+  },
+  "2aaf791e-6a92-4e38-bc94-8c7b11a33fcf": {
+    "asset": 1749190551183,
+    "meta": 1749190551230,
+    "relativePath": "Sprites/Loading"
+  },
+  "c2c67cf2-9d46-4b58-b4a8-1e5403a9874d": {
+    "asset": 1749190551204,
+    "meta": 1749190551279,
+    "relativePath": "Sprites/Loading/Slider_Border_EdgeDeco_01_Demo_Bg.png"
+  },
+  "5be610da-4aa8-4ed4-b702-8cdda3efaa72": {
+    "asset": 1749190551204,
+    "meta": 1749190551299,
+    "relativePath": "Sprites/Loading/Slider_Border_EdgeDeco_03_Border.png"
+  },
+  "d76b5754-9364-4a9d-88ee-20982a2bfa35": {
+    "asset": 1749190551204,
+    "meta": 1749190551308,
+    "relativePath": "Sprites/Loading/Slider_Border_EdgeDeco_03_Demo_Fill.png"
+  },
+  "83f3936b-6de9-409d-8b62-eac60fa0dc73": {
+    "asset": 1749190551204,
+    "meta": 1749190551313,
+    "relativePath": "Sprites/Loading/Slider_Border_Tapered_01_Bg.png"
+  },
+  "7c1db153-7ef9-4972-a832-c8d6ed1817f6": {
+    "asset": 1749190551224,
+    "meta": 1749190551350,
+    "relativePath": "Sprites/Loading/BackGround.png"
+  },
+  "e0b6c4b9-7c85-45af-aafd-4bb7d3c18999": {
+    "asset": 1749191342074,
+    "meta": 1749191342109,
+    "relativePath": "Scene/Loading.fire"
+  },
+  "b7890625-1293-4331-b296-f2e101b0027d": {
+    "asset": 1749190636278,
+    "meta": 1749190636286,
+    "relativePath": "Scripts/Loading"
+  },
+  "aae156cf-5ab6-4335-9bb6-6cc6c64cf83b": {
+    "asset": 1749191465350,
+    "meta": 1749191467524,
+    "relativePath": "Scripts/Loading/LoadingController.js"
   }
 }
