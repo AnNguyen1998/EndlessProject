@@ -494,11 +494,6 @@
     "meta": 1749183088384,
     "relativePath": "Sprites/Commons"
   },
-  "2210ca1c-5faf-466d-b107-1c065a076b50": {
-    "asset": 1749185098774,
-    "meta": 1749185187299,
-    "relativePath": "Scene/Portal.fire"
-  },
   "4edd491a-9350-41e7-8e3c-6838808ed37d": {
     "asset": 1749185116327,
     "meta": 1749185193584,
@@ -518,5 +513,65 @@
     "asset": 1749185173256,
     "meta": 1749185184167,
     "relativePath": "Scene/Room.fire"
+  },
+  "13ad9376-a78e-4a2b-a82d-75be079d98cd": {
+    "asset": 1749190371893,
+    "meta": 1749190371903,
+    "relativePath": "Scene/Portal.fire"
+  },
+  "700cd057-fb98-478a-ba7c-a17bfc6b442e": {
+    "asset": 1749096204668,
+    "meta": 1749190289250,
+    "relativePath": "Sprites/Portal"
+  },
+  "1fb4e988-1757-4147-a97b-d98a8c0b6027": {
+    "asset": 1749095803902,
+    "meta": 1749190289378,
+    "relativePath": "Sprites/Portal/CardFrame_01_BorderGray_DecoLeft.png"
+  },
+  "91475adb-c2f6-462c-896f-c0da552e69e5": {
+    "asset": 1749095803902,
+    "meta": 1749190289419,
+    "relativePath": "Sprites/Portal/CardFrame_01_BorderGray_DecoRight.png"
+  },
+  "1805386f-62a6-4d56-8da6-899f8971fa24": {
+    "asset": 1749095797714,
+    "meta": 1749190289437,
+    "relativePath": "Sprites/Portal/CardFrame_01_BorderGray.png"
+  },
+  "e08458b8-99fa-4f0c-a589-2140b627f5b5": {
+    "asset": 1749095592816,
+    "meta": 1749190289457,
+    "relativePath": "Sprites/Portal/BackGround_Sample_04_Character_1920.png"
+  },
+  "ce7bdfb3-0972-418e-b552-f63c6781be82": {
+    "asset": 1749096017457,
+    "meta": 1749190289472,
+    "relativePath": "Sprites/Portal/Character_Sample_01_m.png"
+  },
+  "c2341c7a-82df-4cd7-93ab-6176a32b1cfb": {
+    "asset": 1749096204666,
+    "meta": 1749190289477,
+    "relativePath": "Sprites/Portal/Character_Sample_01_s.png"
+  },
+  "b2279658-de3d-4ca8-a171-5fc8f52974b0": {
+    "asset": 1749095981238,
+    "meta": 1749190289486,
+    "relativePath": "Sprites/Portal/ItemFrame_02_Focus_Yellow.png"
+  },
+  "ec19df63-1f56-47bd-a279-4801d1ef1692": {
+    "asset": 1749096170834,
+    "meta": 1749190290339,
+    "relativePath": "Sprites/Portal/Character_Sample_04.png"
+  },
+  "faa40e46-8430-4953-8c3d-a3c3ae88da98": {
+    "asset": 1749096885370,
+    "meta": 1749190290343,
+    "relativePath": "Scripts/Portal/PortalController.js"
+  },
+  "23ace276-3f4f-4330-88cc-73b7688e0ea3": {
+    "asset": 1749190337478,
+    "meta": 1749190337488,
+    "relativePath": "Scripts/Portal"
   }
 }
