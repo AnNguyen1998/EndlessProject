@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-import { Game } from 'EventKeys';
+const { Game : GameEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
@@ -8,7 +8,7 @@ cc.Class({
     },
 
     registerEvents() {
-        Emitter.instance.registerEvent(Game.SCENE_CHANGE, this.onSceneChange.bind(this));
+        Emitter.instance.registerEvent(GameEventKeys.SCENE_CHANGE, this.onSceneChange.bind(this));
     },
 
     onSceneChange(nameScene) {
@@ -16,7 +16,7 @@ cc.Class({
     },
 
     onDestroy() {
-        Emitter.instance.removeEvent(EventKey.SCENE_CHANGE, this.onSceneChange.bind(this));
+        Emitter.instance.removeEvent(GameEventKeys.SCENE_CHANGE, this.onSceneChange.bind(this));
     },
 
 });
