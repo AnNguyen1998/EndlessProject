@@ -514,6 +514,7 @@
     "meta": 1749183159352,
     "relativePath": "Sprites/Commons"
   },
+
   "17c78179-efd9-44e9-9d10-53a133e0e12b": {
     "asset": 1749177587061,
     "meta": 1749193978636,
@@ -523,5 +524,6 @@
     "asset": 1749177587058,
     "meta": 1749193978665,
     "relativePath": "Spine/spineboy-pro_3.7_output.json"
+
   }
 }
