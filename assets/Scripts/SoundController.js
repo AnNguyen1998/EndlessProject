@@ -1,5 +1,5 @@
 const mEmitter = require('./EventEmitter/Emitter');
-import { Popup, Game, Player, Monster } from './EventEmitter/EventsKey';
+import { Popup, Game, Player, Monster } from './EventEmitter/EventKeys';
 
 const SoundController = cc.Class({
     extends: cc.Component,
@@ -50,8 +50,6 @@ const SoundController = cc.Class({
     },
 
     onDestroy() {
-        mEmitter.instance.removeEvent(Popup.TOGGLE_MUSIC, this.toggleMusic);
-        mEmitter.instance.removeEvent(Popup.TOGGLE_SOUNDFX, this.toggleSoundFX);
         mEmitter.instance.removeEvent(Popup.CHANGED_SLIDER, this.onVolumeChanged);
         mEmitter.instance.removeEvent(Game.START_GAME, this.onGameStart);
         mEmitter.instance.removeEvent(Game.END_GAME, this.onGameEnd);
@@ -101,13 +99,12 @@ const SoundController = cc.Class({
         this.stopMusic();
 
         const finalVolume = this.backgroundMusicVolume;
-        console.log(`Playing music '${musicName}' with volume: ${finalVolume}`);
         
         this.currentMusicId = cc.audioEngine.playMusic(clip, loop);
         cc.audioEngine.setVolume(this.currentMusicId, fadeIn ? 0 : finalVolume);
 
         if (fadeIn) {
-            this.fadeInMusic(finalVolume, 2.0); // 2 seconds fade in
+            this.fadeInMusic(finalVolume, 2.0); 
         }
         
     },
@@ -179,9 +176,7 @@ const SoundController = cc.Class({
             return;
         }
 
-        // Volume trực tiếp cho sound effect
         const finalVolume = this.soundEffectVolume * individualVolume;
-        console.log(`Playing sound '${soundName}' with volume: ${finalVolume} (Sound Effect: ${this.soundEffectVolume} × Individual: ${individualVolume})`);
         
         return cc.audioEngine.playEffect(clip, false, finalVolume);
     },
@@ -199,7 +194,6 @@ const SoundController = cc.Class({
     setBackgroundMusicVolume(volume) {
         const oldVolume = this.backgroundMusicVolume;
         this.backgroundMusicVolume = cc.misc.clampf(volume, 0, 1);
-        console.log(`Background Music Volume changed: ${oldVolume} → ${this.backgroundMusicVolume}`);
         
         this.updateMusicVolume();
         this.saveSettings();
@@ -208,7 +202,6 @@ const SoundController = cc.Class({
     setSoundEffectVolume(volume) {
         const oldVolume = this.soundEffectVolume;
         this.soundEffectVolume = cc.misc.clampf(volume, 0, 1);
-        console.log(`Sound Effect Volume changed: ${oldVolume} → ${this.soundEffectVolume}`);
         
         this.saveSettings();
     },

@@ -1,10 +1,11 @@
 const Emitter = require("Emitter");
-const EventType = require("EventsType");
+const { Game : GameEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
     properties: {
         progressBar: cc.ProgressBar,
         spineBoy: sp.Skeleton,
+        blackBackground: cc.Node,
     },
 
     onLoad() {
@@ -13,7 +14,8 @@ cc.Class({
 
     init() {
         this.preLoadScene();
-        Emitter.instance.emit(EventType.START_GAME);
+        Emitter.instance.emit(GameEventKeys.START_GAME);
+        this.blackBackground.opacity = 0;
     },
 
     preLoadScene() {
@@ -27,12 +29,17 @@ cc.Class({
             this.spineBoy.node.x = moveDistance + startX;
         },
             () => {
-                cc.director.loadScene("Lobby");
+                cc.tween(this.blackBackground)
+                    .by(0.5, { opacity: 255 })
+                    .call(() => {
+                        cc.director.loadScene("Lobby");
+                    })
+                    .start();
             });
     },
 
     onDestroy() {
-        this.node.StopAllActions();
+        this.node.stopAllActions();
     },
 
 });
