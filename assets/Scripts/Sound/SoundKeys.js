@@ -1,11 +1,11 @@
 const SoundKeys = {
-    SOUND_VOLUME_CHANGED: 'SOUND_VOLUME_CHANGED',
+    SOUND_VOLUME_CHANGED: 'soundVolumeChanged',
     BACKGROUND_MUSIC: 'backgroundMusic',
     SOUND_EFFECT: 'soundEffect',
     JUMP: 'jump',
     ATTACK: 'attack',
-    MONSTER_DIE: 'monster_die',
-    MONSTER_HIT: 'monster_hit',
+    MONSTER_DIE: 'monsterDie',
+    MONSTER_HIT: 'monsterHit',
     CLICK: 'click',
 };
 
