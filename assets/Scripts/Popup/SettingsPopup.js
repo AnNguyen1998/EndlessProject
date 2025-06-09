@@ -2,6 +2,7 @@ const Emitter = require('../EventEmitter/Emitter');
 const { Popup } = require('../EventEmitter/EventKeys');
 const LocalStorageUnit = require('../Unit/LocalStorageUnit');
 const LocalStorageKeys = require('../Unit/LocalStorageKeys');
+const SoundKeys = require('../Sound/SoundKeys');
 
 cc.Class({
     extends: require('./PopupItem'),
@@ -22,11 +23,12 @@ cc.Class({
         this.backgroundMusicSlider.node.on('slide', this.onBackgroundMusicChanged, this);
         this.soundEffectSlider.node.on('slide', this.onSoundEffectChanged, this);
         if (this.closeButton) this.closeButton.node.on('click', this.hide, this);
+        Emitter.instance.registerEvent(SoundKeys.SOUND_VOLUME_CHANGED, this.onSoundVolumeChanged.bind(this));
         this.loadVolume();
     },
     
     onDestroy() {
-
+        Emitter.instance.removeEvent(SoundKeys.SOUND_VOLUME_CHANGED, this.onSoundVolumeChanged);
     },
     
     show() {
@@ -39,53 +41,54 @@ cc.Class({
         let soundEffectVolume = LocalStorageUnit.get(LocalStorageKeys.SOUND_EFFECT_VOLUME);
         this.backgroundMusicSlider.progress = backgroundMusicVolume !== null ? parseFloat(backgroundMusicVolume) : 0.7;
         this.soundEffectSlider.progress = soundEffectVolume !== null ? parseFloat(soundEffectVolume) : 0.8;
-        this.updateBackgroundMusicVolumeIcon();
-        this.updateSoundEffectVolumeIcon();
-        this.updateBackgroundMusicFill();
-        this.updateSoundEffectFill();
+        this.updateBackgroundMusicVolumeIcon(this.backgroundMusicSlider.progress);
+        this.updateBackgroundMusicFill(this.backgroundMusicSlider.progress);
+        this.updateSoundEffectVolumeIcon(this.soundEffectSlider.progress);
+        this.updateSoundEffectFill(this.soundEffectSlider.progress);
     },
     
     onBackgroundMusicChanged() {
-        this.saveVolume();
-        this.updateBackgroundMusicVolumeIcon();
-        this.updateBackgroundMusicFill();
-        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: 'backgroundMusic', value: this.backgroundMusicSlider.progress });
+        console.log(this.backgroundMusicSlider.progress);
+        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: SoundKeys.BACKGROUND_MUSIC, value: this.backgroundMusicSlider.progress });
     },
     
     onSoundEffectChanged() {
-        this.saveVolume();
-        this.updateSoundEffectVolumeIcon();
-        this.updateSoundEffectFill();
-        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: 'soundEffect', value: this.soundEffectSlider.progress });
+        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: SoundKeys.SOUND_EFFECT, value: this.soundEffectSlider.progress });
     },
     
-    saveVolume() {
-        LocalStorageUnit.set(LocalStorageKeys.BACKGROUND_MUSIC_VOLUME, this.backgroundMusicSlider.progress);
-        LocalStorageUnit.set(LocalStorageKeys.SOUND_EFFECT_VOLUME, this.soundEffectSlider.progress);
+    onSoundVolumeChanged(data) {
+        console.log(data.value);
+        if (data.type === SoundKeys.BACKGROUND_MUSIC) {
+            this.backgroundMusicSlider.progress = data.value;
+            this.updateBackgroundMusicVolumeIcon(data.value);
+            this.updateBackgroundMusicFill(data.value);
+        } else if (data.type === SoundKeys.SOUND_EFFECT) {
+            this.soundEffectSlider.progress = data.value;
+            this.updateSoundEffectVolumeIcon(data.value);
+            this.updateSoundEffectFill(data.value);
+        }
     },
     
-    updateBackgroundMusicFill() {
+    updateBackgroundMusicFill(value) {
         if (this.backgroundMusicFill && this.backgroundMusicSlider) {
-            this.backgroundMusicFill.width = this.backgroundMusicSlider.progress * this.backgroundMusicSlider.node.width;
+            this.backgroundMusicFill.width = value * this.backgroundMusicSlider.node.width;
         }
     },
     
-    updateSoundEffectFill() {
+    updateSoundEffectFill(value) {
         if (this.soundEffectFill && this.soundEffectSlider) {
-            this.soundEffectFill.width = this.soundEffectSlider.progress * this.soundEffectSlider.node.width;
+            this.soundEffectFill.width = value * this.soundEffectSlider.node.width;
         }
     },
     
-    updateBackgroundMusicVolumeIcon() {
-        if (!this.backgroundMusicSlider || !this.backgroundMusicVolumeIconOn || !this.backgroundMusicVolumeIconOff) return;
-        const isOn = this.backgroundMusicSlider.progress > 0.001;
+    updateBackgroundMusicVolumeIcon(value) {
+        const isOn = value > 0.001;
         if (this.backgroundMusicVolumeIconOn.node) this.backgroundMusicVolumeIconOn.node.active = isOn;
         if (this.backgroundMusicVolumeIconOff.node) this.backgroundMusicVolumeIconOff.node.active = !isOn;
     },
     
-    updateSoundEffectVolumeIcon() {
-        if (!this.soundEffectSlider || !this.soundEffectVolumeIconOn || !this.soundEffectVolumeIconOff) return;
-        const isOn = this.soundEffectSlider.progress > 0.001;
+    updateSoundEffectVolumeIcon(value) {
+        const isOn = value > 0.001;
         if (this.soundEffectVolumeIconOn.node) this.soundEffectVolumeIconOn.node.active = isOn;
         if (this.soundEffectVolumeIconOff.node) this.soundEffectVolumeIconOff.node.active = !isOn;
     },

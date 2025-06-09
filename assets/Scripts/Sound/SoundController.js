@@ -1,7 +1,8 @@
-const Emitter = require('./EventEmitter/Emitter');
-const { Popup, Game : GameEventKeys, Player, Monster } = require('./EventEmitter/EventKeys');
-const LocalStorageUnit = require('./Unit/LocalStorageUnit');
-const LocalStorageKeys = require('./Unit/LocalStorageKeys');
+const Emitter = require('../EventEmitter/Emitter');
+const { Popup, Game : GameEventKeys, Player, Monster } = require('../EventEmitter/EventKeys');
+const LocalStorageUnit = require('../Unit/LocalStorageUnit');
+const LocalStorageKeys = require('../Unit/LocalStorageKeys');
+const SoundKeys = require('./SoundKeys');
 
 const SoundController = cc.Class({
     extends: cc.Component,
@@ -35,8 +36,16 @@ const SoundController = cc.Class({
     },
 
     init() {
-        cc.game.addPersistRootNode(this.node);
-
+        this.currentMusicId = -1;
+        this.musicClipMap = new Map();
+        this.soundClipMap = new Map();
+        
+        this.loadSettings();
+        
+        this.setupAudioClips();
+        
+        this.playDefaultMusic();
+        
         this.eventMap = {
             [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
             [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
@@ -50,17 +59,9 @@ const SoundController = cc.Class({
             'click': () => this.playSoundEffect('click'),
         };
 
-        this.currentMusicId = -1;
-        this.musicClipMap = new Map();
-        this.soundClipMap = new Map();
-        
-        this.loadSettings();
-        
-        this.setupAudioClips();
-        
         this.registerEvents();
-        
-        this.playDefaultMusic();
+
+        cc.game.addPersistRootNode(this.node);
 
     },
 
@@ -188,20 +189,24 @@ const SoundController = cc.Class({
         this.backgroundMusicVolume = cc.misc.clampf(volume, 0, 1);
         cc.audioEngine.setMusicVolume(this.backgroundMusicVolume);
         this.saveSettings();
+        console.log(this.backgroundMusicVolume);
+        Emitter.instance.emit(SoundKeys.SOUND_VOLUME_CHANGED, { type: SoundKeys.BACKGROUND_MUSIC, value: this.backgroundMusicVolume });
     },
 
     setSoundEffectVolume(volume) {
         this.soundEffectVolume = cc.misc.clampf(volume, 0, 1);
         cc.audioEngine.setEffectsVolume(this.soundEffectVolume);
         this.saveSettings();
+        Emitter.instance.emit(SoundKeys.SOUND_VOLUME_CHANGED, { type: SoundKeys.SOUND_EFFECT, value: this.soundEffectVolume });
     },
     
     onVolumeChanged(data) {
+        console.log(data);
         switch(data.type) {
-            case 'backgroundMusic':
+            case SoundKeys.BACKGROUND_MUSIC:
                 this.setBackgroundMusicVolume(data.value);
                 break;
-            case 'soundEffect':
+            case SoundKeys.SOUND_EFFECT:
                 this.setSoundEffectVolume(data.value);
                 break;
         }
