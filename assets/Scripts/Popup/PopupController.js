@@ -27,10 +27,6 @@ cc.Class({
         Emitter.instance.removeEventsMap(this.eventMap);
     },
 
-    onClickSetting() {
-        this.showPopup(Popup.SHOW_SETTING_POPUP);
-    },
-
     showPopup(name) {
         this.hideAllPopups();
         switch (name) {
