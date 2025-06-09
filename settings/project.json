@@ -2,7 +2,32 @@
   "assets-sort-type": "name",
   "collision-matrix": [
     [
+      false
+    ],
+    [
+      false,
+      true,
+      true,
+      true,
       true
+    ],
+    [
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 720,
@@ -21,7 +46,11 @@
   "fit-height": true,
   "fit-width": true,
   "group-list": [
-    "default"
+    "default",
+    "MobGroup",
+    "DefenderGroup",
+    "PlayerGroup",
+    "BulletGrounp"
   ],
   "last-module-event-record-time": 0,
   "simulator-orientation": false,
@@ -30,6 +59,5 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }
