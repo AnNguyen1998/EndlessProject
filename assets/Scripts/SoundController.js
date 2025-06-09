@@ -1,5 +1,5 @@
-const mEmitter = require('./EventEmitter/Emitter');
-import { Popup, Game, Player, Monster } from './EventEmitter/EventKeys';
+const Emitter = require('./EventEmitter/Emitter');
+const { Popup, Game : GameEventKeys, Player, Monster } = require('./EventEmitter/EventKeys');
 
 const SoundController = cc.Class({
     extends: cc.Component,
@@ -47,14 +47,6 @@ const SoundController = cc.Class({
         
         this.playDefaultMusic();
 
-        console.log('SoundController initialized');
-        console.log(`Volume Settings - Background Music: ${this.backgroundMusicVolume}, Sound Effect: ${this.soundEffectVolume}`);
-    },
-
-    onDestroy() {
-        mEmitter.instance.removeEventsMap(this.eventMap);
-        this.stopMusic();
-        this.stopAllSoundEffects();
     },
 
     setupAudioClips() {
@@ -74,16 +66,17 @@ const SoundController = cc.Class({
     registerEvents() {
         this.eventMap = {
             [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
-            [Game.START_GAME]: this.onGameStart.bind(this),
-            [Game.END_GAME]: this.onGameEnd.bind(this),
-            [Game.PAUSE_GAME]: this.onGamePause.bind(this),
-            [Game.RESUME_GAME]: this.onGameResume.bind(this),
+            [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
+            [GameEventKeys.END_GAME]: this.onGameEnd.bind(this),
+            [GameEventKeys.PAUSE_GAME]: this.onGamePause.bind(this),
+            [GameEventKeys.RESUME_GAME]: this.onGameResume.bind(this),
             [Player.JUMP]: () => this.playSoundEffect('jump'),
             [Player.ATTACK]: () => this.playSoundEffect('attack'),
             [Monster.MONSTER_DIE]: () => this.playSoundEffect('monster_die'),
             [Monster.MONSTER_HIT]: () => this.playSoundEffect('monster_hit'),
+            'click': () => this.playSoundEffect('click'),
         };
-        mEmitter.instance.registerEventsMap(this.eventMap);
+        Emitter.instance.registerEventsMap(this.eventMap);
     },
 
     playMusic(musicName, loop = true, fadeIn = false) {
@@ -211,8 +204,7 @@ const SoundController = cc.Class({
         }
     },
 
-    onGameStart() {
-    },
+    onGameStart() {},
 
     onGameEnd() {
         this.stopMusic(true);
@@ -247,15 +239,10 @@ const SoundController = cc.Class({
         }
     },
 
-    preloadAudio(audioUrl, callback) {
-        cc.resources.load(audioUrl, cc.AudioClip, (err, clip) => {
-            if (err) {
-                console.error('Failed to preload audio:', audioUrl, err);
-                return;
-            }
-            
-            if (callback) callback(clip);
-        });
+    onDestroy() {
+        Emitter.instance.removeEventsMap(this.eventMap);
+        this.stopMusic();
+        this.stopAllSoundEffects();
     },
 
 
