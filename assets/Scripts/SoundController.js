@@ -212,12 +212,12 @@ const SoundController = cc.Class({
     },
 
     onGameStart() {
-        this.playMusic('bgm', true, true);
     },
 
     onGameEnd() {
         this.stopMusic(true);
         this.stopAllSoundEffects();
+        this.onDestroy();
     },
 
     onGamePause() {
@@ -237,8 +237,8 @@ const SoundController = cc.Class({
     },
 
     saveSettings() {
-        cc.sys.localStorage.setItem('bgm_volume', this.backgroundMusicVolume);
-        cc.sys.localStorage.setItem('sfx_volume', this.soundEffectVolume);
+        cc.sys.localStorage.setItem('background_music_volume', this.backgroundMusicVolume);
+        cc.sys.localStorage.setItem('sound_effect_volume', this.soundEffectVolume);
     },
 
     playDefaultMusic() {

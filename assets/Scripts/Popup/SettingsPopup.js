@@ -54,8 +54,8 @@ cc.Class({
     },
     
     saveVolume() {
-        cc.sys.localStorage.setItem('bgm_volume', this.backgroundMusicSlider.progress);
-        cc.sys.localStorage.setItem('sfx_volume', this.soundEffectSlider.progress);
+        cc.sys.localStorage.setItem('background_music_volume', this.backgroundMusicSlider.progress);
+        cc.sys.localStorage.setItem('sound_effect_volume', this.soundEffectSlider.progress);
     },
     
     updateBackgroundMusicVolumeIcon() {
