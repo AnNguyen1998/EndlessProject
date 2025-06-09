@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-const { Game : GameEventKeys } = require('EventKeys');
+const { Game: GameEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
@@ -16,7 +16,7 @@ cc.Class({
 
     registerEvents() {
         Emitter.instance.registerEventsMap(this.eventMaps);
-        
+
     },
 
     onSceneChange(nameScene) {
