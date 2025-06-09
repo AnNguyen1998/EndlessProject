@@ -1,15 +1,25 @@
 cc.Class({
     extends: cc.Component,
-    init(parentNode) {
-        if (parentNode) {
-            parentNode.addChild(this.node);
-        } else {
-            let canvas = cc.director.getScene().getChildByName('Canvas');
-            if (canvas) canvas.addChild(this.node);
-        }
+    properties: {
+
+    },
+    onLoad() {
+        this.node.active = false; 
+        this.node.opacity = 255; 
     },
     onDestroy() {
-        // cleanup nếu cần
-    }
-});
-module.exports = PopupItem; 
+    },
+    show() {    
+        this.node.active = true;
+        this.node.opacity = 0;
+        this.node.runAction(cc.fadeIn(0.2));
+    },
+    hide() {
+        this.node.runAction(cc.sequence(
+            cc.fadeOut(0.2),
+            cc.callFunc(() => {
+                this.node.active = false;
+            })
+        ));
+    },
+})

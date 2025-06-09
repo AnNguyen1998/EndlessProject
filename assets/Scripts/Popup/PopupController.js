@@ -1,26 +1,57 @@
-const SettingsPopup = require('./SettingsPopup');
-const mEmitter = require('../EventEmitter/Emitter');
-import { Popup } from '../EventEmitter/EventKeys';
+const Emitter = require('../EventEmitter/Emitter');
+const { Popup } = require('../EventEmitter/EventKeys');
 
 cc.Class({
     extends: cc.Component,
     properties: {
-        settingsPopup: SettingsPopup
+        _popupItems: [],
     },
+
     onLoad() {
         cc.game.addPersistRootNode(this.node);
-        mEmitter.instance.registerEvent(Popup.SHOW_SETTING_POPUP, this.showSettingsPopup.bind(this));
-        mEmitter.instance.registerEvent(Popup.HIDE_SETTING_POPUP, this.hideSettingsPopup.bind(this));
+        this.eventMap = {
+            [Popup.SHOW_SETTING_POPUP]: this.showSettingsPopup.bind(this),
+            [Popup.HIDE_SETTING_POPUP]: this.hideSettingsPopup.bind(this),
+        };
+        Emitter.instance.registerEventsMap(this.eventMap);
     },
+
     showSettingsPopup() {
-        this.settingsPopup.node.active = true;
+        let popup = this._popupItems.find(p => p && p.node && p.node.isValid && p.popupType === 'settings');
+        if (popup) {
+            popup.show();
+            return;
+        }
+        cc.loader.loadRes('Prefabs/SettingsPopup', cc.Prefab, (err, prefab) => {
+            if (!err) {
+                let instance = cc.instantiate(prefab);
+                let canvas = cc.director.getScene().getChildByName('Canvas');
+                if (canvas) canvas.addChild(instance);
+                else this.node.addChild(instance);
+                let popup = instance.getComponent('SettingsPopup');
+                if (popup) {
+                    popup.popupType = 'settings';
+                    this._popupItems.push(popup);
+                    popup.show();
+                } else {
+                    instance.active = true;
+                }
+            }
+        });
     },
+
     hideSettingsPopup() {
-        this.settingsPopup.node.active = false;
+        let popup = this._popupItems.find(p => p && p.node && p.node.active);
+        if (popup) popup.hide();
     },
+
     onDestroy() {
-        mEmitter.instance.removeEvent(Popup.SHOW_SETTING_POPUP, this.showSettingsPopup);
-        mEmitter.instance.removeEvent(Popup.HIDE_SETTING_POPUP, this.hideSettingsPopup);
+        Emitter.instance.removeEventsMap(this.eventMap);
+        this._popupItems.forEach(item => {
+            if (item && item.node && item.node.isValid) {
+                item.node.destroy();
+            }
+        });
+        this._popupItems = [];
     }
 });
-module.exports = PopupController; 
