@@ -1,5 +1,7 @@
 const Emitter = require('./EventEmitter/Emitter');
 const { Popup, Game : GameEventKeys, Player, Monster } = require('./EventEmitter/EventKeys');
+const LocalStorageUnit = require('./Unit/LocalStorageUnit');
+const LocalStorageKeys = require('./Unit/LocalStorageKeys');
 
 const SoundController = cc.Class({
     extends: cc.Component,
@@ -34,7 +36,7 @@ const SoundController = cc.Class({
 
     init() {
         cc.game.addPersistRootNode(this.node);
-        
+
         this.eventMap = {
             [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
             [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
@@ -223,16 +225,16 @@ const SoundController = cc.Class({
     },
 
     loadSettings() {
-        const backgroundMusicVol = cc.sys.localStorage.getItem('background_music_volume');
-        const soundEffectVol = cc.sys.localStorage.getItem('sound_effect_volume'); 
+        const backgroundMusicVol = LocalStorageUnit.get(LocalStorageKeys.BACKGROUND_MUSIC_VOLUME);
+        const soundEffectVol = LocalStorageUnit.get(LocalStorageKeys.SOUND_EFFECT_VOLUME);
 
         if (backgroundMusicVol !== null) this.backgroundMusicVolume = parseFloat(backgroundMusicVol);
         if (soundEffectVol !== null) this.soundEffectVolume = parseFloat(soundEffectVol);
     },
 
     saveSettings() {
-        cc.sys.localStorage.setItem('background_music_volume', this.backgroundMusicVolume);
-        cc.sys.localStorage.setItem('sound_effect_volume', this.soundEffectVolume);
+        LocalStorageUnit.set(LocalStorageKeys.BACKGROUND_MUSIC_VOLUME, this.backgroundMusicVolume);
+        LocalStorageUnit.set(LocalStorageKeys.SOUND_EFFECT_VOLUME, this.soundEffectVolume);
     },
 
     playDefaultMusic() {

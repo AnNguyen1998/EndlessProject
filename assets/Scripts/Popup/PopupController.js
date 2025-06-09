@@ -1,6 +1,6 @@
 const Emitter = require('../EventEmitter/Emitter');
 const { Popup } = require('../EventEmitter/EventKeys');
-const { SETTINGS } = require('./PopupKeys');
+const { PopupNames, PopupItems } = require('./PopupKeys');
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -17,7 +17,7 @@ cc.Class({
     init() {
         cc.game.addPersistRootNode(this.node);
         this.eventMap = {
-            [Popup.SHOW_SETTING_POPUP]: this.showPopup.bind(this, Popup.SETTINGS),
+            [Popup.SHOW_SETTING_POPUP]: this.showPopup.bind(this, Popup.SHOW_SETTING_POPUP),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
     },
@@ -27,12 +27,12 @@ cc.Class({
     },
 
     onClickSetting() {
-        this.showPopup(Popup.SETTINGS);
+        this.showPopup(Popup.SHOW_SETTING_POPUP);
     },
 
     showPopup(name) {
         this.hideAllPopups();
-        if (name === Popup.SETTINGS) {
+        if (name === Popup.SHOW_SETTING_POPUP) {
             let node = this.popupItems.find(item => item.name === PopupItems.SETTINGS);
             if (node) {
                 let popup = node.getComponent(PopupItems.SETTINGS);

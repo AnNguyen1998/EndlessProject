@@ -1,5 +1,7 @@
 const Emitter = require('../EventEmitter/Emitter');
 const { Popup } = require('../EventEmitter/EventKeys');
+const LocalStorageUnit = require('../Unit/LocalStorageUnit');
+const LocalStorageKeys = require('../Unit/LocalStorageKeys');
 
 cc.Class({
     extends: require('./PopupItem'),
@@ -22,7 +24,7 @@ cc.Class({
     },
     
     onDestroy() {
-        
+
     },
     
     show() {
@@ -52,8 +54,8 @@ cc.Class({
     },
     
     saveVolume() {
-        cc.sys.localStorage.setItem('background_music_volume', this.backgroundMusicSlider.progress);
-        cc.sys.localStorage.setItem('sound_effect_volume', this.soundEffectSlider.progress);
+        LocalStorageUnit.set(LocalStorageKeys.BACKGROUND_MUSIC_VOLUME, this.backgroundMusicSlider.progress);
+        LocalStorageUnit.set(LocalStorageKeys.SOUND_EFFECT_VOLUME, this.soundEffectSlider.progress);
     },
     
     updateBackgroundMusicVolumeIcon() {
