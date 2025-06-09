@@ -1,7 +1,7 @@
 cc.Class({
     extends: cc.Component,
 
-    onClick() {
+    launchGame() {
         cc.director.loadScene("Loading");
     }
 
