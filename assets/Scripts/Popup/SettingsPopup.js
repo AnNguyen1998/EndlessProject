@@ -22,9 +22,7 @@ cc.Class({
     },
     
     onDestroy() {
-        if (Emitter.instance) {
-            Emitter.instance.removeEvent('VOLUME_DATA_CHANGED', this.onVolumeDataChanged.bind(this));
-        }
+        
     },
     
     show() {

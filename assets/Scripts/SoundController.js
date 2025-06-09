@@ -34,6 +34,19 @@ const SoundController = cc.Class({
 
     init() {
         cc.game.addPersistRootNode(this.node);
+        
+        this.eventMap = {
+            [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
+            [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
+            [GameEventKeys.END_GAME]: this.onGameEnd.bind(this),
+            [GameEventKeys.PAUSE_GAME]: this.onGamePause.bind(this),
+            [GameEventKeys.RESUME_GAME]: this.onGameResume.bind(this),
+            [Player.JUMP]: () => this.playSoundEffect('jump'),
+            [Player.ATTACK]: () => this.playSoundEffect('attack'),
+            [Monster.MONSTER_DIE]: () => this.playSoundEffect('monster_die'),
+            [Monster.MONSTER_HIT]: () => this.playSoundEffect('monster_hit'),
+            'click': () => this.playSoundEffect('click'),
+        };
 
         this.currentMusicId = -1;
         this.musicClipMap = new Map();
@@ -64,18 +77,7 @@ const SoundController = cc.Class({
     },
 
     registerEvents() {
-        this.eventMap = {
-            [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
-            [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
-            [GameEventKeys.END_GAME]: this.onGameEnd.bind(this),
-            [GameEventKeys.PAUSE_GAME]: this.onGamePause.bind(this),
-            [GameEventKeys.RESUME_GAME]: this.onGameResume.bind(this),
-            [Player.JUMP]: () => this.playSoundEffect('jump'),
-            [Player.ATTACK]: () => this.playSoundEffect('attack'),
-            [Monster.MONSTER_DIE]: () => this.playSoundEffect('monster_die'),
-            [Monster.MONSTER_HIT]: () => this.playSoundEffect('monster_hit'),
-            'click': () => this.playSoundEffect('click'),
-        };
+
         Emitter.instance.registerEventsMap(this.eventMap);
     },
 
