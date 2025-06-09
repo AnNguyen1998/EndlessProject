@@ -52,11 +52,11 @@ const SoundController = cc.Class({
             [GameEventKeys.END_GAME]: this.onGameEnd.bind(this),
             [GameEventKeys.PAUSE_GAME]: this.onGamePause.bind(this),
             [GameEventKeys.RESUME_GAME]: this.onGameResume.bind(this),
-            [Player.JUMP]: () => this.playSoundEffect('jump'),
-            [Player.ATTACK]: () => this.playSoundEffect('attack'),
-            [Monster.MONSTER_DIE]: () => this.playSoundEffect('monster_die'),
-            [Monster.MONSTER_HIT]: () => this.playSoundEffect('monster_hit'),
-            'click': () => this.playSoundEffect('click'),
+            [Player.JUMP]: () => this.playSoundEffect(SoundKeys.JUMP),
+            [Player.ATTACK]: () => this.playSoundEffect(SoundKeys.ATTACK),
+            [Monster.MONSTER_DIE]: () => this.playSoundEffect(SoundKeys.MONSTER_DIE),
+            [Monster.MONSTER_HIT]: () => this.playSoundEffect(SoundKeys.MONSTER_HIT),
+            [SoundKeys.CLICK]: () => this.playSoundEffect(SoundKeys.CLICK),
         };
 
         this.registerEvents();
