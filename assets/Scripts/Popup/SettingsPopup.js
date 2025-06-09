@@ -8,6 +8,8 @@ cc.Class({
     properties: {
         backgroundMusicSlider: cc.Slider,
         soundEffectSlider: cc.Slider,
+        backgroundMusicFill: cc.Node,
+        soundEffectFill: cc.Node,
         closeButton: cc.Button,
         backgroundMusicVolumeIconOn: cc.Sprite,
         backgroundMusicVolumeIconOff: cc.Sprite,
@@ -33,29 +35,45 @@ cc.Class({
     },
     
     loadVolume() {
-        let backgroundMusicVolume = cc.sys.localStorage.getItem('background_music_volume');
-        let soundEffectVolume = cc.sys.localStorage.getItem('sound_effect_volume');
+        let backgroundMusicVolume = LocalStorageUnit.get(LocalStorageKeys.BACKGROUND_MUSIC_VOLUME);
+        let soundEffectVolume = LocalStorageUnit.get(LocalStorageKeys.SOUND_EFFECT_VOLUME);
         this.backgroundMusicSlider.progress = backgroundMusicVolume !== null ? parseFloat(backgroundMusicVolume) : 0.7;
         this.soundEffectSlider.progress = soundEffectVolume !== null ? parseFloat(soundEffectVolume) : 0.8;
         this.updateBackgroundMusicVolumeIcon();
         this.updateSoundEffectVolumeIcon();
+        this.updateBackgroundMusicFill();
+        this.updateSoundEffectFill();
     },
     
     onBackgroundMusicChanged() {
         this.saveVolume();
-        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: 'backgroundMusic', value: this.backgroundMusicSlider.progress });
         this.updateBackgroundMusicVolumeIcon();
+        this.updateBackgroundMusicFill();
+        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: 'backgroundMusic', value: this.backgroundMusicSlider.progress });
     },
     
     onSoundEffectChanged() {
         this.saveVolume();
-        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: 'soundEffect', value: this.soundEffectSlider.progress });
         this.updateSoundEffectVolumeIcon();
+        this.updateSoundEffectFill();
+        Emitter.instance.emit(Popup.CHANGED_SLIDER, { type: 'soundEffect', value: this.soundEffectSlider.progress });
     },
     
     saveVolume() {
         LocalStorageUnit.set(LocalStorageKeys.BACKGROUND_MUSIC_VOLUME, this.backgroundMusicSlider.progress);
         LocalStorageUnit.set(LocalStorageKeys.SOUND_EFFECT_VOLUME, this.soundEffectSlider.progress);
+    },
+    
+    updateBackgroundMusicFill() {
+        if (this.backgroundMusicFill && this.backgroundMusicSlider) {
+            this.backgroundMusicFill.width = this.backgroundMusicSlider.progress * this.backgroundMusicSlider.node.width;
+        }
+    },
+    
+    updateSoundEffectFill() {
+        if (this.soundEffectFill && this.soundEffectSlider) {
+            this.soundEffectFill.width = this.soundEffectSlider.progress * this.soundEffectSlider.node.width;
+        }
     },
     
     updateBackgroundMusicVolumeIcon() {

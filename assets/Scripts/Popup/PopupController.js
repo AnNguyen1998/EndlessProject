@@ -1,6 +1,6 @@
 const Emitter = require('../EventEmitter/Emitter');
 const { Popup } = require('../EventEmitter/EventKeys');
-const { PopupNames, PopupItems } = require('./PopupKeys');
+const { PopupKeys } = require('./PopupKeys');
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -33,16 +33,16 @@ cc.Class({
     showPopup(name) {
         this.hideAllPopups();
         if (name === Popup.SHOW_SETTING_POPUP) {
-            let node = this.popupItems.find(item => item.name === PopupItems.SETTINGS);
+            let node = this.popupItems.find(item => item.name === PopupKeys.SETTINGS);
             if (node) {
-                let popup = node.getComponent(PopupItems.SETTINGS);
+                let popup = node.getComponent(PopupKeys.SETTINGS);
                 popup.show();
             }
         }
     },
     hideAllPopups() {
         this.popupItems.forEach(item => {
-            let popup = item.getComponent(PopupItems.POPUP_ITEM);
+            let popup = item.getComponent(PopupKeys.POPUP_ITEM);
             if (popup) {
                 popup.hide();
             }
