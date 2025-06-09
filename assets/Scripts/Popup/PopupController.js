@@ -32,11 +32,14 @@ cc.Class({
 
     showPopup(name) {
         this.hideAllPopups();
-        if (name === Popup.SHOW_SETTING_POPUP) {
-            let node = this.popupItems.find(item => item.name === PopupKeys.SETTINGS);
-            if (node) {
-                let popup = node.getComponent(PopupKeys.SETTINGS);
-                popup.show();
+        switch (name) {
+            case Popup.SHOW_SETTING_POPUP: {
+                let node = this.popupItems.find(item => item.name === PopupKeys.SETTINGS);
+                if (node) {
+                    let popup = node.getComponent(PopupKeys.SETTINGS);
+                    popup.show();
+                }
+                break;
             }
         }
     },
