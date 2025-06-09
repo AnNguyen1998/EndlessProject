@@ -79,7 +79,6 @@ const SoundController = cc.Class({
     },
 
     registerEvents() {
-
         Emitter.instance.registerEventsMap(this.eventMap);
     },
 
