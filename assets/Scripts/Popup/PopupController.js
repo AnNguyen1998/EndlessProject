@@ -15,11 +15,12 @@ cc.Class({
     },
 
     init() {
-        cc.game.addPersistRootNode(this.node);
+
         this.eventMap = {
             [Popup.SHOW_SETTING_POPUP]: this.showPopup.bind(this, Popup.SHOW_SETTING_POPUP),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
+        cc.game.addPersistRootNode(this.node);
     },
 
     onDestroy() {
