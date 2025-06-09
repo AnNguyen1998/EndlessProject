@@ -7,22 +7,10 @@ cc.Class({
         backgroundMusicSlider: cc.Slider,
         soundEffectSlider: cc.Slider,
         closeButton: cc.Button,
-        backgroundMusicVolumeIconOn: {
-            type: cc.Sprite,
-            default: null
-        },
-        backgroundMusicVolumeIconOff: {
-            type: cc.Sprite,
-            default: null
-        },
-        soundEffectVolumeIconOn: {
-            type: cc.Sprite,
-            default: null
-        },
-        soundEffectVolumeIconOff: {
-            type: cc.Sprite,
-            default: null
-        }
+        backgroundMusicVolumeIconOn: cc.Sprite,
+        backgroundMusicVolumeIconOff: cc.Sprite,
+        soundEffectVolumeIconOn: cc.Sprite,
+        soundEffectVolumeIconOff: cc.Sprite,
     },
     
     onLoad() {
@@ -45,10 +33,10 @@ cc.Class({
     },
     
     loadVolume() {
-        let bgm = cc.sys.localStorage.getItem('bgm_volume');
-        let sfx = cc.sys.localStorage.getItem('sfx_volume');
-        this.bgmSlider.progress = bgm !== null ? parseFloat(bgm) : 0.7;
-        this.sfxSlider.progress = sfx !== null ? parseFloat(sfx) : 0.8;
+        let backgroundMusicVolume = cc.sys.localStorage.getItem('background_music_volume');
+        let soundEffectVolume = cc.sys.localStorage.getItem('sound_effect_volume');
+        this.backgroundMusicSlider.progress = backgroundMusicVolume !== null ? parseFloat(backgroundMusicVolume) : 0.7;
+        this.soundEffectSlider.progress = soundEffectVolume !== null ? parseFloat(soundEffectVolume) : 0.8;
         this.updateBackgroundMusicVolumeIcon();
         this.updateSoundEffectVolumeIcon();
     },
@@ -66,31 +54,21 @@ cc.Class({
     },
     
     saveVolume() {
-        cc.sys.localStorage.setItem('bgm_volume', this.bgmSlider.progress);
-        cc.sys.localStorage.setItem('sfx_volume', this.sfxSlider.progress);
+        cc.sys.localStorage.setItem('bgm_volume', this.backgroundMusicSlider.progress);
+        cc.sys.localStorage.setItem('sfx_volume', this.soundEffectSlider.progress);
     },
     
     updateBackgroundMusicVolumeIcon() {
         if (!this.backgroundMusicSlider || !this.backgroundMusicVolumeIconOn || !this.backgroundMusicVolumeIconOff) return;
-        
-        const isOn = this.bgmSlider.progress > 0.001;
-        if (this.bgmVolumeIconOn.node) {
-            this.bgmVolumeIconOn.node.active = isOn;
-        }
-        if (this.bgmVolumeIconOff.node) {
-            this.bgmVolumeIconOff.node.active = !isOn;
-        }
+        const isOn = this.backgroundMusicSlider.progress > 0.001;
+        if (this.backgroundMusicVolumeIconOn.node) this.backgroundMusicVolumeIconOn.node.active = isOn;
+        if (this.backgroundMusicVolumeIconOff.node) this.backgroundMusicVolumeIconOff.node.active = !isOn;
     },
     
     updateSoundEffectVolumeIcon() {
         if (!this.soundEffectSlider || !this.soundEffectVolumeIconOn || !this.soundEffectVolumeIconOff) return;
-        
-        const isOn = this.sfxSlider.progress > 0.001;
-        if (this.sfxVolumeIconOn.node) {
-            this.sfxVolumeIconOn.node.active = isOn;
-        }
-        if (this.sfxVolumeIconOff.node) {
-            this.sfxVolumeIconOff.node.active = !isOn;
-        }
+        const isOn = this.soundEffectSlider.progress > 0.001;
+        if (this.soundEffectVolumeIconOn.node) this.soundEffectVolumeIconOn.node.active = isOn;
+        if (this.soundEffectVolumeIconOff.node) this.soundEffectVolumeIconOff.node.active = !isOn;
     },
 });

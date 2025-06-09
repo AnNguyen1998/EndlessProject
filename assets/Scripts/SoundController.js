@@ -45,17 +45,14 @@ const SoundController = cc.Class({
         
         this.registerEvents();
         
+        this.playDefaultMusic();
+
         console.log('SoundController initialized');
         console.log(`Volume Settings - Background Music: ${this.backgroundMusicVolume}, Sound Effect: ${this.soundEffectVolume}`);
     },
 
     onDestroy() {
-        mEmitter.instance.removeEvent(Popup.CHANGED_SLIDER, this.onVolumeChanged);
-        mEmitter.instance.removeEvent(Game.START_GAME, this.onGameStart);
-        mEmitter.instance.removeEvent(Game.END_GAME, this.onGameEnd);
-        mEmitter.instance.removeEvent(Game.PAUSE_GAME, this.onGamePause);
-        mEmitter.instance.removeEvent(Game.RESUME_GAME, this.onGameResume);
-        
+        mEmitter.instance.removeEventsMap(this.eventMap);
         this.stopMusic();
         this.stopAllSoundEffects();
     },
@@ -75,18 +72,18 @@ const SoundController = cc.Class({
     },
 
     registerEvents() {
-        mEmitter.instance.registerEvent(Popup.CHANGED_SLIDER, this.onVolumeChanged.bind(this));
-
-        mEmitter.instance.registerEvent(Game.START_GAME, this.onGameStart.bind(this));
-        mEmitter.instance.registerEvent(Game.END_GAME, this.onGameEnd.bind(this));
-        mEmitter.instance.registerEvent(Game.PAUSE_GAME, this.onGamePause.bind(this));
-        mEmitter.instance.registerEvent(Game.RESUME_GAME, this.onGameResume.bind(this));
-
-        mEmitter.instance.registerEvent(Player.JUMP, () => this.playSoundEffect('jump'));
-        mEmitter.instance.registerEvent(Player.ATTACK, () => this.playSoundEffect('attack'));
-
-        mEmitter.instance.registerEvent(Monster.MONSTER_DIE, () => this.playSoundEffect('monster_die'));
-        mEmitter.instance.registerEvent(Monster.MONSTER_HIT, () => this.playSoundEffect('monster_hit'));
+        this.eventMap = {
+            [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
+            [Game.START_GAME]: this.onGameStart.bind(this),
+            [Game.END_GAME]: this.onGameEnd.bind(this),
+            [Game.PAUSE_GAME]: this.onGamePause.bind(this),
+            [Game.RESUME_GAME]: this.onGameResume.bind(this),
+            [Player.JUMP]: () => this.playSoundEffect('jump'),
+            [Player.ATTACK]: () => this.playSoundEffect('attack'),
+            [Monster.MONSTER_DIE]: () => this.playSoundEffect('monster_die'),
+            [Monster.MONSTER_HIT]: () => this.playSoundEffect('monster_hit'),
+        };
+        mEmitter.instance.registerEventsMap(this.eventMap);
     },
 
     playMusic(musicName, loop = true, fadeIn = false) {
@@ -192,17 +189,14 @@ const SoundController = cc.Class({
     },
 
     setBackgroundMusicVolume(volume) {
-        const oldVolume = this.backgroundMusicVolume;
         this.backgroundMusicVolume = cc.misc.clampf(volume, 0, 1);
-        
-        this.updateMusicVolume();
+        cc.audioEngine.setMusicVolume(this.backgroundMusicVolume);
         this.saveSettings();
     },
 
     setSoundEffectVolume(volume) {
-        const oldVolume = this.soundEffectVolume;
         this.soundEffectVolume = cc.misc.clampf(volume, 0, 1);
-        
+        cc.audioEngine.setEffectsVolume(this.soundEffectVolume);
         this.saveSettings();
     },
     
@@ -218,7 +212,7 @@ const SoundController = cc.Class({
     },
 
     onGameStart() {
-        this.playMusic('game_music', true, true);
+        this.playMusic('bgm', true, true);
     },
 
     onGameEnd() {
@@ -243,8 +237,8 @@ const SoundController = cc.Class({
     },
 
     saveSettings() {
-        cc.sys.localStorage.setItem('background_music_volume', this.backgroundMusicVolume);
-        cc.sys.localStorage.setItem('sound_effect_volume', this.soundEffectVolume);
+        cc.sys.localStorage.setItem('bgm_volume', this.backgroundMusicVolume);
+        cc.sys.localStorage.setItem('sfx_volume', this.soundEffectVolume);
     },
 
     playDefaultMusic() {

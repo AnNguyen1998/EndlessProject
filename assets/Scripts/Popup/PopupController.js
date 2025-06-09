@@ -4,6 +4,10 @@ const { Popup } = require('../EventEmitter/EventKeys');
 cc.Class({
     extends: cc.Component,
     properties: {
+        popupPrefabs: {
+            default: [],
+            type: [cc.Prefab],
+        },
         _popupItems: [],
     },
 
@@ -17,31 +21,30 @@ cc.Class({
     },
 
     showSettingsPopup() {
-        let popup = this._popupItems.find(p => p && p.node && p.node.isValid && p.popupType === 'settings');
+        let popup = this._popupItems.find(popup => popup && popup.node && popup.node.isValid && popup.popupType === 'settings');
         if (popup) {
             popup.show();
             return;
         }
-        cc.loader.loadRes('Prefabs/SettingsPopup', cc.Prefab, (err, prefab) => {
-            if (!err) {
-                let instance = cc.instantiate(prefab);
-                let canvas = cc.director.getScene().getChildByName('Canvas');
-                if (canvas) canvas.addChild(instance);
-                else this.node.addChild(instance);
-                let popup = instance.getComponent('SettingsPopup');
-                if (popup) {
-                    popup.popupType = 'settings';
-                    this._popupItems.push(popup);
-                    popup.show();
-                } else {
-                    instance.active = true;
-                }
+        let prefab = this.popupPrefabs.find(prefab => prefab && prefab.name === 'SettingsPopup');
+        if (prefab) {
+            let instance = cc.instantiate(prefab);
+            let canvas = cc.director.getScene().getChildByName('Canvas');
+            if (canvas) canvas.addChild(instance);
+            else this.node.addChild(instance);
+            let popup = instance.getComponent('SettingsPopup');
+            if (popup) {
+                popup.popupType = 'settings';
+                this._popupItems.push(popup);
+                popup.show();
+            } else {
+                instance.active = true;
             }
-        });
+        }
     },
 
     hideSettingsPopup() {
-        let popup = this._popupItems.find(p => p && p.node && p.node.active);
+        let popup = this._popupItems.find(p => p && p.node && p.node.active && p.popupType === 'settings');
         if (popup) popup.hide();
     },
 
