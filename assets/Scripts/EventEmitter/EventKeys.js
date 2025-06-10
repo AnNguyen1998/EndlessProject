@@ -24,7 +24,10 @@ export const Player = {
     MOVE_UP: 'moveUp',
     MOVE_DOWN: 'moveDown',
     SHOOT: 'shoot',
-    UPGRADE_ATTRIBUTE: 'upgradeAttribute',
+    REQUEST_UPGRADE: "requestUpgrade",
+    REQUEST_ATTRIBUTE_DATA: "requestAttributeData",
+    REQUEST_UPGRADE_INFO: "requestUpgradeInfo",
+    UPDATE_ATTRIBUTE_UI: "updateAttributeUI"
 }
 
 export const Monster = {

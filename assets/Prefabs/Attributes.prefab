@@ -1187,7 +1187,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.25,
+      "width": 30,
       "height": 30
     },
     "_anchorPoint": {
@@ -1237,7 +1237,7 @@
     "_N$string": "1",
     "_fontSize": 35,
     "_lineHeight": 40,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
