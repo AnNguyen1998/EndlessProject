@@ -1,5 +1,5 @@
 const Emitter = require('../EventEmitter/Emitter');
-const { Skill } = require('../EventEmitter/EventKeys');
+const { Skill } = require('./SkillKeys');
 
 cc.Class({
     extends: cc.Component,
@@ -16,7 +16,6 @@ cc.Class({
     },
 
     onLoad() {
-        console.log("SkillCooldownProgress onLoad");
         this.registerEvents();
         if (this.progressSprite) {
             this.progressSprite.fillRange = 0;
@@ -39,17 +38,47 @@ cc.Class({
     },
 
     onSkillCooldownStart(skillIndex) {
-        if (!this.skill || this.skill.skillIndex !== skillIndex) return;
+        // Lấy component skill từ node nếu cần
+        let skillComponent = this.getSkillComponent();
+        if (!skillComponent) {
+            console.log("No skill component found");
+            return;
+        }
+        
+        console.log("Progress bar: skillIndex from event:", skillIndex, "skill component index:", skillComponent.skillIndex);
+        
+        if (skillComponent.skillIndex !== skillIndex) return;
+        
         console.log("Progress bar cooldown started for skill:", skillIndex);
         this.progressSprite.node.active = true;
         this.startProgressUpdate();
     },
 
     onSkillCooldownEnd(skillIndex) {
-        if (!this.skill || this.skill.skillIndex !== skillIndex) return;
+        let skillComponent = this.getSkillComponent();
+        if (!skillComponent) return;
+        
+        if (skillComponent.skillIndex !== skillIndex) return;
+        
         console.log("Progress bar cooldown ended for skill:", skillIndex);
         this.progressSprite.node.active = false;
         this.stopProgressUpdate();
+    },
+
+    getSkillComponent() {
+        if (!this.skill) return null;
+        
+        // // Nếu skill là component, trả về trực tiếp
+        // if (this.skill.skillIndex !== undefined) {
+        //     return this.skill;
+        // }
+        
+        // Nếu skill là node, lấy component HeavyShotBulletSkill
+        if (this.skill.node || this.skill.getComponent) {
+            return this.skill.getComponent('SkillItem');
+        }
+        
+        return null;
     },
 
     startProgressUpdate() {
@@ -69,11 +98,7 @@ cc.Class({
             return;
         }
         
-        let skillComponent = this.skill;
-        if (this.skill.node) { // Nếu skill là node, lấy component
-            skillComponent = this.skill.getComponent('SkillItem');
-        }
-        
+        let skillComponent = this.getSkillComponent();
         if (!skillComponent || !skillComponent.fsm) {
             console.log("Skill component or fsm not found");
             return;

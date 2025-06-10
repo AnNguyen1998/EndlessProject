@@ -1,5 +1,5 @@
 const Emitter = require('../EventEmitter/Emitter');
-const { Skill } = require('../EventEmitter/EventKeys');
+const { Skill } = require('./SkillKeys');
 
 cc.Class({
     extends: cc.Component,
