@@ -648,7 +648,7 @@
     "_enabled": true,
     "skillName": "Heavy Shot",
     "skillIndex": 0,
-    "cooldown": 10,
+    "cooldown": 2,
     "duration": 0.1,
     "isActive": false,
     "_cooldownTimer": 0,
@@ -730,17 +730,17 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_id": "7bhSj1mopNaqAovuvioIJx"
+    "_id": "788cHvdqBNrLmCHORLDU5+"
   },
   {
-    "__type__": "70c5cFQKVlNdLquFkeEBq8K",
+    "__type__": "e9e6e6YsPNEn7wNnptolZH2",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 16
     },
     "_enabled": true,
-    "skills": [
+    "skillComponents": [
       {
         "__id__": 13
       }
@@ -750,7 +750,17 @@
         "__id__": 12
       }
     ],
-    "_id": "dcF7bDLK9HcbfsAMzKbrR9"
+    "progressSprites": [
+      {
+        "__id__": 8
+      }
+    ],
+    "progressNodes": [
+      {
+        "__id__": 7
+      }
+    ],
+    "_id": "b2z/nmriFHxpMiqYQ1Ee42"
   },
   {
     "__type__": "cc.Canvas",

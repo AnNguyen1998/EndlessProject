@@ -38,7 +38,7 @@ cc.Class({
         this.unregisterEvents();
     },
 
-    init(){
+    init() {
         this._cooldownTimer = 0;
         this.isActive = false;
         this._initStateMachine();
@@ -79,7 +79,6 @@ cc.Class({
                     this.isActive = false;
                     this.onDeactivate();
                     this._cooldownTimer = this.cooldown;
-                    Emitter.instance.emit(Skill.SKILL_DEACTIVATED, this.skillIndex);
                     Emitter.instance.emit(Skill.SKILL_COOLDOWN_START, this.skillIndex);
                 },
                 onCooldownEnd: () => {
@@ -108,7 +107,7 @@ cc.Class({
     },
 
     canUse() {
-        return this.fsm.state === 'idle';
+        return this.fsm && this.fsm.state === 'idle';
     },
 
     activate() {
@@ -118,35 +117,29 @@ cc.Class({
     },
 
     _onDurationEnd() {
-        if (this.fsm.state === 'active') {
+        if (this.fsm && this.fsm.state === 'active') {
             this.fsm.deactivate();
         }
     },
 
-    deactivate() {
-        if (this.fsm.state !== 'active') return;
-        this.fsm.deactivate();
-    },
-
     disable() {
-        if (this.fsm.state !== 'disabled') {
+        if (this.fsm && this.fsm.state !== 'disabled') {
             this.fsm.disable();
         }
     },
 
     enable() {
-        if (this.fsm.state === 'disabled') {
+        if (this.fsm && this.fsm.state === 'disabled') {
             this.fsm.enable();
         }
     },
 
+    // Override these methods in child classes
     onActivate() {
-        // Custom skill logic here
         console.log(`${this.skillName} activated!`);
     },
 
     onDeactivate() {
         console.log(`${this.skillName} deactivated!`);
-        // Custom logic when skill ends
     },
 });
