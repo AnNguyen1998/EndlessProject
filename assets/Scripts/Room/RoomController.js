@@ -1,3 +1,4 @@
+const InputController = require("../Input/InputController");
 const MobTransition = require("../Mob/MobTransition");
 
 const GAME_AREA = {
@@ -10,14 +11,8 @@ const GAME_AREA = {
 cc.Class({
     extends: cc.Component,
     properties: {
-        mobPrefabs: {
-            default: [],
-            type: [cc.Prefab]
-        },
-        mobPrefabNames: {
-            default: [],
-            type: [cc.String]
-        },
+        mobPrefabs: { default: [], type: [cc.Prefab] },
+        mobPrefabNames: { default: [], type: [cc.String] },
         wareLabel: { default: null, type: cc.Label },
         coinLabel: { default: null, type: cc.Label },
         starLabel: { default: null, type: cc.Label },
@@ -32,7 +27,9 @@ cc.Class({
         currentLevel: { default: 0, type: cc.Integer },
         currentWave: { default: 0, type: cc.Integer },
         mobSpawnQueue: [],
-        mobsActive: []
+        mobsActive: [],
+        playerSpine: { default: null, type: sp.Skeleton },
+        inputController: { default: null, type: InputController }
     },
 
     onLoad() {
@@ -50,6 +47,9 @@ cc.Class({
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.prepareWave();
+        this.inputController = new InputController();
+        this.inputController.node = this.node;
+        this.inputController.init();
         // this.generateDefenders();
     },
 
@@ -246,5 +246,20 @@ cc.Class({
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
+    },
+
+    onDestroy() {
+        if (this.inputController) {
+            this.inputController.unregisterInputEvents();
+        }
+        this.mobs.forEach(mob => {
+            if (mob.destroy) mob.destroy();
+        });
+        this.mobs = [];
+        this.mobsActive = [];
+        this.defenders.forEach(defender => {
+            if (defender.destroy) defender.destroy();
+        });
+        this.defenders = [];
     }
 });

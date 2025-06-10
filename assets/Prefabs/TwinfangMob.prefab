@@ -72,8 +72,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 1.2,
+      "y": 1.2,
       "z": 1
     },
     "_eulerAngles": {
@@ -253,7 +253,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6d8e2be2-e5d7-461d-924a-95fe2aa06ead"
     },
     "fileId": "06tPDIN/FJaKlzFUYtTPwO",
     "sync": false
@@ -313,7 +313,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6d8e2be2-e5d7-461d-924a-95fe2aa06ead"
     },
     "fileId": "ddaDuEdJtGRY/NT1Q56ppY",
     "sync": false
@@ -438,7 +438,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6d8e2be2-e5d7-461d-924a-95fe2aa06ead"
     },
     "fileId": "8beiYlZk9APYY0qlB5WH+2",
     "sync": false
@@ -458,6 +458,7 @@
     "healthBar": {
       "__id__": 7
     },
+    "mobType": "",
     "_id": ""
   },
   {
@@ -550,7 +551,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6d8e2be2-e5d7-461d-924a-95fe2aa06ead"
     },
     "fileId": "0eI25rizpAFbvJXy0MerUd",
     "sync": false
