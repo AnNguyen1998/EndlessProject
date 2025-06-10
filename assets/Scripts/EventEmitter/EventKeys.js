@@ -21,12 +21,9 @@ export const Game = {
 }
 
 export const Player = {
-    MOVE_LEFT: 'moveLeft',
-    MOVE_RIGHT: 'moveRight',
     MOVE_UP: 'moveUp',
     MOVE_DOWN: 'moveDown',
-    ATTACK: 'attack',
-    JUMP: 'jump',
+    SHOOT: 'shoot',
 }
 
 export const Monster = {
