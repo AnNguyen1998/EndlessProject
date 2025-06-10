@@ -1,20 +1,18 @@
 const Emitter = require('Emitter');
 const { Player: PlayerEventKeys } = require('EventKeys');
-cc.Class ({
+const LocalStorageUnit = require('LocalStorageUnit');
+
+cc.Class({
     extends: cc.Component,
-
-    properties: {
-       
-    },
-
+    
     onLoad() {
-       this.init();
-       this.registerEvents();
+        this.init();
+        this.registerEvents();
     },
 
     init() {
         this.eventMap = {
-            [PlayerEventKeys.UPGRADE_STAT]: this.onUpgradeStat.bind(this),
+            [PlayerEventKeys.UPGRADE_STAT]: this.handleUpgradeStat.bind(this),
         };
     },
 
@@ -22,8 +20,8 @@ cc.Class ({
         Emitter.instance.registerEventsMap(this.eventMap);
     },
 
-    onUpgradeStat(title) {
-        
+    handleUpgradeStat(attributeNode) {
+        console.log(attributeNode,"dang o upgradecontroller");
     },
 
     removeEvents() {
@@ -33,5 +31,4 @@ cc.Class ({
     onDestroy() {
         this.removeEvents();
     }
-
-})
+});

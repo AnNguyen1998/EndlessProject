@@ -171,7 +171,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 398.3716857408418
+      "z": 585.4331729582806
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -4483,7 +4483,7 @@
     "_attributeNodeList": [],
     "_playerAttribute": null,
     "_attributeConfig": null,
-    "_id": "33lJfjwzBIGKLTTv8gB2sK"
+    "_id": "4fx+63LT1AK5z6lMflnkfB"
   },
   {
     "__type__": "cc.Node",
@@ -6578,6 +6578,8 @@
       "__id__": 153
     },
     "_enabled": true,
+    "attributeJsonAsset": null,
+    "playerAttribute": null,
     "_id": "c7UjPzwKxDw7yPjWUjytRF"
   },
   {

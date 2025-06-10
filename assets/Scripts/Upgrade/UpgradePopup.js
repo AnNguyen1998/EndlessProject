@@ -5,7 +5,7 @@ const LocalStorageUnit = require('./LocalStorageUnit');
 const PlayerAttributeTemplate = {
     hpLevel: { value: 0, level: 1 },
     damage: { value: 0, level: 1 },
-    critDamage: { value: 0, level: 1 },
+    critChance: { value: 0, level: 1 },
     critRate: { value: 0, level: 1 },
     attackSpeed: { value: 0, level: 1 },
     getAttribute(attributeName) {
@@ -49,15 +49,22 @@ cc.Class({
 
     onLoad() {
         this._super();
+        this.init();
+    },
+
+    init() {
+        this.eventMap = {
+            [PlayerEventKeys.UPGRADE_ATTRIBUTE]: this.handleUpgradeStat.bind(this)
+        }
         this._attributeConfig = this.attributeJsonAsset.json;
         this.loadPlayerAttribute();
         this.initializeUI();
         this.updateAllAttributeDisplays();
-        // Emitter.instance.on(PlayerEventKeys.UPGRADE_STAT, this.handleUpgradeStat, this);
+        Emitter.instance.registerEventsMap(this.eventMap);
     },
 
     onDestroy() {
-        // Emitter.instance.off(PlayerEventKeys.UPGRADE_STAT, this.handleUpgradeStat, this);
+        Emitter.instance.removeEventsMap(this.eventMap);
     },
 
     loadPlayerAttribute() {
@@ -84,7 +91,7 @@ cc.Class({
         const dataToSave = {
             hpLevel: this._playerAttribute.hpLevel,
             damage: this._playerAttribute.damage,
-            critDamage: this._playerAttribute.critDamage,
+            critChance: this._playerAttribute.critChance,
             critRate: this._playerAttribute.critRate,
             attackSpeed: this._playerAttribute.attackSpeed,
         };
@@ -101,6 +108,7 @@ cc.Class({
             attributeNode.config = attrConfig;
             attributeNode.attributeName = attrConfig.name;
             const upgradeButton = attributeNode.getChildByName("AddButton").getComponent(cc.Button);
+            upgradeButton.node.on('click', this.handleUpgradeStat.bind(this, attributeNode.attributeName), this);
             this.layout.node.addChild(attributeNode);
             this._attributeNodeList.push(attributeNode);
         }
@@ -119,22 +127,22 @@ cc.Class({
         console.log(`Updating attribute: ${attrName}`, currentAttrData);
 
         attributeNode.getChildByName("Title").getComponent(cc.Label).string = attrConfig.title;
-        attributeNode.getChildByName("AttributeValue").getComponent(cc.Label).string = currentAttrData.value.toFixed(2);
+        if(attrConfig.title == 'HP') {
+            attributeNode.getChildByName("AttributeValue").getComponent(cc.Label).string = currentAttrData.value.toFixed(0);
+        } else {
+            attributeNode.getChildByName("AttributeValue").getComponent(cc.Label).string = currentAttrData.value.toFixed(1);
+        }
         attributeNode.getChildByName("Level").getChildByName("Mask").getChildByName("LevelValue").getComponent(cc.Label).string = `${currentAttrData.level}`;
         const upgradeInfo = this.getUpgradeInfo(attrName, currentAttrData.level);
-        const upgradeButton = attributeNode.getChildByName("UpgradeButton");
         if (upgradeInfo) {
             attributeNode.getChildByName("GoldUpgrade").getComponent(cc.Label).string = upgradeInfo.price;
-            // upgradeButton.active = true;
         } else {
-            // upgradeButton.active = false;
             attributeNode.getChildByName("Level").getChildByName("Mask").getChildByName("LevelValue").getComponent(cc.Label).string = `${currentAttrData.level}`;
-
         }
         const AttributeValueUpgradeInfo = attributeNode.getChildByName("AttributeValueUpgrade");
         if (upgradeInfo) {
             if (upgradeInfo.hasOwnProperty('multiplier')) {
-                AttributeValueUpgradeInfo.getComponent(cc.Label).string = `${currentAttrData.value * upgradeInfo.multiplier}`;
+                AttributeValueUpgradeInfo.getComponent(cc.Label).string = `${(currentAttrData.value * upgradeInfo.multiplier).toFixed(1)}`;
             } else if (upgradeInfo.hasOwnProperty('bonus')) {
                 AttributeValueUpgradeInfo.getComponent(cc.Label).string = `${currentAttrData.value + upgradeInfo.bonus}`;
             }
@@ -149,12 +157,8 @@ cc.Class({
         return factory.factory.find(f => f.level === currentLevel + 1) || null;
     },
 
-    onClickAddStat(event, attributeName) {
-        console.log(`Upgrade request for: ${attributeName}`);
-        Emitter.instance.emit(PlayerEventKeys.UPGRADE_STAT, attributeName);
-    },
-
     handleUpgradeStat(attributeName) {
+        Emitter.instance.emit(PlayerEventKeys.UPGRADE_STAT, attributeName);
         const currentAttrData = this._playerAttribute[attributeName];
         const upgradeInfo = this.getUpgradeInfo(attributeName, currentAttrData.level);
         if (!upgradeInfo) {
