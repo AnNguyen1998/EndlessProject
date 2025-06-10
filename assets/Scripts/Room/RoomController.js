@@ -18,6 +18,9 @@ cc.Class({
             default: [],
             type: [cc.String]
         },
+        wareLabel: { default: null, type: cc.Label },
+        coinLabel: { default: null, type: cc.Label },
+        starLabel: { default: null, type: cc.Label },
         mobs: [],
         defender: { default: null, type: cc.Prefab },
         defenders: [],
@@ -47,7 +50,7 @@ cc.Class({
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.prepareWave();
-        this.generateDefenders();
+        // this.generateDefenders();
     },
 
     fakeInitGameScript() {
@@ -60,10 +63,10 @@ cc.Class({
                     "enemyWaves": [
                         {
                             "types": [
-                                { "name": "wolf", "health": 80, "damage": 8, "speed": 60, "number": 3 },
-                                { "name": "twinfang", "health": 120, "damage": 12, "speed": 90, "number": 1 }
+                                { "name": "wolf", "health": 80, "damage": 8, "speed": 60, "number": 5 },
+                                { "name": "twinfang", "health": 120, "damage": 12, "speed": 90, "number": 2 }
                             ]
-                        },                        
+                        },
                         {
                             "types": [
                                 { "name": "wolf", "health": 110, "damage": 11, "speed": 90, "number": 10 },
@@ -94,6 +97,7 @@ cc.Class({
 
         if (this.mobSpawnQueue.length === 0 && this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
             this.currentWave++;
+            this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
             this.prepareWave();
         }
 
@@ -103,6 +107,14 @@ cc.Class({
             this.trySpawnMob();
             this.spawnTimer = this.spawnInterval;
         }
+        this.updateLabels();
+    },
+
+    updateLabels() {
+        if (!this.wareLabel || !this.coinLabel || !this.starLabel) return;
+        this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
+        // this.coinLabel.string = `Coins: ${this.gameScript.levels[this.currentLevel].coin}`;
+        // this.starLabel.string = `Stars: ${this.gameScript.levels[this.currentLevel].star}`;
     },
 
     prepareWave() {
@@ -117,14 +129,9 @@ cc.Class({
             }
         });
         this.shuffleArray(this.mobSpawnQueue);
-
-        const totalMob = this.mobSpawnQueue.length;
-        const waveDuration = level.duration / level.waveCount;      // ví dụ: 300 s / 5 = 60 s
-        const rawInterval = waveDuration / totalMob;               // chia đều cho mỗi con
-        this.spawnInterval = this.spawnInterval; // điều chỉnh spawnInterval theo rawInterval
+        this.spawnInterval = this.spawnInterval;
         this.spawnTimer = 0;
-
-        this.generateMobs();                                         // giữ nguyên
+        this.generateMobs();
     }
     ,
 
@@ -185,8 +192,8 @@ cc.Class({
     },
 
     getLanePosition(laneIndex) {
-        const startY = GAME_AREA.bottomLeft.y + 100;
-        const endY = GAME_AREA.bottomLeft.y + 500;
+        const startY = GAME_AREA.bottomLeft.y + 70;
+        const endY = GAME_AREA.bottomLeft.y + 450;
         const step = (endY - startY) / (this.laneCount - 1);
         return startY + laneIndex * step;
     },

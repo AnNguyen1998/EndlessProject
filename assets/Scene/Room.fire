@@ -171,7 +171,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 623.5382907247958
+      "z": 398.3716857408418
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1687,7 +1687,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TrophyNode",
+    "_name": "WareNode",
     "_objFlags": 0,
     "_parent": {
       "__id__": 34
@@ -1748,7 +1748,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TimerIcon",
+    "_name": "WareIcon",
     "_objFlags": 0,
     "_parent": {
       "__id__": 35
@@ -1838,7 +1838,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TimerLabel",
+    "_name": "WareLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 35
@@ -1862,7 +1862,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 58.39,
+      "width": 41.7,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -1908,8 +1908,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "1:30",
-    "_N$string": "1:30",
+    "_string": "0/5",
+    "_N$string": "0/5",
     "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -1926,7 +1926,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "StartNode",
+    "_name": "CoinNode",
     "_objFlags": 0,
     "_parent": {
       "__id__": 34
@@ -1987,7 +1987,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "StartIcon",
+    "_name": "CoinIcon",
     "_objFlags": 0,
     "_parent": {
       "__id__": 40
@@ -2011,8 +2011,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27,
-      "height": 24
+      "width": 24,
+      "height": 27
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2059,7 +2059,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "393e57f6-0ce9-4041-a4bd-1a90bcc094de"
+      "__uuid__": "676f0489-10c5-42d9-9a33-8fc3952eaba6"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -2077,7 +2077,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "StartNumberLabel",
+    "_name": "CoinLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 40
@@ -2165,7 +2165,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TargetNode",
+    "_name": "StarNode",
     "_objFlags": 0,
     "_parent": {
       "__id__": 34
@@ -2232,7 +2232,7 @@
       "__id__": 45
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 7,
     "_components": [
       {
@@ -2316,7 +2316,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TargetNumberLabel",
+    "_name": "StarLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 45
@@ -2340,7 +2340,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 58.39,
+      "width": 90,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -2350,7 +2350,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 47,
+      "x": 0,
       "y": 0,
       "z": 0
     },
@@ -2386,8 +2386,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "0/50",
-    "_N$string": "0/50",
+    "_string": "★★★",
+    "_N$string": "★★★",
     "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -2395,7 +2395,7 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_N$horizontalAlign": 0,
+    "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
@@ -3126,6 +3126,15 @@
       "twinfang",
       "drakey"
     ],
+    "wareLabel": {
+      "__id__": 39
+    },
+    "coinLabel": {
+      "__id__": 44
+    },
+    "starLabel": {
+      "__id__": 49
+    },
     "mobs": [],
     "defender": {
       "__uuid__": "679394c3-1951-48b3-a302-628659b12d3d"
