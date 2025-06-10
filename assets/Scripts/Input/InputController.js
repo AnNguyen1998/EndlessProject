@@ -7,9 +7,6 @@ cc.Class({
         upButton: cc.Node,
         downButton: cc.Node,
         shootButton: cc.Node,
-        isMovingUp: false,
-        isMovingDown: false,
-        isShoot: false,
     },
 
     init() {
@@ -47,15 +44,12 @@ cc.Class({
     onKeyDown(event) {
         switch (event.keyCode) {
             case cc.macro.KEY.up:
-                this.isMovingUp = true;
-                cc.systemEvent.emit(PlayerEventKeys.MOVE_UP, true);
+                cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
                 break;
             case cc.macro.KEY.down:
-                this.isMovingDown = true;
-                cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN, true);
+                cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
                 break;
             case cc.macro.KEY.space:
-                this.isShoot = true;
                 cc.systemEvent.emit(PlayerEventKeys.SHOOT);
                 break;
         }
@@ -64,60 +58,35 @@ cc.Class({
     onKeyUp(event) {
         switch (event.keyCode) {
             case cc.macro.KEY.up:
-                this.isMovingUp = false;
-                cc.systemEvent.emit(PlayerEventKeys.MOVE_UP, false);
+                cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
                 break;
             case cc.macro.KEY.down:
-                this.isMovingDown = false;
-                cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN, false);
+                cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
                 break;
             case cc.macro.KEY.space:
-                this.isShoot = false;
+                cc.systemEvent.emit(PlayerEventKeys.SHOOT);
                 break;
         }
     },
 
     onUpButtonDown() {
-        this.isMovingUp = true;
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_UP, true);
+        cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
     },
 
     onUpButtonUp() {
-        this.isMovingUp = false;
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_UP, false);
+        cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
     },
 
     onDownButtonDown() {
-        this.isMovingDown = true;
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN, true);
+        cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
     },
 
     onDownButtonUp() {
-        this.isMovingDown = false;
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN, false);
+        cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
     },
 
     onShootButtonDown() {
-        if (!this.isShoot) {
-            this.isShoot = true;
             cc.systemEvent.emit(PlayerEventKeys.SHOOT);
-        }
-    },
-
-    onShootButtonUp() {
-        this.isShoot = false;
-    },
-
-    getIsMovingUp() {
-        return this.isMovingUp;
-    },
-
-    getIsMovingDown() {
-        return this.isMovingDown;
-    },
-
-    getIsShooting() {
-        return this.isShoot;
     },
 
     unregisterInputEvents() {
