@@ -1,0 +1,385 @@
+{
+        "attributes": [
+            {
+                "name": "hpLevel",
+                "title": "HP",
+                "defaultAttribute": 1,
+                "maxLevel": 5
+            },
+            {
+                "name": "damage",
+                "title": "Damage",
+                "defaultAttribute": 50,
+                "maxLevel": 10
+            },
+            {
+                "name": "attackSpeed",
+                "title": "Attack Speed",
+                "defaultAttribute": 1.0,
+                "maxLevel": 5
+            },
+            {
+                "name": "critRate",
+                "title": "Crit Rate",
+                "defaultAttribute": 0.05,
+                "maxLevel": 8
+            },
+            {
+                "name": "critDamage",
+                "title": "Crit Damage",
+                "defaultAttribute": 1.5,
+                "maxLevel": 8
+            }
+        ],
+        "attributes_factory": [
+            {
+                "name": "hpLevel",
+                "factory": [
+                    {
+                        "level": 1,
+                        "condition": {
+                            "required_player_level": 8,
+                            "chapter": 2
+                        },
+                        "price": 5000,
+                        "bonus": 1
+                    },
+                    {
+                        "level": 2,
+                        "condition": {
+                            "required_player_level": 15,
+                            "chapter": 3
+                        },
+                        "price": 12000,
+                        "bonus": 1
+                    },
+                    {
+                        "level": 3,
+                        "condition": {
+                            "required_player_level": 22,
+                            "chapter": 4
+                        },
+                        "price": 25000,
+                        "bonus": 1
+                    },
+                    {
+                        "level": 4,
+                        "condition": {
+                            "required_player_level": 30,
+                            "chapter": 5
+                        },
+                        "price": 50000,
+                        "bonus": 1
+                    },
+                    {
+                        "level": 5,
+                        "condition": {
+                            "required_player_level": 40,
+                            "chapter": 6
+                        },
+                        "price": 99999,
+                        "bonus": 1
+                    }
+                ]
+            },
+            {
+                "name": "damage",
+                "factory": [
+                    {
+                        "level": 1,
+                        "condition": {
+                            "required_player_level": 1,
+                            "chapter": 1
+                        },
+                        "price": 200,
+                        "multiplier": 1.2
+                    },
+                    {
+                        "level": 2,
+                        "condition": {
+                            "required_player_level": 3,
+                            "chapter": 1
+                        },
+                        "price": 450,
+                        "multiplier": 1.45
+                    },
+                    {
+                        "level": 3,
+                        "condition": {
+                            "required_player_level": 6,
+                            "chapter": 1
+                        },
+                        "price": 900,
+                        "multiplier": 1.8
+                    },
+                    {
+                        "level": 4,
+                        "condition": {
+                            "required_player_level": 9,
+                            "chapter": 2
+                        },
+                        "price": 1800,
+                        "multiplier": 2.3
+                    },
+                    {
+                        "level": 5,
+                        "condition": {
+                            "required_player_level": 12,
+                            "chapter": 2
+                        },
+                        "price": 3500,
+                        "multiplier": 3.0
+                    },
+                    {
+                        "level": 6,
+                        "condition": {
+                            "required_player_level": 16,
+                            "chapter": 3
+                        },
+                        "price": 6000,
+                        "multiplier": 3.8
+                    },
+                    {
+                        "level": 7,
+                        "condition": {
+                            "required_player_level": 20,
+                            "chapter": 3
+                        },
+                        "price": 9500,
+                        "multiplier": 4.7
+                    },
+                    {
+                        "level": 8,
+                        "condition": {
+                            "required_player_level": 24,
+                            "chapter": 4
+                        },
+                        "price": 15000,
+                        "multiplier": 5.8
+                    },
+                    {
+                        "level": 9,
+                        "condition": {
+                            "required_player_level": 28,
+                            "chapter": 5
+                        },
+                        "price": 22000,
+                        "multiplier": 7.0
+                    },
+                    {
+                        "level": 10,
+                        "condition": {
+                            "required_player_level": 35,
+                            "chapter": 5
+                        },
+                        "price": 30000,
+                        "multiplier": 8.5
+                    }
+                ]
+            },
+            {
+                "name": "attackSpeed",
+                "factory": [
+                    {
+                        "level": 1,
+                        "condition": {
+                            "required_player_level": 5,
+                            "chapter": 1
+                        },
+                        "price": 1000,
+                        "multiplier": 1.08
+                    },
+                    {
+                        "level": 2,
+                        "condition": {
+                            "required_player_level": 10,
+                            "chapter": 2
+                        },
+                        "price": 2500,
+                        "multiplier": 1.18
+                    },
+                    {
+                        "level": 3,
+                        "condition": {
+                            "required_player_level": 18,
+                            "chapter": 3
+                        },
+                        "price": 6000,
+                        "multiplier": 1.30
+                    },
+                    {
+                        "level": 4,
+                        "condition": {
+                            "required_player_level": 25,
+                            "chapter": 4
+                        },
+                        "price": 14000,
+                        "multiplier": 1.45
+                    },
+                    {
+                        "level": 5,
+                        "condition": {
+                            "required_player_level": 32,
+                            "chapter": 5
+                        },
+                        "price": 28000,
+                        "multiplier": 1.65
+                    }
+                ]
+            },
+            {
+                "name": "critRate",
+                "factory": [
+                    {
+                        "level": 1,
+                        "condition": {
+                            "required_player_level": 7,
+                            "chapter": 1
+                        },
+                        "price": 1500,
+                        "multiplier": 1.8
+                    },
+                    {
+                        "level": 2,
+                        "condition": {
+                            "required_player_level": 11,
+                            "chapter": 2
+                        },
+                        "price": 3000,
+                        "multiplier": 2.6
+                    },
+                    {
+                        "level": 3,
+                        "condition": {
+                            "required_player_level": 14,
+                            "chapter": 2
+                        },
+                        "price": 5500,
+                        "multiplier": 3.5
+                    },
+                    {
+                        "level": 4,
+                        "condition": {
+                            "required_player_level": 19,
+                            "chapter": 3
+                        },
+                        "price": 9000,
+                        "multiplier": 4.5
+                    },
+                    {
+                        "level": 5,
+                        "condition": {
+                            "required_player_level": 23,
+                            "chapter": 4
+                        },
+                        "price": 13500,
+                        "multiplier": 5.6
+                    },
+                    {
+                        "level": 6,
+                        "condition": {
+                            "required_player_level": 27,
+                            "chapter": 4
+                        },
+                        "price": 19000,
+                        "multiplier": 6.8
+                    },
+                    {
+                        "level": 7,
+                        "condition": {
+                            "required_player_level": 33,
+                            "chapter": 5
+                        },
+                        "price": 26000,
+                        "multiplier": 8.2
+                    },
+                    {
+                        "level": 8,
+                        "condition": {
+                            "required_player_level": 38,
+                            "chapter": 6
+                        },
+                        "price": 35000,
+                        "multiplier": 10.0
+                    }
+                ]
+            },
+            {
+                "name": "critDamage",
+                "factory": [
+                    {
+                        "level": 1,
+                        "condition": {
+                            "required_player_level": 7,
+                            "chapter": 1
+                        },
+                        "price": 1200,
+                        "multiplier": 1.1
+                    },
+                    {
+                        "level": 2,
+                        "condition": {
+                            "required_player_level": 11,
+                            "chapter": 2
+                        },
+                        "price": 2800,
+                        "multiplier": 1.22
+                    },
+                    {
+                        "level": 3,
+                        "condition": {
+                            "required_player_level": 14,
+                            "chapter": 2
+                        },
+                        "price": 5000,
+                        "multiplier": 1.35
+                    },
+                    {
+                        "level": 4,
+                        "condition": {
+                            "required_player_level": 19,
+                            "chapter": 3
+                        },
+                        "price": 8500,
+                        "multiplier": 1.50
+                    },
+                    {
+                        "level": 5,
+                        "condition": {
+                            "required_player_level": 23,
+                            "chapter": 4
+                        },
+                        "price": 13000,
+                        "multiplier": 1.68
+                    },
+                    {
+                        "level": 6,
+                        "condition": {
+                            "required_player_level": 27,
+                            "chapter": 4
+                        },
+                        "price": 18000,
+                        "multiplier": 1.88
+                    },
+                    {
+                        "level": 7,
+                        "condition": {
+                            "required_player_level": 33,
+                            "chapter": 5
+                        },
+                        "price": 25000,
+                        "multiplier": 2.1
+                    },
+                    {
+                        "level": 8,
+                        "condition": {
+                            "required_player_level": 38,
+                            "chapter": 6
+                        },
+                        "price": 34000,
+                        "multiplier": 2.35
+                    }
+                ]
+            }
+        ]
+    }

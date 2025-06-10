@@ -1,10 +1,10 @@
-import { CLICK } from "../Sound/SoundKeys"
-
 export const Popup = {
     SHOW_SETTING_POPUP: 'showSetting',
     SHOW_RANK_POPUP: 'showRank',
     HIDE_SETTING_POPUP: 'hideSetting',
     HIDE_RANK_POPUP: 'hideRank',
+    SHOW_UPGRADE_POPUP: 'showUpgrade',
+    HIDE_UPGRADE_POPUP: 'hideUpgrade',
     CHANGED_SLIDER: 'changedSlider',
 }
 
@@ -24,6 +24,7 @@ export const Player = {
     MOVE_UP: 'moveUp',
     MOVE_DOWN: 'moveDown',
     SHOOT: 'shoot',
+    UPGRADE_ATTRIBUTE: 'upgradeAttribute',
 }
 
 export const Monster = {
