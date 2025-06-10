@@ -1,3 +1,5 @@
+import { CLICK } from "../Sound/SoundKeys"
+
 export const Popup = {
     SHOW_SETTING_POPUP: 'showSetting',
     SHOW_RANK_POPUP: 'showRank',
@@ -14,15 +16,14 @@ export const Game = {
     RESTART_GAME: 'restartGame',
     GAME_OVER: 'gameOver',
     SCENE_CHANGE: 'sceneChange',
+    SELECT_CHAPTER: 'selectChapter',
+    CLICK_CHAPTER: 'clickChapter',
 }
 
 export const Player = {
-    MOVE_LEFT: 'moveLeft',
-    MOVE_RIGHT: 'moveRight',
     MOVE_UP: 'moveUp',
     MOVE_DOWN: 'moveDown',
-    ATTACK: 'attack',
-    JUMP: 'jump',
+    SHOOT: 'shoot',
 }
 
 export const Monster = {
