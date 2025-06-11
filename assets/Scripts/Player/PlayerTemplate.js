@@ -10,7 +10,7 @@ const DEFAULT_PLAYER_DATA = {
         highestChapter: 1,
     },
     attributes: {
-        hpLevel: { value: 5, level: 1 },
+        hpLevel: { value: 1, level: 1 },
         damage: { value: 10, level: 1 },
         critChance: { value: 0.05, level: 1 },
         critRate: { value: 1.5, level: 1 },

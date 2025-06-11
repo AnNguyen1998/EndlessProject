@@ -26,7 +26,6 @@ export const Player = {
     SHOOT: 'shoot',
     REQUEST_UPGRADE: "requestUpgrade",
     REQUEST_ATTRIBUTE_DATA: "requestAttributeData",
-    REQUEST_UPGRADE_INFO: "requestUpgradeInfo",
     UPDATE_ATTRIBUTE_UI: "updateAttributeUI",
     REQUEST_UPGRADE_DISPLAY_DATA: "requestUpgradeDisplayData",
     UPDATE_PLAYER_GOLD_UI: "updatePlayerGoldUI"
