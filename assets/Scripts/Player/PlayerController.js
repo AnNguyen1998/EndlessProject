@@ -41,9 +41,9 @@ cc.Class({
         this.eventMap = {
             [PlayerEventKeys.MOVE_UP]: this.onMoveUp.bind(this),
             [PlayerEventKeys.MOVE_DOWN]: this.onMoveDown.bind(this),
-            [PlayerEventKeys.SHOOT]: this.onShoot.bind(this),
-            [PlayerEventKeys.HEAVY_SHOT]: this.onShoot.bind(this),
-            [PlayerEventKeys.TRIPLE_SHOT]: this.onShoot.bind(this),
+            //[PlayerEventKeys.SHOOT]: this.onShoot.bind(this),
+            //[PlayerEventKeys.HEAVY_SHOT]: this.onShoot.bind(this),
+            //[PlayerEventKeys.TRIPLE_SHOT]: this.onShoot.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
 

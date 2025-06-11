@@ -39,7 +39,7 @@ cc.Class({
     onCollisionEnter(other, self) {
         if (other.node.group === "MobGroup") {
             this.createExplosionEffect();
-
+            // this.node.destroy();
             if (!this._isPiercing) {
                 if (this._controller) {
                     this._controller.recycleBullet(this.node);

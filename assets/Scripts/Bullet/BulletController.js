@@ -72,7 +72,7 @@ cc.Class({
         bulletNode.position = this.playerNode.position;
     },
 
-    recycleBullet(bulletNode) {        
+    recycleBullet(bulletNode) {
         this.bulletPool.put(bulletNode);
     },
 });

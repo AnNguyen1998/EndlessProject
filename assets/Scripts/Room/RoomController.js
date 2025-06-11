@@ -35,7 +35,7 @@ cc.Class({
     },
 
     init() {
-        this.spawnInterval = 3.5;
+        this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
@@ -57,21 +57,20 @@ cc.Class({
                     "enemyWaves": [
                         {
                             "types": [
-                                { "name": "wolf", "health": 80, "damage": 8, "speed": 60, "number": 5 },
-                                { "name": "twinfang", "health": 120, "damage": 12, "speed": 90, "number": 2 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 5 },
                             ]
                         },
                         {
                             "types": [
-                                { "name": "wolf", "health": 110, "damage": 11, "speed": 90, "number": 10 },
-                                { "name": "twinfang", "health": 155, "damage": 16, "speed": 110, "number": 4 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 10 },
+                                { "name": "twinfang", "health": 15, "damage": 16, "speed": 160, "number": 4 }
                             ]
                         },
                         {
                             "types": [
-                                { "name": "wolf", "health": 120, "damage": 12, "speed": 100, "number": 8 },
-                                { "name": "twinfang", "health": 170, "damage": 18, "speed": 120, "number": 4 },
-                                { "name": "drakey", "health": 300, "damage": 25, "speed": 80, "number": 1 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 8 },
+                                { "name": "twinfang", "health": 10, "damage": 1, "speed": 160, "number": 4 },
+                                { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1 }
                             ]
                         }
                     ]
