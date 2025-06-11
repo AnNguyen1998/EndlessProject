@@ -1,6 +1,7 @@
 const Emitter = require('Emitter');
 const { Player: PlayerEventKeys } = require('EventKeys');
-const LocalStorageUnit = require('LocalStorageUnit');
+const PlayerData = require('PlayerTemplate');
+
 cc.Class({
     extends: require('PopupItem'),
 
@@ -8,12 +9,10 @@ cc.Class({
         attributePrefab: cc.Prefab,
         layout: cc.Layout,
         attributeJsonAsset: cc.JsonAsset,
+        playerGoldLabel: cc.Label,
+
         _attributeNodeList: [],
         _attributeConfig: null,
-        playerGold: {
-            default: null,
-            type: cc.Label
-        }
     },
 
     onLoad() {
@@ -22,24 +21,18 @@ cc.Class({
     },
 
     init() {
+        PlayerData.load(); //TODE: Xoá đi sau khi có gameController hoàn chỉnh
         this.eventMap = {
-            [PlayerEventKeys.UPDATE_ATTRIBUTE_UI]: this.updateAllAttributeDisplays.bind(this),
-            [PlayerEventKeys.UPDATE_PLAYER_GOLD_UI]: this.updateGoldUI.bind(this)
-        }
+            [PlayerEventKeys.UPGRADE_SUCCESS]: this.refreshDisplay.bind(this),
+        };
+        Emitter.instance.registerEventsMap(this.eventMap);
+
         this._attributeConfig = this.attributeJsonAsset.json;
         this.initializeUI();
-        this.loadPlayerGold();
-        this.updateAllAttributeDisplays();
-        Emitter.instance.registerEventsMap(this.eventMap);
     },
 
-    loadPlayerGold() {
-        const savedGold = LocalStorageUnit.get("PlayerGold");
-        this.playerGold.string = savedGold !== null ? savedGold.toString() : "10000";
-    },
-
-    updateGoldUI(newGold) {
-        this.playerGold.string = newGold.toString();
+    onEnable() {
+        this.refreshDisplay();
     },
 
     onDestroy() {
@@ -47,22 +40,28 @@ cc.Class({
     },
 
     initializeUI() {
-        this.playerGold.string = 10000;
+        this.layout.node.removeAllChildren();
+        this._attributeNodeList = [];
+
         const attributes = this._attributeConfig.attributes;
         for (const attrConfig of attributes) {
             const attributeNode = cc.instantiate(this.attributePrefab);
             attributeNode.config = attrConfig;
             attributeNode.attributeName = attrConfig.name;
+
             const upgradeButton = attributeNode.getChildByName("AddButton").getComponent(cc.Button);
             upgradeButton.node.on('click', () => {
                 Emitter.instance.emit(PlayerEventKeys.REQUEST_UPGRADE, attrConfig.name);
             });
+
             this.layout.node.addChild(attributeNode);
             this._attributeNodeList.push(attributeNode);
         }
     },
 
-    updateAllAttributeDisplays() {
+    refreshDisplay() {
+        this.playerGoldLabel.string = PlayerData.getGold().toString();
+
         for (const attributeNode of this._attributeNodeList) {
             this.updateSingleAttributeDisplay(attributeNode);
         }
@@ -71,7 +70,7 @@ cc.Class({
     updateSingleAttributeDisplay(attributeNode) {
         const attrName = attributeNode.attributeName;
         const attrConfig = attributeNode.config;
-        const maxLevel = attrConfig.maxLevel;
+
         const titleLabel = attributeNode.getChildByName("Title").getComponent(cc.Label);
         const valueLabel = attributeNode.getChildByName("AttributeValue").getComponent(cc.Label);
         const levelLabel = attributeNode.getChildByName("Level").getChildByName("Mask").getChildByName("LevelValue").getComponent(cc.Label);
@@ -81,28 +80,36 @@ cc.Class({
         const upgradeValueLabel = attributeNode.getChildByName("AttributeValueUpgrade").getComponent(cc.Label);
 
         Emitter.instance.emit(PlayerEventKeys.REQUEST_UPGRADE_DISPLAY_DATA, attrName, (data) => {
-            if (!data) return;
+            if (!data) {
+                cc.warn(`No display data for ${attrName}`);
+                return;
+            }
+
             titleLabel.string = attrConfig.title;
-            valueLabel.string = attrConfig.title === 'HP' ? data.currentValue.toFixed(0) : data.currentValue.toFixed(1);
-            if (data.isMaxLevel || data.currentLevel >= maxLevel) {
+            valueLabel.string = this._formatValue(attrConfig.name, data.currentValue);
+
+            if (data.isMaxLevel) {
                 levelLabel.string = "MAX";
                 upgradeButtonNode.active = false;
                 goldLabel.string = "";
                 upgradeValueLabel.string = "";
-                return;
-            }
-            levelLabel.string = `${data.currentLevel}`;
-            upgradeButtonNode.active = true;
-            goldLabel.string = data.upgradeInfo.price;
-            upgradeValueLabel.string = data.nextValue.toFixed(1);
-            if (!data.canUpgrade) {
-                upgradeButton.interactable = false;
-                upgradeButtonNode.color = cc.Color.GRAY;
             } else {
-                upgradeButton.interactable = true;
-                upgradeButtonNode.color = cc.Color.WHITE;
+                levelLabel.string = `${data.currentLevel}`;
+                upgradeButtonNode.active = true;
+                goldLabel.string = data.upgradeInfo.price;
+                upgradeValueLabel.string = `+${this._formatValue(attrConfig.name, data.nextValue - data.currentValue)}`;
+                
+                upgradeButton.interactable = data.canUpgrade;
+                upgradeButtonNode.color = data.canUpgrade ? cc.Color.WHITE : cc.Color.GRAY;
+                goldLabel.node.color = data.canUpgrade ? cc.Color.WHITE : cc.Color.RED;
             }
         });
-    }
+    },
 
+    _formatValue(attrName, value) {
+        if (attrName === 'hp') {
+            return value.toFixed(0);
+        }
+        return value.toFixed(1);
+    }
 });
