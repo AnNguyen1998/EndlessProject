@@ -1,4 +1,5 @@
 const Emitter = require('Emitter')
+const { Game } = require('EventKeys')
 cc.Class({
     extends: cc.Component,
 
