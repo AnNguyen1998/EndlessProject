@@ -8,9 +8,8 @@ cc.Class({
     properties: {
         attributeJsonAsset: cc.JsonAsset,
         _attributeConfig: null,
+        toast: cc.Node,
     },
-
-
 
     onLoad() {
         this.init();
@@ -18,18 +17,16 @@ cc.Class({
 
     init() {
         this._attributeConfig = this.attributeJsonAsset.json;
-
         this.eventMap = {
             [PlayerEventKeys.REQUEST_UPGRADE]: this.handleUpgradeStat.bind(this),
             [PlayerEventKeys.REQUEST_ATTRIBUTE_DATA]: this.provideAttributeData.bind(this),
-            [PlayerEventKeys.REQUEST_UPGRADE_INFO]: this.provideUpgradeInfo.bind(this),
             [PlayerEventKeys.REQUEST_UPGRADE_DISPLAY_DATA]: this.getUpgradeDisplayData.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
     },
 
     onDestroy() {
-        Emitter.instance.removeEvent(this.eventMap);
+        Emitter.instance.removeEventsMap(this.eventMap);
     },
 
     provideAttributeData(attributeName, callback) {
@@ -54,11 +51,9 @@ cc.Class({
             callback(null);
             return;
         }
-
         const currentValue = attrData.value;
         const currentLevel = attrData.level;
         const playerGold = PlayerData.getGold();
-
         this.provideUpgradeInfo(attributeName, currentLevel, (upgradeInfo) => {
             let nextValue = null;
             if (upgradeInfo) {
@@ -68,7 +63,6 @@ cc.Class({
                     nextValue = currentValue + upgradeInfo.bonus;
                 }
             }
-
             const displayData = {
                 currentValue,
                 currentLevel,
@@ -85,40 +79,43 @@ cc.Class({
     handleUpgradeStat(attributeName) {
         const currentAttrData = PlayerData.getAttribute(attributeName);
         if (!currentAttrData) return;
-
         this.provideUpgradeInfo(attributeName, currentAttrData.level, (upgradeInfo) => {
             if (!upgradeInfo) {
-                cc.warn(`Cannot upgrade ${attributeName}: Max level reached or no upgrade info found.`);
+                this.toast.getChildByName("Content").getComponent(cc.Label).string = `Cannot upgrade ${attributeName}: Max level reached or no upgrade info found.`;
+                this.toast.getComponent(cc.Animation).play();
                 return;
             }
-
             const playerGold = PlayerData.getGold();
             const playerLevel = PlayerData.getLevel();
-
+            const highestChapter = PlayerData.getHighestChapter();
             if (playerGold < upgradeInfo.price) {
-                cc.log("Not enough gold!");
+                this.toast.getChildByName("Content").getComponent(cc.Label).string = "Not enough gold!";
+                this.toast.getComponent(cc.Animation).play();
                 return;
             }
             if (playerLevel < upgradeInfo.condition.required_player_level) {
-                cc.log("Player level not high enough!");
+                this.toast.getChildByName("Content").getComponent(cc.Label).string = `Player level must be ${upgradeInfo.condition.required_player_level}!`;
+                this.toast.getComponent(cc.Animation).play();
                 return;
             }
-
+            if (highestChapter < upgradeInfo.condition.chapter) {
+                this.toast.getChildByName("Content").getComponent(cc.Label).string = `Chapter must be ${upgradeInfo.condition.chapter}!`;
+                this.toast.getComponent(cc.Animation).play();
+                return;
+            }
             PlayerData.addGold(-upgradeInfo.price);
             PlayerData.upgradeAttributeLevel(attributeName);
-
             let newValue = currentAttrData.value;
+            console.log(upgradeInfo)
             if (upgradeInfo.hasOwnProperty('multiplier')) {
                 newValue *= upgradeInfo.multiplier;
             } else if (upgradeInfo.hasOwnProperty('bonus')) {
                 newValue += upgradeInfo.bonus;
             }
             PlayerData.updateAttributeValue(attributeName, newValue);
-
             PlayerData.save();
-            cc.log(`Upgraded ${attributeName} successfully!`);
-
-            Emitter.instance.emit(PlayerEventKeys.UPDATE_PLAYER_GOLD_UI, PlayerData.getGold());
+            this.toast.getChildByName("Content").getComponent(cc.Label).string = `Upgraded ${attributeName} successfully!`;
+            this.toast.getComponent(cc.Animation).play();
             Emitter.instance.emit(PlayerEventKeys.UPDATE_ATTRIBUTE_UI, attributeName);
         });
     },

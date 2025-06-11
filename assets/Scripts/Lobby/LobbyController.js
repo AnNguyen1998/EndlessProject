@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-const { Popup } = require('EventKeys');
+const { Popup, Game } = require('EventKeys');
 
 cc.Class({
     extends: cc.Component,
@@ -14,6 +14,10 @@ cc.Class({
 
     hideUpgradePopup() {
         Emitter.instance.emit(Popup.HIDE_UPGRADE_POPUP);
+    },
+
+    onClickPlayButton() {
+        Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
     }
 
 });
