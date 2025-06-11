@@ -1,4 +1,3 @@
-const InputController = require("../Input/InputController");
 const MobTransition = require("../Mob/MobTransition");
 
 const GAME_AREA = {
@@ -70,7 +69,7 @@ cc.Class({
                             "types": [
                                 { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 8 },
                                 { "name": "twinfang", "health": 10, "damage": 1, "speed": 160, "number": 4 },
-                                { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1 }
+                                { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1, "isBoss": true }
                             ]
                         }
                     ]
@@ -88,7 +87,7 @@ cc.Class({
 
         this.spawnTimer -= dt;
 
-        if (this.mobSpawnQueue.length === 0 && this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
+        if (this.mobSpawnQueue.length === 0 && this.mobsActive.every(m => !m.active) && this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
             this.currentWave++;
             this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
             this.prepareWave();
@@ -106,49 +105,54 @@ cc.Class({
     updateLabels() {
         if (!this.wareLabel || !this.coinLabel || !this.starLabel) return;
         this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
-        // this.coinLabel.string = `Coins: ${this.gameScript.levels[this.currentLevel].coin}`;
-        // this.starLabel.string = `Stars: ${this.gameScript.levels[this.currentLevel].star}`;
     },
 
     prepareWave() {
         const level = this.gameScript.levels[this.currentLevel];
         const wave = level.enemyWaves[this.currentWave];
+        const normalMobs = [];
+        const bossMobs = [];
 
-        // gom quái vào queue
-        this.mobSpawnQueue = [];
         wave.types.forEach(t => {
             for (let i = 0; i < t.number; i++) {
-                this.mobSpawnQueue.push({ name: t.name, health: t.health, damage: t.damage, speed: t.speed });
+                const mobData = { name: t.name, health: t.health, damage: t.damage, speed: t.speed };
+                if (t.isBoss) {
+                    bossMobs.push(mobData);
+                } else {
+                    normalMobs.push(mobData);
+                }
             }
         });
-        this.shuffleArray(this.mobSpawnQueue);
-        this.spawnInterval = this.spawnInterval;
+
+        this.shuffleArray(normalMobs);
+        this.mobSpawnQueue = normalMobs.concat(bossMobs);
+
         this.spawnTimer = 0;
         this.generateMobs();
-    }
-    ,
+    },
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
-        let activeMobs = this.mobsActive.filter(mob => mob.active);
-        // if (activeMobs.length >= 6) {
-        //     let int = Math.floor(Math.random() * 100);
-        //     if (int < 30) return;
-        // }
+
         let mobInfo = this.mobSpawnQueue.shift();
         let prefabIndex = this.mobPrefabNames.indexOf(mobInfo.name);
         if (prefabIndex === -1) return;
+
         let mob = this.getInactiveMob(prefabIndex);
         if (!mob) return;
+
         let laneIndex = this.getLane(this.lastLane);
         mob.setPosition(GAME_AREA.topRight.x + mob.width, this.getLanePosition(laneIndex));
         let mobItem = mob.getComponent('MobItem');
         mobItem.setStats(mobInfo.health, mobInfo.damage, mobInfo.speed);
+
         if (mobItem && mobItem.stateMachine.can(MobTransition.SPAWN)) {
             mobItem.spawn();
         }
         mob.active = true;
-        this.mobsActive.push(mob);
+        if (!this.mobsActive.includes(mob)) {
+            this.mobsActive.push(mob);
+        }
     },
 
     getInactiveMob(prefabIndex) {
@@ -158,21 +162,7 @@ cc.Class({
                 return mob;
             }
         }
-        for (let i = 0; i < this.mobs.length; i++) {
-            let mob = this.mobs[i];
-            if (!mob.active) {
-                mob.mobTypeIndex = prefabIndex;
-                mob.getComponent('MobItem').setType(this.mobPrefabNames[prefabIndex]);
-                return mob;
-            }
-        }
-        let mob = cc.instantiate(this.mobPrefabs[prefabIndex]);
-        mob.parent = this.node;
-        mob.active = false;
-        mob.mobTypeIndex = prefabIndex;
-        mob.getComponent('MobItem').setType(this.mobPrefabNames[prefabIndex]);
-        this.mobs.push(mob);
-        return mob;
+        return null;
     },
 
     getLane(lastLane) {
@@ -187,17 +177,27 @@ cc.Class({
     getLanePosition(laneIndex) {
         const startY = GAME_AREA.bottomLeft.y + 70;
         const endY = GAME_AREA.bottomLeft.y + 450;
-        const step = (endY - startY) / (this.laneCount - 1);
+        const step = (endY - startY) / (this.laneCount > 1 ? this.laneCount - 1 : 1);
         return startY + laneIndex * step;
     },
 
     generateMobs() {
+        this.mobs.forEach(mob => mob.destroy());
         this.mobs = [];
-        let wave = this.gameScript.levels[this.currentLevel].enemyWaves[this.currentWave];
-        for (let i = 0; i < wave.types.length; i++) {
-            let mobType = wave.types[i];
+        this.mobsActive = [];
+
+        const allMobTypesInLevel = new Map();
+        this.gameScript.levels[this.currentLevel].enemyWaves.forEach(wave => {
+            wave.types.forEach(mobType => {
+                if (!allMobTypesInLevel.has(mobType.name)) {
+                    allMobTypesInLevel.set(mobType.name, mobType);
+                }
+            });
+        });
+
+        allMobTypesInLevel.forEach(mobType => {
             let prefabIndex = this.mobPrefabNames.indexOf(mobType.name);
-            if (prefabIndex === -1) continue;
+            if (prefabIndex === -1) return;
             for (let j = 0; j < mobType.number; j++) {
                 let mob = cc.instantiate(this.mobPrefabs[prefabIndex]);
                 mob.parent = this.node;
@@ -206,10 +206,8 @@ cc.Class({
                 mob.getComponent('MobItem').setType(this.mobPrefabNames[prefabIndex]);
                 this.mobs.push(mob);
             }
-        }
-        this.mobsActive = [];
+        });
     },
-
 
     generateDefenders() {
         this.defenders.forEach(d => d.destroy && d.destroy());
@@ -246,12 +244,12 @@ cc.Class({
             this.inputController.unregisterInputEvents();
         }
         this.mobs.forEach(mob => {
-            if (mob.destroy) mob.destroy();
+            if (mob && mob.destroy) mob.destroy();
         });
         this.mobs = [];
         this.mobsActive = [];
         this.defenders.forEach(defender => {
-            if (defender.destroy) defender.destroy();
+            if (defender && defender.destroy) defender.destroy();
         });
         this.defenders = [];
     }
