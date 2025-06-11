@@ -1,6 +1,8 @@
 const { Player: PlayerEventKeys } = require('EventKeys');
+const { SkillEvent, SkillButtonEvent } = require('SkillKeys');
+const Emitter = require('Emitter');
 
-cc.Class({
+const InputController = cc.Class({
     extends: cc.Component,
 
     properties: {
@@ -11,6 +13,22 @@ cc.Class({
 
     init() {
         this.registerInputEvents();
+        console.log('InputController initialized');
+
+    },
+
+    registerSkillButtons() {
+        const skillItems = cc.director.getScene().getComponentsInChildren('SkillItem');
+
+        skillItems.forEach(skillItem => {
+            if (skillItem.skillButton) {
+                skillItem.skillButton.node.on(SkillButtonEvent.CLICK, this.onSkillButtonClick.bind(this, skillItem), this);
+            }
+        });
+    },
+
+    onSkillButtonClick(skillItem) {
+        Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, skillItem.skillIndex);
     },
 
     registerInputEvents() {
@@ -39,7 +57,11 @@ cc.Class({
         this.node.parent.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.parent.on(cc.Node.EventType.MOUSE_DOWN, this.onMouseDown, this);
         this.node.parent.on(cc.Node.EventType.MOUSE_UP, this.onMouseUp, this);
+
+        this.registerSkillButtons();
     },
+
+
 
     onKeyDown(event) {
         switch (event.keyCode) {
@@ -51,6 +73,12 @@ cc.Class({
                 break;
             case cc.macro.KEY.space:
                 cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+                break;
+            case cc.macro.KEY.j:
+                Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, 0);
+                break;
+            case cc.macro.KEY.k:
+                Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, 1);
                 break;
         }
     },
@@ -73,20 +101,41 @@ cc.Class({
         cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
     },
 
-    onUpButtonUp() {
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
-    },
+    onUpButtonUp() { },
 
     onDownButtonDown() {
         cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
     },
 
-    onDownButtonUp() {
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
-    },
+    onDownButtonUp() { },
 
     onShootButtonDown() {
-            cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+        cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+    },
+
+    onShootButtonUp() { },
+
+    onTouchStart() {
+        cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+        console.log('Touch started, shooting');
+
+    },
+
+    onTouchEnd() { },
+
+    onMouseDown() {
+        cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+    },
+
+    onMouseUp() { },
+
+    unregisterSkillButtons() {
+        const skillItems = cc.director.getScene().getComponentsInChildren('SkillItem');
+        skillItems.forEach(skillItem => {
+            if (skillItem.skillButton) {
+                skillItem.skillButton.node.off(SkillButtonEvent.CLICK, this.onSkillButtonClick.bind(this, skillItem), this);
+            }
+        });
     },
 
     unregisterInputEvents() {
@@ -115,10 +164,17 @@ cc.Class({
         this.node.parent.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.parent.off(cc.Node.EventType.MOUSE_DOWN, this.onMouseDown, this);
         this.node.parent.off(cc.Node.EventType.MOUSE_UP, this.onMouseUp, this);
+    
+    
+        this.unregisterSkillButtons();
     },
+
 
     onDestroy() {
         this.unregisterInputEvents();
-    },
+        console.log('InputController destroyed');
 
+    },
 });
+
+module.exports = InputController;
