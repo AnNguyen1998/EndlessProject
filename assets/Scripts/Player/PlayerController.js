@@ -1,7 +1,7 @@
 const PlayerStateMachine = require('./PlayerStateMachine');
 const PlayerState = require('./PlayerState');
 const PlayerTransition = require('./PlayerTransition');
-
+const InputController = require("../Input/InputController");
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -13,9 +13,16 @@ cc.Class({
     },
 
     onLoad() {
+        this.init();
+    },
+
+    init() {
         this.fsm = PlayerStateMachine.createStateMachine(this);
         this.curDirection = 0; // -1: left, 1: right, 0: idle
         this.input = { left: false, right: false, up: false, down: false, attack: false, shoot: false };
+        this.inputController = new InputController();
+        this.inputController.node = this.node;
+        this.inputController.init();
     },
 
     update(dt) {
@@ -82,24 +89,24 @@ cc.Class({
         }
     },
 
-    onStartMove() {},
-    onStopMove() {},
-    onStartAttack() {},
-    onStopAttack() {},
-    onJump() {},
-    onTakeDamage() {},
-    onDie() {},
-    onRespawn() {},
-    onStun() {},
-    onRecover() {},
-    onBecomeInvincible() {},
-    onLoseInvincible() {},
-    onDash() {},
-    onFinishDash() {},
-    onFall() {},
-    onLand() {},
-    onCrouch() {},
-    onStandUp() {},
-    onWin() {},
-    onLose() {},
+    onStartMove() { },
+    onStopMove() { },
+    onStartAttack() { },
+    onStopAttack() { },
+    onJump() { },
+    onTakeDamage() { },
+    onDie() { },
+    onRespawn() { },
+    onStun() { },
+    onRecover() { },
+    onBecomeInvincible() { },
+    onLoseInvincible() { },
+    onDash() { },
+    onFinishDash() { },
+    onFall() { },
+    onLand() { },
+    onCrouch() { },
+    onStandUp() { },
+    onWin() { },
+    onLose() { },
 });
