@@ -1,6 +1,6 @@
 const Emitter = require('Emitter');
 const { Player: PlayerEventKeys } = require('EventKeys');
-
+const LocalStorageUnit = require('LocalStorageUnit');
 cc.Class({
     extends: require('PopupItem'),
 
@@ -10,6 +10,10 @@ cc.Class({
         attributeJsonAsset: cc.JsonAsset,
         _attributeNodeList: [],
         _attributeConfig: null,
+        playerGold: {
+            default: null,
+            type: cc.Label
+        }
     },
 
     onLoad() {
@@ -19,21 +23,31 @@ cc.Class({
 
     init() {
         this.eventMap = {
-            [PlayerEventKeys.UPDATE_ATTRIBUTE_UI]: this.updateAllAttributeDisplays.bind(this)
+            [PlayerEventKeys.UPDATE_ATTRIBUTE_UI]: this.updateAllAttributeDisplays.bind(this),
+            [PlayerEventKeys.UPDATE_PLAYER_GOLD_UI]: this.updateGoldUI.bind(this)
         }
         this._attributeConfig = this.attributeJsonAsset.json;
         this.initializeUI();
+        this.loadPlayerGold();
         this.updateAllAttributeDisplays();
         Emitter.instance.registerEventsMap(this.eventMap);
     },
 
+    loadPlayerGold() {
+        const savedGold = LocalStorageUnit.get("PlayerGold");
+        this.playerGold.string = savedGold !== null ? savedGold.toString() : "10000";
+    },
+
+    updateGoldUI(newGold) {
+        this.playerGold.string = newGold.toString();
+    },
+
     onDestroy() {
-        Emitter.instance.removeEvent(this.eventMap);
+        Emitter.instance.removeEventsMap(this.eventMap);
     },
 
     initializeUI() {
-        this.layout.node.removeAllChildren();
-        this._attributeNodeList = [];
+        this.playerGold.string = 10000;
         const attributes = this._attributeConfig.attributes;
         for (const attrConfig of attributes) {
             const attributeNode = cc.instantiate(this.attributePrefab);
@@ -65,43 +79,29 @@ cc.Class({
         const upgradeButton = upgradeButtonNode.getComponent(cc.Button);
         const goldLabel = attributeNode.getChildByName("GoldUpgrade").getComponent(cc.Label);
         const upgradeValueLabel = attributeNode.getChildByName("AttributeValueUpgrade").getComponent(cc.Label);
-        Emitter.instance.emit(PlayerEventKeys.REQUEST_ATTRIBUTE_DATA, attrName, (currentAttrData) => {
-            if (!currentAttrData) return;
+
+        Emitter.instance.emit(PlayerEventKeys.REQUEST_UPGRADE_DISPLAY_DATA, attrName, (data) => {
+            if (!data) return;
             titleLabel.string = attrConfig.title;
-            valueLabel.string = attrConfig.title === 'HP' ? currentAttrData.value.toFixed(0) : currentAttrData.value.toFixed(1);
-            if (currentAttrData.level >= maxLevel) {
+            valueLabel.string = attrConfig.title === 'HP' ? data.currentValue.toFixed(0) : data.currentValue.toFixed(1);
+            if (data.isMaxLevel || data.currentLevel >= maxLevel) {
                 levelLabel.string = "MAX";
-                upgradeButtonNode.active = false;   
+                upgradeButtonNode.active = false;
                 goldLabel.string = "";
                 upgradeValueLabel.string = "";
                 return;
             }
-            levelLabel.string = `${currentAttrData.level}`;
+            levelLabel.string = `${data.currentLevel}`;
             upgradeButtonNode.active = true;
-            Emitter.instance.emit(PlayerEventKeys.REQUEST_UPGRADE_INFO, attrName, currentAttrData.level, (upgradeInfo) => {
-                if (upgradeInfo) {
-                    goldLabel.string = upgradeInfo.price;
-
-                    if (upgradeInfo.hasOwnProperty('multiplier')) {
-                        upgradeValueLabel.string = `${(currentAttrData.value * upgradeInfo.multiplier).toFixed(1)}`;
-                    } else if (upgradeInfo.hasOwnProperty('bonus')) {
-                        upgradeValueLabel.string = `${(currentAttrData.value + upgradeInfo.bonus).toFixed(1)}`;
-                    }
-                    const playerGold = 100000;
-                    if (playerGold < upgradeInfo.price) {
-                        upgradeButton.interactable = false;
-                        upgradeButtonNode.color = cc.Color.GRAY;
-                    } else {
-                        upgradeButton.interactable = true;
-                        upgradeButtonNode.color = cc.Color.WHITE;
-                    }
-                } else {
-                    goldLabel.string = "";
-                    upgradeValueLabel.string = "";
-                    upgradeButton.interactable = false;
-                    upgradeButtonNode.color = cc.Color.GRAY;
-                }
-            });
+            goldLabel.string = data.upgradeInfo.price;
+            upgradeValueLabel.string = data.nextValue.toFixed(1);
+            if (!data.canUpgrade) {
+                upgradeButton.interactable = false;
+                upgradeButtonNode.color = cc.Color.GRAY;
+            } else {
+                upgradeButton.interactable = true;
+                upgradeButtonNode.color = cc.Color.WHITE;
+            }
         });
     }
 
