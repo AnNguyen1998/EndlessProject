@@ -1,4 +1,6 @@
 const { Player: PlayerEventKeys } = require('EventKeys');
+const { SkillEvent } = require('../Skill/SkillKeys');
+const Emitter = require('../EventEmitter/Emitter');
 
 const InputController = cc.Class({
     extends: cc.Component,
@@ -53,6 +55,12 @@ const InputController = cc.Class({
                 break;
             case cc.macro.KEY.space:
                 cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+                break;
+            case cc.macro.KEY.j:
+                Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, 0);
+                break;
+            case cc.macro.KEY.k:
+                Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, 1);
                 break;
         }
     },

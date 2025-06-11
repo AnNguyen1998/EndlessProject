@@ -7,7 +7,7 @@ cc.Class({
     properties: {
         skills: {
             default: [],
-            type: [cc.Component],
+            type: [cc.Node], 
         },
     },
 
@@ -21,39 +21,62 @@ cc.Class({
         this.cleanupSkills();
     },
 
+    getSkillComponent(node) {
+        let skill = node.getComponent('SkillItem');
+        return skill;
+    },
+
     initSkills() {
         for (let i = 0; i < this.skills.length; i++) {
-            const skill = this.skills[i];
-            if (skill) {
-                skill.skillIndex = i;
+            const skillNode = this.skills[i];
+            if (skillNode) {
+                const skillComponent = this.getSkillComponent(skillNode);
+                if (skillComponent) {
+                    skillComponent.skillIndex = i;
+                }
             }
         }
     },
 
     registerEvents() {
+        Emitter.instance.registerEvent(SkillEvent.SKILL_BUTTON_CLICK, this.onSkillButtonClick.bind(this));
     },
 
     unregisterEvents() {
+        Emitter.instance.removeEvent(SkillEvent.SKILL_BUTTON_CLICK, this.onSkillButtonClick.bind(this));
     },
 
     onSkillButtonClick(skillIndex) {
-        console.log(`Skill ${skillIndex} button clicked`);
+        
+        const skillNode = this.skills[skillIndex];
+
+        const skillComponent = this.getSkillComponent(skillNode);
+
+        if (skillComponent.canUse()) {
+            skillComponent.activate();
+        } 
     },
 
     cleanupSkills() {
         for (let i = 0; i < this.skills.length; i++) {
-            const skill = this.skills[i];
-            if (skill && skill.disable) {
-                skill.disable();
+            const skillNode = this.skills[i];
+            if (skillNode) {
+                const skillComponent = this.getSkillComponent(skillNode);
+                if (skillComponent && skillComponent.disable) {
+                    skillComponent.disable();
+                }
             }
         }
     },
 
     getSkill(index) {
-        return this.skills[index] || null;
+        const skillNode = this.skills[index];
+        return skillNode ? this.getSkillComponent(skillNode) : null;
     },
 
     getAllSkills() {
-        return this.skills.filter(skill => skill);
+        return this.skills
+            .map(node => node ? this.getSkillComponent(node) : null)
+            .filter(skill => skill);
     },
 });

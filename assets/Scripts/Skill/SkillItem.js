@@ -80,11 +80,9 @@ cc.Class({
         }
     },
 
-    registerEvents() {
-    },
+    registerEvents() {},
 
-    unregisterEvents() {
-    },
+    unregisterEvents() {},
 
     _initStateMachine() {
         this.fsm = new StateMachine({
