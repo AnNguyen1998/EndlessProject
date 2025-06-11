@@ -1,24 +1,9 @@
 const PlayerTransition = cc.Enum({
     SPAWNED: 'spawned',
-    START_MOVE: 'startMove',
-    STOP_MOVE: 'stopMove',
-    START_ATTACK: 'startAttack',
-    STOP_ATTACK: 'stopAttack',
-    TAKE_DAMAGE: 'takeDamage',
+    SHOOT: 'shoot',
+    FINISH_SHOOT: 'finishShoot',
     DIE: 'die',
-    RESPAWN: 'respawn',
-    STUN: 'stun',
-    RECOVER: 'recover',
-    BECOME_INVINCIBLE: 'becomeInvincible',
-    LOSE_INVINCIBLE: 'loseInvincible',
-    DASH: 'dash',
-    FINISH_DASH: 'finishDash',
-    JUMP: 'jump',
-    FALL: 'fall',
-    LAND: 'land',
-    CROUCH: 'crouch',
-    STAND_UP: 'standUp',
-    WIN: 'win',
-    LOSE: 'lose',
+    MOVE: 'move',
 });
+
 module.exports = PlayerTransition;

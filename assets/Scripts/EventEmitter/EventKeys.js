@@ -24,11 +24,14 @@ export const Player = {
     MOVE_UP: 'moveUp',
     MOVE_DOWN: 'moveDown',
     SHOOT: 'shoot',
+    HEAVY_SHOT: 'heavyShot',
+    TRIPLE_SHOT: 'tripleShot',
     REQUEST_UPGRADE: "requestUpgrade",
     REQUEST_ATTRIBUTE_DATA: "requestAttributeData",
     UPDATE_ATTRIBUTE_UI: "updateAttributeUI",
     REQUEST_UPGRADE_DISPLAY_DATA: "requestUpgradeDisplayData",
-    UPDATE_PLAYER_GOLD_UI: "updatePlayerGoldUI"
+    UPDATE_PLAYER_GOLD_UI: "updatePlayerGoldUI",
+    UPGRADE_SUCCESS: "upgradeSuccess",
 }
 
 export const Monster = {

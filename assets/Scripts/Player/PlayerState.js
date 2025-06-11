@@ -1,20 +1,8 @@
 const PlayerState = cc.Enum({
     SPAWN: 'spawn',
     IDLE: 'idle',
-    MOVE: 'move',
-    ATTACK: 'attack',
-    CAST_SKILL: 'castSkill',
-    DAMAGED: 'damaged',
+    SHOOT: 'shoot',
     DEAD: 'dead',
-    RESPAWN: 'respawn',
-    STUNNED: 'stunned',
-    INVINCIBLE: 'invincible',
-    DASH: 'dash',
-    JUMP: 'jump',
-    FALL: 'fall',
-    CROUCH: 'crouch',
-    VICTORY: 'victory',
-    DEFEAT: 'defeat',
-    STAND_UP: 'standUp',
 });
+
 module.exports = PlayerState;

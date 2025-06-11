@@ -27,6 +27,15 @@ cc.Class({
     this.effectTimers = {};
   },
 
+  onCollisionEnter(other, self) {
+    if (other.node.group === 'BulletGroup') {
+        const bulletItem = other.getComponent('BulletItem');
+        if (bulletItem) {
+            this.takeDamage(bulletItem.damage);
+        }
+    }
+  },
+
   update(dt) {
     if (this.node && this.node.active) {
       if (this.stateMachine.state === MobState.MOVING) {
@@ -157,7 +166,6 @@ cc.Class({
   onDead() {
     this.node.active = false;
     this.constructor.numDie++;
-    console.log(`Mob died. Total deaths: ${this.constructor.numDie}`);
   },
 
   onOutOfScreen() {
@@ -171,11 +179,8 @@ cc.Class({
   },
 
   spawn() {
-    console.log(`Spawning mob at position: ${this.node.x}, ${this.node.y}`);
     if (this.stateMachine.can(MobTransition.SPAWN)) {
       this.stateMachine.spawn();
-    } else {
-      console.warn("Cannot spawn mob, current state:", this.stateMachine.state);
     }
   },
 

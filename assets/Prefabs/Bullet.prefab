@@ -240,7 +240,7 @@
     "asset": {
       "__uuid__": "5acf0767-6e94-47b0-aff4-412eb4409e07"
     },
-    "fileId": "618BWWXUVJXLVploRNnItn",
+    "fileId": "5f2ZtjyqhM8o2mV8JpszIv",
     "sync": false
   },
   {
@@ -308,7 +308,7 @@
     "explosionPrefab": {
       "__uuid__": "9f0427f4-e2c1-483f-982b-6f67b5dda417"
     },
-    "target": null,
+    "_isPiercing": false,
     "_id": ""
   },
   {

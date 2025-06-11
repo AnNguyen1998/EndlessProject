@@ -50,7 +50,7 @@
     "MobGroup",
     "DefenderGroup",
     "PlayerGroup",
-    "BulletGrounp"
+    "BulletGroup"
   ],
   "last-module-event-record-time": 0,
   "simulator-orientation": false,

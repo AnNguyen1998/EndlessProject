@@ -28,14 +28,16 @@ cc.Class({
         currentWave: { default: 0, type: cc.Integer },
         mobSpawnQueue: [],
         mobsActive: [],
+        waveInfoBadgeNode: { default: null, type: cc.Node },
     },
 
     onLoad() {
+        // wareLabelNode.active = false;
         this.init();
     },
 
     init() {
-        this.spawnInterval = 3.5;
+        this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
@@ -44,9 +46,38 @@ cc.Class({
         this.currentWave = 0;
         this.mobSpawnQueue = [];
         this.mobsActive = [];
+        this.waveInfoBadgeNode.active = false;
         this.prepareWave();
     },
 
+    showWaveStartAnimation() {
+        if (!this.waveInfoBadgeNode) return;
+
+        // const labelNode = this.waveInfoBadgeNode.getChildByName('Background').getChildByName('Label');
+        const labelNode = this.waveInfoBadgeNode.getChildByName('Label');
+        const label = labelNode.getComponent(cc.Label);
+        label.string = `WAVE ${this.currentWave + 1}`;
+
+        const animation = this.waveInfoBadgeNode.getComponent(cc.Animation);
+        if (animation) {
+            this.waveInfoBadgeNode.active = true;
+            animation.play();           
+            this.waveInfoBadgeNode.children.forEach(child => {
+                if (child.getComponent(cc.Animation)) {
+                    child.active = true;
+                    child.getComponent(cc.Animation).play();
+                }
+            });
+
+        }
+
+        //đợi 2s sau đó ẩn đi. dùng tween
+        this.scheduleOnce(() => {
+            this.waveInfoBadgeNode.active = false;
+            label.string = '';
+        }, 2);
+    },
+    
     fakeInitGameScript() {
         const gameScript = {
             "levels": [
@@ -57,21 +88,20 @@ cc.Class({
                     "enemyWaves": [
                         {
                             "types": [
-                                { "name": "wolf", "health": 80, "damage": 8, "speed": 60, "number": 5 },
-                                { "name": "twinfang", "health": 120, "damage": 12, "speed": 90, "number": 2 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 10 },
                             ]
                         },
                         {
                             "types": [
-                                { "name": "wolf", "health": 110, "damage": 11, "speed": 90, "number": 10 },
-                                { "name": "twinfang", "health": 155, "damage": 16, "speed": 110, "number": 4 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 10 },
+                                { "name": "twinfang", "health": 15, "damage": 16, "speed": 160, "number": 4 }
                             ]
                         },
                         {
                             "types": [
-                                { "name": "wolf", "health": 120, "damage": 12, "speed": 100, "number": 8 },
-                                { "name": "twinfang", "health": 170, "damage": 18, "speed": 120, "number": 4 },
-                                { "name": "drakey", "health": 300, "damage": 25, "speed": 80, "number": 1 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 8 },
+                                { "name": "twinfang", "health": 15, "damage": 1, "speed": 160, "number": 4 },
+                                { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1 }
                             ]
                         }
                     ]
@@ -102,6 +132,7 @@ cc.Class({
             this.spawnTimer = this.spawnInterval;
         }
         this.updateLabels();
+        // this.updateWareLabelBagedNode(dt);
     },
 
     updateLabels() {
@@ -126,8 +157,8 @@ cc.Class({
         this.spawnInterval = this.spawnInterval;
         this.spawnTimer = 0;
         this.generateMobs();
-    }
-    ,
+        this.showWaveStartAnimation();
+    }    ,
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
