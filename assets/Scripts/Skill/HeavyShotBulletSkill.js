@@ -5,65 +5,26 @@ cc.Class({
 
     properties: {
         skillName: {
-        default: 'Heavy Shot',
-        type: cc.String,
-        },
-        cooldown: {
-            default: 1,
-            type: cc.Float,
-        },
-        duration: {
-            default: 0.1,
-            type: cc.Float,
-        },
-        skillName: {
             default: 'Heavy Shot',
-            type: cc.String,
+            override: true,
         },
         cooldown: {
             default: 1,
-            type: cc.Float,
+            override: true,
         },
         duration: {
             default: 0.1,
-            type: cc.Float,
+            override: true,
         },
-        skillName: {
-            default: 'Heavy Shot',
-            type: cc.String,
-        },
-        cooldown: {
-            default: 1,
-            type: cc.Float,
-        },
-        duration: {
-            default: 0.1,
-            type: cc.Float,
-        },
-        skillName: {
-            default: 'Heavy Shot',
-            type: cc.String,
-        },
-        cooldown: {
-            default: 1,
-            type: cc.Float,
-        },
-        duration: {
-            default: 0.1,
-            type: cc.Float,
-        },
-        bulletPrefab: cc.Prefab, // Kéo prefab viên đạn đặc biệt vào đây
-        firePoint: cc.Node,      // Vị trí xuất phát viên đạn (thường là node player)
+        bulletPrefab: cc.Prefab, 
+        firePoint: cc.Node,     
     },
     
     onLoad() {
         this._super();
     },
     onActivate() {
-        // Gọi hàm cha để phát events
-        // SkillItem.prototype.onActivate.call(this);
-
-        // Logic bắn đạn đặc biệt
+        this._super();
         if (this.bulletPrefab && this.firePoint) {
             const bullet = cc.instantiate(this.bulletPrefab);
             bullet.parent = cc.director.getScene();

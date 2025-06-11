@@ -68,14 +68,14 @@
         "__id__": 6
       },
       {
-        "__id__": 16
+        "__id__": 15
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 18
+        "__id__": 17
       }
     ],
     "_prefab": null,
@@ -291,9 +291,6 @@
       },
       {
         "__id__": 14
-      },
-      {
-        "__id__": 15
       }
     ],
     "_prefab": null,
@@ -650,6 +647,15 @@
     "skillIndex": 0,
     "cooldown": 2,
     "duration": 0.1,
+    "skillButton": {
+      "__id__": 12
+    },
+    "progressSprite": {
+      "__id__": 8
+    },
+    "progressNode": {
+      "__id__": 6
+    },
     "isActive": false,
     "_cooldownTimer": 0,
     "bulletPrefab": {
@@ -659,20 +665,6 @@
       "__id__": 5
     },
     "_id": "17JrQE0DRG+qxwJS1v7DVO"
-  },
-  {
-    "__type__": "80a32AQwHFPxq11mm1Ushm7",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 6
-    },
-    "_enabled": true,
-    "skillIndex": 0,
-    "button": {
-      "__id__": 12
-    },
-    "_id": "35l5GueyNOk4CCO8KY/FAv"
   },
   {
     "__type__": "cc.Node",
@@ -686,7 +678,7 @@
     "_level": 2,
     "_components": [
       {
-        "__id__": 17
+        "__id__": 16
       }
     ],
     "_prefab": null,
@@ -737,27 +729,12 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 16
+      "__id__": 15
     },
     "_enabled": true,
-    "skillComponents": [
+    "skills": [
       {
         "__id__": 13
-      }
-    ],
-    "skillButtons": [
-      {
-        "__id__": 12
-      }
-    ],
-    "progressSprites": [
-      {
-        "__id__": 8
-      }
-    ],
-    "progressNodes": [
-      {
-        "__id__": 7
       }
     ],
     "_id": "b2z/nmriFHxpMiqYQ1Ee42"

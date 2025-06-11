@@ -1,6 +1,6 @@
 const StateMachine = require('javascript-state-machine');
 const Emitter = require('../EventEmitter/Emitter');
-const { Skill } = require('./SkillKeys');
+const { SkillEvent, SkillState, SkillAction, SkillInternalEvent} = require('./SkillKeys');
 
 cc.Class({
     extends: cc.Component,
@@ -22,6 +22,14 @@ cc.Class({
             default: 1,
             type: cc.Float,
         },
+        skillButton: {
+            default: null,
+            type: cc.Button,
+        },
+        progressSprite: {
+            default: null,
+            type: cc.Sprite, 
+        },
         isActive: {
             default: false,
             visible: false,
@@ -32,10 +40,12 @@ cc.Class({
     onLoad() {
         this.init();
         this.registerEvents();
+        this.setupUI();
     },
 
     onDestroy() {
         this.unregisterEvents();
+        this.cleanupUI();
     },
 
     init() {
@@ -44,58 +54,88 @@ cc.Class({
         this._initStateMachine();
     },
 
-    registerEvents() {
-        Emitter.instance.registerEvent(Skill.SKILL_BUTTON_CLICK, this.onSkillButtonClick.bind(this));
+    setupUI() {
+        if (this.skillButton) {
+            this._originalTransition = this.skillButton.transition;
+            this._originalScale = this.skillButton.node.scale;
+            this.skillButton.node.on(SkillInternalEvent.CLICK, this.onButtonClick, this);
+        }
+
+        if (this.progressSprite) {
+            this.progressSprite.fillRange = 0;
+        }
     },
 
-    unregisterEvents() {
-        Emitter.instance.removeEvent(Skill.SKILL_BUTTON_CLICK, this.onSkillButtonClick.bind(this));
+    cleanupUI() {
+        if (this.skillButton) {
+            this.skillButton.node.off(SkillInternalEvent.CLICK, this.onButtonClick, this);
+        }
+        
+        this.stopProgressBar();
     },
 
-    onSkillButtonClick(skillIndex) {
-        if (skillIndex === this.skillIndex && this.canUse()) {
+    onButtonClick() {
+        if (this.canUse()) {
             this.activate();
         }
     },
 
+    registerEvents() {
+    },
+
+    unregisterEvents() {
+    },
+
     _initStateMachine() {
         this.fsm = new StateMachine({
-            init: 'idle',
+            init: SkillState.IDLE,
             transitions: [
-                { name: 'activate', from: 'idle', to: 'active' },
-                { name: 'deactivate', from: 'active', to: 'cooldown' },
-                { name: 'cooldownEnd', from: 'cooldown', to: 'idle' },
-                { name: 'disable', from: '*', to: 'disabled' },
-                { name: 'enable', from: 'disabled', to: 'idle' },
+                { name: SkillAction.ACTIVATE, from: SkillState.IDLE, to: SkillState.ACTIVE },
+                { name: SkillAction.DEACTIVATE, from: SkillState.ACTIVE, to: SkillState.COOLDOWN },
+                { name: SkillAction.COOLDOWN_END, from: SkillState.COOLDOWN, to: SkillState.IDLE },
+                { name: SkillAction.DISABLE, from: '*', to: SkillState.DISABLED },
+                { name: SkillAction.ENABLE, from: SkillState.DISABLED, to: SkillState.IDLE },
             ],
             methods: {
                 onActivate: () => {
                     this.isActive = true;
                     this.onActivate();
-                    Emitter.instance.emit(Skill.SKILL_ACTIVATED, this.skillIndex);
+                    this.setButtonState(false); 
+                    Emitter.instance.emit(SkillEvent.SKILL_ACTIVATED, this.skillIndex);
                     this.scheduleOnce(this._onDurationEnd, this.duration);
                 },
                 onDeactivate: () => {
                     this.isActive = false;
                     this.onDeactivate();
                     this._cooldownTimer = this.cooldown;
-                    Emitter.instance.emit(Skill.SKILL_COOLDOWN_START, this.skillIndex);
+                    this.startProgressBar(); 
+                    Emitter.instance.emit(SkillEvent.SKILL_COOLDOWN_START, this.skillIndex);
                 },
                 onCooldownEnd: () => {
-                    Emitter.instance.emit(Skill.SKILL_COOLDOWN_END, this.skillIndex);
+                    this.setButtonState(true); 
+                    this.stopProgressBar(); 
+                    Emitter.instance.emit(SkillEvent.SKILL_COOLDOWN_END, this.skillIndex);
                 },
                 onDisable: () => {
                     this.unscheduleAllCallbacks();
                     this.isActive = false;
+                    this.setButtonState(false);
+                    this.stopProgressBar();
                 },
-                onEnable: () => {},
+                onEnable: () => {
+                    this.setButtonState(true);
+                },
             },
         });
     },
 
     update(dt) {
+        this.updateCooldown(dt);
+    },
+
+    updateCooldown(dt) {
         if (!this.fsm) return;
-        if (this.fsm.state === 'cooldown') {
+        if (this.fsm.state === SkillState.COOLDOWN) {
             if (this._cooldownTimer > 0) {
                 this._cooldownTimer -= dt;
                 if (this._cooldownTimer <= 0) {
@@ -106,8 +146,20 @@ cc.Class({
         }
     },
 
+    startCooldownTimer() {
+        this._cooldownInterval = setInterval(() => {
+            this.updateCooldown(0.016); 
+        }, 16);
+        
+    },
+
+    stopCooldownTimer() {
+        clearInterval(this._cooldownInterval);
+        this._cooldownInterval = null;
+    },
+
     canUse() {
-        return this.fsm && this.fsm.state === 'idle';
+        return this.fsm && this.fsm.state === SkillState.IDLE;
     },
 
     activate() {
@@ -117,29 +169,77 @@ cc.Class({
     },
 
     _onDurationEnd() {
-        if (this.fsm && this.fsm.state === 'active') {
+        if (this.fsm && this.fsm.state === SkillState.ACTIVE) {
             this.fsm.deactivate();
         }
     },
 
     disable() {
-        if (this.fsm && this.fsm.state !== 'disabled') {
+        if (this.fsm && this.fsm.state !== SkillState.DISABLED) {
             this.fsm.disable();
         }
     },
 
     enable() {
-        if (this.fsm && this.fsm.state === 'disabled') {
+        if (this.fsm && this.fsm.state === SkillState.DISABLED) {
             this.fsm.enable();
         }
     },
 
-    // Override these methods in child classes
+    setButtonState(enabled) {
+        if (!this.skillButton) return;
+        
+        this.skillButton.interactable = enabled;
+        
+        if (enabled) {
+            this.skillButton.transition = this._originalTransition || cc.Button.Transition.SCALE;
+            this.skillButton.node.opacity = 255; 
+            this.skillButton.node.scale = this._originalScale || 1;
+            
+            this.node.opacity = 255;
+        } else {
+            this.skillButton.transition = cc.Button.Transition.NONE;
+            this.skillButton.node.opacity = 100; 
+            
+            this.node.opacity = 150;
+        }
+    },
+
+    startProgressBar() {
+        if (!this.progressSprite) return;
+
+        this.stopProgressBar(); 
+        this._progressTimer = setInterval(() => {
+            this.updateProgress();
+        }, 16); 
+    },
+
+    stopProgressBar() {
+        if (this._progressTimer) {
+            clearInterval(this._progressTimer);
+            this._progressTimer = null;
+        }
+        
+        if (this.progressSprite) {
+            this.progressSprite.fillRange = 0;
+        }
+    },
+
+    updateProgress() {
+        if (!this.progressSprite || !this.fsm) return;
+        
+        if (this.fsm.state !== SkillState.COOLDOWN) {
+            this.stopProgressBar();
+            return;
+        }
+        
+        const percent = this._cooldownTimer / this.cooldown;
+        this.progressSprite.fillRange = percent;
+    },
+
     onActivate() {
-        console.log(`${this.skillName} activated!`);
     },
 
     onDeactivate() {
-        console.log(`${this.skillName} deactivated!`);
     },
 });
