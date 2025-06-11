@@ -1,6 +1,6 @@
 const { Player: PlayerEventKeys } = require('EventKeys');
 
-cc.Class({
+const InputController = cc.Class({
     extends: cc.Component,
 
     properties: {
@@ -11,6 +11,8 @@ cc.Class({
 
     init() {
         this.registerInputEvents();
+        console.log('InputController initialized');
+
     },
 
     registerInputEvents() {
@@ -73,21 +75,33 @@ cc.Class({
         cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
     },
 
-    onUpButtonUp() {
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_UP);
-    },
+    onUpButtonUp() { },
 
     onDownButtonDown() {
         cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
     },
 
-    onDownButtonUp() {
-        cc.systemEvent.emit(PlayerEventKeys.MOVE_DOWN);
-    },
+    onDownButtonUp() { },
 
     onShootButtonDown() {
-            cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+        cc.systemEvent.emit(PlayerEventKeys.SHOOT);
     },
+
+    onShootButtonUp() { },
+
+    onTouchStart() {
+        cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+        console.log('Touch started, shooting');
+
+    },
+
+    onTouchEnd() { },
+
+    onMouseDown() {
+        cc.systemEvent.emit(PlayerEventKeys.SHOOT);
+    },
+
+    onMouseUp() { },
 
     unregisterInputEvents() {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -119,6 +133,9 @@ cc.Class({
 
     onDestroy() {
         this.unregisterInputEvents();
-    },
+        console.log('InputController destroyed');
 
+    },
 });
+
+module.exports = InputController;

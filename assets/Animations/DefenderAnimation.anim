@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "DefenderAmin",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.75,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 22,
+  "curveData": {
+    "props": {
+      "scaleY": [
+        {
+          "frame": 0,
+          "value": 0.7
+        },
+        {
+          "frame": 0.75,
+          "value": 0.75
+        }
+      ],
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            180.853,
+            191.09,
+            0
+          ]
+        },
+        {
+          "frame": 0.75,
+          "value": [
+            180.853,
+            198,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "events": []
+}
