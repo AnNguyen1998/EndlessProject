@@ -28,7 +28,6 @@ cc.Class({
         currentWave: { default: 0, type: cc.Integer },
         mobSpawnQueue: [],
         mobsActive: [],
-        playerSpine: { default: null, type: sp.Skeleton },
         inputController: { default: null, type: InputController }
     },
 
