@@ -1,5 +1,5 @@
 const { Player: PlayerEventKeys } = require('EventKeys');
-const { SkillEvent } = require('../Skill/SkillKeys');
+const { SkillEvent, SkillButtonEvent } = require('../Skill/SkillKeys');
 const Emitter = require('../EventEmitter/Emitter');
 
 const InputController = cc.Class({
@@ -15,6 +15,20 @@ const InputController = cc.Class({
         this.registerInputEvents();
         console.log('InputController initialized');
 
+    },
+
+    registerSkillButtons() {
+        const skillItems = cc.director.getScene().getComponentsInChildren('SkillItem');
+
+        skillItems.forEach(skillItem => {
+            if (skillItem.skillButton) {
+                skillItem.skillButton.node.on(SkillButtonEvent.CLICK, this.onSkillButtonClick.bind(this, skillItem), this);
+            }
+        });
+    },
+
+    onSkillButtonClick(skillItem) {
+        Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, skillItem.skillIndex);
     },
 
     registerInputEvents() {
@@ -43,7 +57,11 @@ const InputController = cc.Class({
         this.node.parent.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.parent.on(cc.Node.EventType.MOUSE_DOWN, this.onMouseDown, this);
         this.node.parent.on(cc.Node.EventType.MOUSE_UP, this.onMouseUp, this);
+
+        this.registerSkillButtons();
     },
+
+
 
     onKeyDown(event) {
         switch (event.keyCode) {
@@ -111,6 +129,15 @@ const InputController = cc.Class({
 
     onMouseUp() { },
 
+    unregisterSkillButtons() {
+        const skillItems = cc.director.getScene().getComponentsInChildren('SkillItem');
+        skillItems.forEach(skillItem => {
+            if (skillItem.skillButton) {
+                skillItem.skillButton.node.off(SkillButtonEvent.CLICK, this.onSkillButtonClick.bind(this, skillItem), this);
+            }
+        });
+    },
+
     unregisterInputEvents() {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
@@ -137,7 +164,11 @@ const InputController = cc.Class({
         this.node.parent.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.node.parent.off(cc.Node.EventType.MOUSE_DOWN, this.onMouseDown, this);
         this.node.parent.off(cc.Node.EventType.MOUSE_UP, this.onMouseUp, this);
+    
+    
+        this.unregisterSkillButtons();
     },
+
 
     onDestroy() {
         this.unregisterInputEvents();

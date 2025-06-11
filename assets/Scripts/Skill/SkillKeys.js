@@ -8,7 +8,7 @@ export const SkillEvent = cc.Enum({
     GATLING_SHOT_FIRED: 'gatlingShotFired',
 });
 
-export const SkillInternalEvent = cc.Enum({
+export const SkillButtonEvent = cc.Enum({
     CLICK : 'click',
 });
 

@@ -1,6 +1,6 @@
 const StateMachine = require('javascript-state-machine');
 const Emitter = require('../EventEmitter/Emitter');
-const { SkillEvent, SkillState, SkillAction, SkillInternalEvent} = require('./SkillKeys');
+const { SkillEvent, SkillState, SkillAction } = require('./SkillKeys');
 
 cc.Class({
     extends: cc.Component,
@@ -58,7 +58,6 @@ cc.Class({
         if (this.skillButton) {
             this._originalTransition = this.skillButton.transition;
             this._originalScale = this.skillButton.node.scale;
-            this.skillButton.node.on(SkillInternalEvent.CLICK, this.onButtonClick, this);
         }
 
         if (this.progressSprite) {
@@ -67,10 +66,6 @@ cc.Class({
     },
 
     cleanupUI() {
-        if (this.skillButton) {
-            this.skillButton.node.off(SkillInternalEvent.CLICK, this.onButtonClick, this);
-        }
-        
         this.stopProgressBar();
     },
 
