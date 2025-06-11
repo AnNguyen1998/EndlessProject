@@ -37,7 +37,7 @@
       }
     ],
     "_active": true,
-    "_level": 1,
+    "_level": 2,
     "_components": [
       {
         "__id__": 27
@@ -69,8 +69,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 295.069,
-      "y": 0,
+      "x": 702.155,
+      "y": -284.141,
       "z": 0
     },
     "_scale": {
@@ -237,9 +237,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "9bLZ3Dec1I4IIUPmbOwJpw",
+    "fileId": "0ff7Aku9FP0Lj0m/Oqcl/c",
     "sync": false
   },
   {
@@ -340,9 +340,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "95PKH64KxDh5dj6MSbKevs",
+    "fileId": "d0x6GC8LxN3IAaGwA4lG0V",
     "sync": false
   },
   {
@@ -510,9 +510,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "91nyNbax1Ew6esjvdR0js9",
+    "fileId": "adX5MveIJFKJTV4hLISFQe",
     "sync": false
   },
   {
@@ -613,9 +613,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "2eTCFXSRBFSKu5Bh/15kbj",
+    "fileId": "fe0xZ+B8tLZrsWxGimk4YD",
     "sync": false
   },
   {
@@ -656,9 +656,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "809o6Fzi5IGZzBCNqU70jw",
+    "fileId": "32bEHAEyBMibJQuhwiA+W/",
     "sync": false
   },
   {
@@ -759,9 +759,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "25DJm1C5RHm6YlEzTNoU5b",
+    "fileId": "efWMiV+CFKa5iNZoL2NeRq",
     "sync": false
   },
   {
@@ -862,9 +862,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "44trm6XYxLnb9gDtEvLDzr",
+    "fileId": "d3ozxBm/xNe76fY3zPtM6y",
     "sync": false
   },
   {
@@ -891,8 +891,8 @@
     "_opacity": 150,
     "_color": {
       "__type__": "cc.Color",
-      "r": 30,
-      "g": 0,
+      "r": 255,
+      "g": 255,
       "b": 255,
       "a": 255
     },
@@ -985,9 +985,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "e68OFtQ6xJco5qR2u6Ehun",
+    "fileId": "57P8f4L8REh4mBe7ja6+CR",
     "sync": false
   },
   {
@@ -1000,7 +1000,7 @@
     "_enabled": true,
     "skillName": "Heavy Shot",
     "skillIndex": 0,
-    "cooldown": 2,
+    "cooldown": 5,
     "duration": 0.1,
     "skillButton": {
       "__id__": 3
@@ -1041,9 +1041,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "61063fa8-6b51-463b-abce-60199a7b1bce"
+      "__id__": 0
     },
-    "fileId": "f1aGVXAr1GdaKUYb4aB+5t",
+    "fileId": "e4I+xvpkZPuZ/kUOJb6JDX",
     "sync": false
   }
 ]
