@@ -1,3 +1,4 @@
+const Emitter = require('Emitter')
 cc.Class({
     extends: cc.Component,
 
@@ -37,5 +38,9 @@ cc.Class({
         }
         this.scrollView.scrollToTop(0);
     },
+
+    onClickButtonBack() {
+        Emitter.instance.emit(Game.SCENE_CHANGE, "Lobby");
+    }
 
 });
