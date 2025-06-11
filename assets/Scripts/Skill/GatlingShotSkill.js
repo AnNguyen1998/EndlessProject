@@ -25,6 +25,6 @@ cc.Class({
     onActivate() {
         this._super();
         console.log("Gatling Shot activated");
-        Emitter.instance.emit(SkillEvent.HEAVY_SHOT_FIRED, this.skillIndex);
+        Emitter.instance.emit(SkillEvent.GATLING_SHOT_FIRED, this.skillIndex);
     },
 });
