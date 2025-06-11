@@ -1,6 +1,6 @@
 const StateMachine = require('javascript-state-machine');
-const Emitter = require('../EventEmitter/Emitter');
-const { SkillEvent, SkillState, SkillAction } = require('./SkillKeys');
+const Emitter = require('Emitter');
+const { SkillEvent, SkillState, SkillAction } = require('SkillKeys');
 
 cc.Class({
     extends: cc.Component,
@@ -147,18 +147,6 @@ cc.Class({
         }
     },
 
-    startCooldownTimer() {
-        this._cooldownInterval = setInterval(() => {
-            this.updateCooldown(0.016); 
-        }, 16);
-        
-    },
-
-    stopCooldownTimer() {
-        clearInterval(this._cooldownInterval);
-        this._cooldownInterval = null;
-    },
-
     canUse() {
         return this.fsm && this.fsm.state === SkillState.IDLE;
     },
@@ -201,7 +189,6 @@ cc.Class({
         } else {
             this.skillButton.transition = cc.Button.Transition.NONE;
             this.skillButton.node.active = false; 
-            console.log("Skill button is disabled, hiding progress bar");
             this.backgroundProgressSprite.node.active = true;  
         }
     },

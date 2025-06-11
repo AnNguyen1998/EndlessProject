@@ -1,6 +1,6 @@
 const { Player: PlayerEventKeys } = require('EventKeys');
-const { SkillEvent, SkillButtonEvent } = require('../Skill/SkillKeys');
-const Emitter = require('../EventEmitter/Emitter');
+const { SkillEvent, SkillButtonEvent } = require('SkillKeys');
+const Emitter = require('Emitter');
 
 const InputController = cc.Class({
     extends: cc.Component,

@@ -1,5 +1,5 @@
-const Emitter = require('../EventEmitter/Emitter');
-const { SkillEvent } = require('./SkillKeys');
+const Emitter = require("Emitter");
+const { SkillEvent } = require("SkillKeys");
 
 cc.Class({
     extends: cc.Component,
@@ -7,7 +7,7 @@ cc.Class({
     properties: {
         skills: {
             default: [],
-            type: [cc.Node], 
+            type: [cc.Node],
         },
     },
 
@@ -22,7 +22,7 @@ cc.Class({
     },
 
     getSkillComponent(node) {
-        let skill = node.getComponent('SkillItem');
+        let skill = node.getComponent("SkillItem");
         return skill;
     },
 
@@ -39,22 +39,27 @@ cc.Class({
     },
 
     registerEvents() {
-        Emitter.instance.registerEvent(SkillEvent.SKILL_BUTTON_CLICK, this.onSkillButtonClick.bind(this));
+        Emitter.instance.registerEvent(
+            SkillEvent.SKILL_BUTTON_CLICK,
+            this.onSkillButtonClick.bind(this)
+        );
     },
 
     unregisterEvents() {
-        Emitter.instance.removeEvent(SkillEvent.SKILL_BUTTON_CLICK, this.onSkillButtonClick.bind(this));
+        Emitter.instance.removeEvent(
+            SkillEvent.SKILL_BUTTON_CLICK,
+            this.onSkillButtonClick.bind(this)
+        );
     },
 
     onSkillButtonClick(skillIndex) {
-        
         const skillNode = this.skills[skillIndex];
 
         const skillComponent = this.getSkillComponent(skillNode);
 
         if (skillComponent.canUse()) {
             skillComponent.activate();
-        } 
+        }
     },
 
     cleanupSkills() {
@@ -62,21 +67,11 @@ cc.Class({
             const skillNode = this.skills[i];
             if (skillNode) {
                 const skillComponent = this.getSkillComponent(skillNode);
-                if (skillComponent && skillComponent.disable) {
+                if (skillComponent) {
                     skillComponent.disable();
+                    skillComponent.onDestroy();
                 }
             }
         }
-    },
-
-    getSkill(index) {
-        const skillNode = this.skills[index];
-        return skillNode ? this.getSkillComponent(skillNode) : null;
-    },
-
-    getAllSkills() {
-        return this.skills
-            .map(node => node ? this.getSkillComponent(node) : null)
-            .filter(skill => skill);
     },
 });
