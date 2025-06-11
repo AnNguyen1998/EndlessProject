@@ -28,7 +28,6 @@ cc.Class({
         currentWave: { default: 0, type: cc.Integer },
         mobSpawnQueue: [],
         mobsActive: [],
-        inputController: { default: null, type: InputController }
     },
 
     onLoad() {
@@ -46,10 +45,6 @@ cc.Class({
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.prepareWave();
-        this.inputController = new InputController();
-        this.inputController.node = this.node;
-        this.inputController.init();
-        // this.generateDefenders();
     },
 
     fakeInitGameScript() {

@@ -15,5 +15,6 @@ const PlayerState = cc.Enum({
     CROUCH: 'crouch',
     VICTORY: 'victory',
     DEFEAT: 'defeat',
+    STAND_UP: 'standUp',
 });
 module.exports = PlayerState;
