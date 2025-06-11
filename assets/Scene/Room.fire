@@ -17,7 +17,7 @@
         "__id__": 2
       },
       {
-        "__id__": 84
+        "__id__": 88
       }
     ],
     "_active": false,
@@ -75,13 +75,19 @@
       },
       {
         "__id__": 71
+      },
+      {
+        "__id__": 83
+      },
+      {
+        "__id__": 85
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 83
+        "__id__": 87
       }
     ],
     "_prefab": null,
@@ -3744,6 +3750,78 @@
     "_id": "2bzB6XqKtKIbyZNK4/4UGp"
   },
   {
+    "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_id": "c2Jlpq76pEmZuLHXlfJiD/",
+    "_prefab": {
+      "__id__": 84
+    },
+    "_name": "GatlingShotSkill",
+    "_active": true,
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 511.647,
+      "y": -276.684,
+      "z": 0
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 83
+    },
+    "asset": {
+      "__uuid__": "33e4f229-2592-42d1-b7ca-30dacae5f9f1"
+    },
+    "fileId": "363zlM+2BMfK3OyUmVByC+",
+    "sync": true
+  },
+  {
+    "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_id": "7dCAQj/+BEgok/LVT4nCbK",
+    "_prefab": {
+      "__id__": 86
+    },
+    "_name": "HeavyShotSkill",
+    "_active": true,
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 702.155,
+      "y": -284.141,
+      "z": 0
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 85
+    },
+    "asset": {
+      "__uuid__": "1ae67c16-d57a-47ec-b292-aa2aa0269425"
+    },
+    "fileId": "e4I+xvpkZPuZ/kUOJb6JDX",
+    "sync": true
+  },
+  {
     "__type__": "cc.Canvas",
     "_name": "",
     "_objFlags": 0,
@@ -3769,7 +3847,10 @@
     },
     "_children": [
       {
-        "__id__": 85
+        "__id__": 89
+      },
+      {
+        "__id__": 91
       }
     ],
     "_active": true,
@@ -3823,14 +3904,14 @@
     "_name": "RoomController",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 84
+      "__id__": 88
     },
     "_children": [],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 86
+        "__id__": 90
       }
     ],
     "_prefab": null,
@@ -3881,7 +3962,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 85
+      "__id__": 89
     },
     "_enabled": true,
     "mobPrefabs": [
@@ -3927,5 +4008,81 @@
       "__id__": 71
     },
     "_id": "39wtTw8qVD+oWeSg+W7tWT"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "SkillController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 88
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 92
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "caTCxmnLhHxJiWRF8hcA8E"
+  },
+  {
+    "__type__": "e9e6e6YsPNEn7wNnptolZH2",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 91
+    },
+    "_enabled": true,
+    "skills": [
+      {
+        "__id__": 83
+      },
+      {
+        "__id__": 85
+      }
+    ],
+    "_id": "480yIL7VJFnK1UDlPgMWK4"
   }
 ]
