@@ -61,14 +61,23 @@ cc.Class({
         const animation = this.waveInfoBadgeNode.getComponent(cc.Animation);
         if (animation) {
             this.waveInfoBadgeNode.active = true;
-            animation.play();
+            animation.play();           
+            this.waveInfoBadgeNode.children.forEach(child => {
+                if (child.getComponent(cc.Animation)) {
+                    child.active = true;
+                    child.getComponent(cc.Animation).play();
+                }
+            });
+
         }
-    },
-    onWaveBadgeAnimationFinished() {
-        if (this.waveInfoBadgeNode) {
+
+        //đợi 2s sau đó ẩn đi. dùng tween
+        this.scheduleOnce(() => {
             this.waveInfoBadgeNode.active = false;
-        }
+            label.string = '';
+        }, 2);
     },
+    
     fakeInitGameScript() {
         const gameScript = {
             "levels": [
@@ -79,7 +88,7 @@ cc.Class({
                     "enemyWaves": [
                         {
                             "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 5 },
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 10 },
                             ]
                         },
                         {
@@ -91,7 +100,7 @@ cc.Class({
                         {
                             "types": [
                                 { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 8 },
-                                { "name": "twinfang", "health": 10, "damage": 1, "speed": 160, "number": 4 },
+                                { "name": "twinfang", "health": 15, "damage": 1, "speed": 160, "number": 4 },
                                 { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1 }
                             ]
                         }
@@ -149,7 +158,7 @@ cc.Class({
         this.spawnTimer = 0;
         this.generateMobs();
         this.showWaveStartAnimation();
-    },
+    }    ,
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
