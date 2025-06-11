@@ -28,9 +28,11 @@ cc.Class({
         currentWave: { default: 0, type: cc.Integer },
         mobSpawnQueue: [],
         mobsActive: [],
+        waveInfoBadgeNode: { default: null, type: cc.Node },
     },
 
     onLoad() {
+        // wareLabelNode.active = false;
         this.init();
     },
 
@@ -44,9 +46,29 @@ cc.Class({
         this.currentWave = 0;
         this.mobSpawnQueue = [];
         this.mobsActive = [];
+        this.waveInfoBadgeNode.active = false;
         this.prepareWave();
     },
 
+    showWaveStartAnimation() {
+        if (!this.waveInfoBadgeNode) return;
+
+        // const labelNode = this.waveInfoBadgeNode.getChildByName('Background').getChildByName('Label');
+        const labelNode = this.waveInfoBadgeNode.getChildByName('Label');
+        const label = labelNode.getComponent(cc.Label);
+        label.string = `WAVE ${this.currentWave + 1}`;
+
+        const animation = this.waveInfoBadgeNode.getComponent(cc.Animation);
+        if (animation) {
+            this.waveInfoBadgeNode.active = true;
+            animation.play();
+        }
+    },
+    onWaveBadgeAnimationFinished() {
+        if (this.waveInfoBadgeNode) {
+            this.waveInfoBadgeNode.active = false;
+        }
+    },
     fakeInitGameScript() {
         const gameScript = {
             "levels": [
@@ -101,6 +123,7 @@ cc.Class({
             this.spawnTimer = this.spawnInterval;
         }
         this.updateLabels();
+        // this.updateWareLabelBagedNode(dt);
     },
 
     updateLabels() {
@@ -125,8 +148,8 @@ cc.Class({
         this.spawnInterval = this.spawnInterval;
         this.spawnTimer = 0;
         this.generateMobs();
-    }
-    ,
+        this.showWaveStartAnimation();
+    },
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
