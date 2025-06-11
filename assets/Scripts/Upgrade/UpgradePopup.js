@@ -21,7 +21,7 @@ cc.Class({
     },
 
     init() {
-        PlayerData.load(); //TODE: Xoá đi sau khi có gameController hoàn chỉnh
+        PlayerData.load(); //TODO: Xoá đi sau khi có gameController hoàn chỉnh
         this.eventMap = {
             [PlayerEventKeys.UPGRADE_SUCCESS]: this.refreshDisplay.bind(this),
         };
@@ -29,6 +29,8 @@ cc.Class({
 
         this._attributeConfig = this.attributeJsonAsset.json;
         this.initializeUI();
+        PlayerData.save(); //TODO: Xoá đi sau khi có gameController hoàn chỉnh
+
     },
 
     onEnable() {

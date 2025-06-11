@@ -171,7 +171,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 585.4331729582806
+      "z": 401.83578735597956
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -4299,11 +4299,11 @@
     "attributeJsonAsset": {
       "__uuid__": "e3718b23-4120-4241-8601-270eb2be079c"
     },
-    "_attributeNodeList": [],
-    "_attributeConfig": null,
-    "playerGold": {
+    "playerGoldLabel": {
       "__id__": 78
     },
+    "_attributeNodeList": [],
+    "_attributeConfig": null,
     "_id": "4fx+63LT1AK5z6lMflnkfB"
   },
   {
@@ -7105,11 +7105,7 @@
     "attributeJsonAsset": {
       "__uuid__": "e3718b23-4120-4241-8601-270eb2be079c"
     },
-    "_playerAttribute": null,
     "_attributeConfig": null,
-    "playerGold": {
-      "__id__": 78
-    },
     "_id": "00YzUG3zFKJZZtNSdzD5Bz"
   },
   {

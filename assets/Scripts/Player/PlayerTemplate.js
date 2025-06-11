@@ -6,12 +6,11 @@ const DEFAULT_PLAYER_DATA = {
         playerName: "Player",
         playerLevel: 1,
         playerExperience: 0,
-        playerGold: 0,
-        playerDiamonds: 0,
-        playerAvatar: "default_avatar",
+        playerGold: 10000,
+        highestChapter: 1,
     },
     attributes: {
-        hp: { value: 100, level: 1 },
+        hpLevel: { value: 5, level: 1 },
         damage: { value: 10, level: 1 },
         critChance: { value: 0.05, level: 1 },
         critRate: { value: 1.5, level: 1 },
@@ -65,9 +64,13 @@ class PlayerTemplate {
     getExperience() {
         return this._data.metaData.playerExperience;
     }
-    
+
     getPlayerName() {
         return this._data.metaData.playerName;
+    }
+
+    getHighestChapter() {
+        return this._data.metaData.highestChapter;
     }
 
     getAttribute(attributeName) {
@@ -88,9 +91,13 @@ class PlayerTemplate {
     setLevel(level) {
         this._data.metaData.playerLevel = level;
     }
-    
+
     setPlayerName(name) {
         this._data.metaData.playerName = name;
+    }
+
+    setHighestChapter(chapter) {
+        this._data.metaData.highestChapter = chapter;
     }
 
     updateAttributeValue(attributeName, newValue) {
@@ -100,7 +107,7 @@ class PlayerTemplate {
             cc.warn(`Attribute "${attributeName}" does not exist.`);
         }
     }
-    
+
     upgradeAttributeLevel(attributeName) {
         if (this._data.attributes[attributeName]) {
             this._data.attributes[attributeName].level++;
