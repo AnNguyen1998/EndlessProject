@@ -18,6 +18,8 @@ cc.Class({
 
         this.eventMap = {
             [Popup.SHOW_SETTING_POPUP]: this.showPopup.bind(this, Popup.SHOW_SETTING_POPUP),
+            [Popup.SHOW_UPGRADE_POPUP]: this.showPopup.bind(this, Popup.SHOW_UPGRADE_POPUP),
+            [Popup.HIDE_UPGRADE_POPUP]: this.hideUpgradePopup.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
         cc.game.addPersistRootNode(this.node);
@@ -38,8 +40,27 @@ cc.Class({
                 }
                 break;
             }
+            case Popup.SHOW_UPGRADE_POPUP: {
+                let node = this.popupItems.find(item => item.name === PopupKeys.UPGRADE);
+                if (node) {
+                    let popup = node.getComponent(PopupKeys.UPGRADE);
+                    popup.show();
+                }
+                break;
+            }
         }
     },
+
+    hideUpgradePopup() {
+        let node = this.popupItems.find(item => item.name === PopupKeys.UPGRADE);
+        if (node) {
+            let popup = node.getComponent(PopupKeys.UPGRADE);
+            if (popup) {
+                popup.hide();
+            }
+        }
+    },
+
     hideAllPopups() {
         this.popupItems.forEach(item => {
             let popup = item.getComponent(PopupKeys.POPUP_ITEM);
