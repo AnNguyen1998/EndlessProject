@@ -30,6 +30,10 @@ cc.Class({
             default: null,
             type: cc.Sprite, 
         },
+        backgroundProgressSprite: {
+            default: null,
+            type: cc.Sprite,
+        },
         isActive: {
             default: false,
             visible: false,
@@ -62,6 +66,10 @@ cc.Class({
 
         if (this.progressSprite) {
             this.progressSprite.fillRange = 0;
+        }
+
+        if (this.backgroundProgressSprite && this.fsm.state !== SkillState.DISABLED) {
+            this.backgroundProgressSprite.node.active = false;
         }
     },
 
@@ -171,6 +179,7 @@ cc.Class({
         if (this.fsm && this.fsm.state !== SkillState.DISABLED) {
             this.fsm.disable();
         }
+        
     },
 
     enable() {
@@ -186,15 +195,14 @@ cc.Class({
         
         if (enabled) {
             this.skillButton.transition = this._originalTransition || cc.Button.Transition.SCALE;
-            this.skillButton.node.opacity = 255; 
+            this.skillButton.node.active = true; 
             this.skillButton.node.scale = this._originalScale || 1;
-            
-            this.node.opacity = 255;
+            this.backgroundProgressSprite.node.active = false;
         } else {
             this.skillButton.transition = cc.Button.Transition.NONE;
-            this.skillButton.node.opacity = 100; 
-            
-            this.node.opacity = 150;
+            this.skillButton.node.active = false; 
+            console.log("Skill button is disabled, hiding progress bar");
+            this.backgroundProgressSprite.node.active = true;  
         }
     },
 
