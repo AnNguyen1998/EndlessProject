@@ -6,7 +6,7 @@ cc.Class({
 
     properties: {
         skillName: {
-            default: 'Heavy Shot',
+            default: 'Gatling Shot',
             override: true,
         },
         cooldown: {
@@ -24,7 +24,7 @@ cc.Class({
     },
     onActivate() {
         this._super();
-        console.log("Heavy Shot activated");
+        console.log("Gatling Shot activated");
         Emitter.instance.emit(SkillEvent.HEAVY_SHOT_FIRED, this.skillIndex);
     },
 });

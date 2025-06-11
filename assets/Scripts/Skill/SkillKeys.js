@@ -5,6 +5,7 @@ export const SkillEvent = cc.Enum({
     SKILL_COOLDOWN_START: 'skillCooldownStart',
     SKILL_COOLDOWN_END: 'skillCooldownEnd',
     HEAVY_SHOT_FIRED: 'heavyShotFired',
+    GATLING_SHOT_FIRED: 'gatlingShotFired',
 });
 
 export const SkillInternalEvent = cc.Enum({
