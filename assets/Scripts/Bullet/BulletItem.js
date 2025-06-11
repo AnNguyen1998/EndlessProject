@@ -4,48 +4,60 @@ cc.Class({
         speed: 600,
         damage: 10,
         explosionPrefab: cc.Prefab,
-        target: null
+        _isPiercing: false,
+        _controller: null,
     },
 
+    unuse() {
+        this.node.active = false;
+        this._controller = null;
+        console.log('Bullet unuse, deactivating node');
+
+    },
+
+    reuse(controller, options) {
+        console.log('Bullet reuse, activating node with options:', options);
+
+        this.node.active = true;
+        this._controller = controller;
+        this.damage = options.damage || 10;
+        this._isPiercing = options.isPiercing || false;
+    },
+
+
     update(dt) {
-        let currentWorldPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
-        let newWorldX = currentWorldPos.x + this.speed * dt;
-        let newWorldPos = cc.v2(newWorldX, currentWorldPos.y);
-        let newLocalPos = this.node.parent.convertToNodeSpaceAR(newWorldPos);
-        this.node.setPosition(newLocalPos);
-        if (newWorldX > 1600) {
-            this.node.destroy();
-        }
-        if (this.target && this.target.active) {
-            let targetWorldPos = this.target.convertToWorldSpaceAR(cc.v2(0, 0));
-            if (newWorldX >= targetWorldPos.x) {
+        this.node.x += this.speed * dt;
+        if (this.node.x > 1600) {
+            if (this._controller) {
+                this._controller.recycleBullet(this.node);
+                console.log('Bullet out of bounds, recycling bullet');
+
             }
         }
     },
 
     onCollisionEnter(other, self) {
         if (other.node.group === "MobGroup") {
-            let mobComp = other.node.getComponent("MobItem");
-            if (mobComp) {
-                mobComp.takeDamage(this.damage);
-            }
             this.createExplosionEffect();
-            this.node.destroy();
+
+            if (!this._isPiercing) {
+                if (this._controller) {
+                    this._controller.recycleBullet(this.node);
+                    console.log('Bullet hit mob, recycling bullet');
+
+                }
+            }
         }
     },
 
     createExplosionEffect() {
         if (!this.explosionPrefab) return;
 
-        let bulletWorldPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
-        let effectLayer = cc.find('Canvas/GameArea');
-        if (!effectLayer) {
-            effectLayer = this.node.parent;
-        }
+        const effectLayer = cc.find('Canvas/GameArea');
+        if (!effectLayer) return;
 
-        let effectLocalPos = effectLayer.convertToNodeSpaceAR(bulletWorldPos);
-        let effect = cc.instantiate(this.explosionPrefab);
+        const effect = cc.instantiate(this.explosionPrefab);
         effect.parent = effectLayer;
-        effect.setPosition(effectLocalPos);
+        effect.position = this.node.position;
     }
 });
