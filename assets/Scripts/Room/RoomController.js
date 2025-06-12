@@ -13,7 +13,6 @@ cc.Class({
     extends: cc.Component,
     properties: {
         mobPrefabs: { default: [], type: [cc.Prefab] },
-
         mobPrefabNames: { default: [], type: [cc.String] },
         wareCountLabel: { default: null, type: cc.Label },
         coinLabel: { default: null, type: cc.Label },
@@ -37,14 +36,10 @@ cc.Class({
         isLose: { default: false, type: cc.Boolean },
         levelNameLabel: { default: null, type: cc.Label },
         gameSciptJsonAsset: cc.JsonAsset,
-
     },
 
     onLoad() {
-        // wareLabelNode.active = false;
         this.init();
-
-
     },
 
     init() {

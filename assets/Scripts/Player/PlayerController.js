@@ -15,13 +15,13 @@ cc.Class({
         _currentLaneIndex: 1,
         _lanePositionsY: [],
         lastShootTime: 0,
-        shootInterval: 1, // Adjust as needed
+        shootInterval: 0.75,
     },
 
     onLoad() {
         PlayerData.load();
         this.init();
-        this.shootInterval = PlayerData.getAttribute('attackSpeed').value;
+        this.shootInterval /= PlayerData.getAttribute('attackSpeed').value;
     },
 
     init() {
@@ -31,7 +31,7 @@ cc.Class({
 
         this.calculateLanePositions();
         this.node.y = this._lanePositionsY[this._currentLaneIndex];
-        this.node.x += 100; // Adjust initial X position if needed
+        this.node.x += 100;
         this.spine.setCompleteListener((trackEntry) => {
             const animationName = trackEntry.animation ? trackEntry.animation.name : '';
             if (animationName === 'portal') {
@@ -56,14 +56,9 @@ cc.Class({
     onPreShoot() {
         if (this.fsm.can('shoot')) {
             const currentTime = Date.now();
-            // console.log(`Current time: ${currentTime}, Last shoot time: ${this.lastShootTime}, Shoot interval: ${this.shootInterval}`);
-            
             if (currentTime - this.lastShootTime >= this.shootInterval * 1000) {
-                // this.fsm.shoot();
                 Emitter.instance.emit(PlayerEventKeys.SHOOT);
                 this.lastShootTime = currentTime;
-            } else {
-                // console.log(`Cannot shoot yet. Time remaining: ${((this.shootInterval * 1000) - (currentTime - this.lastShootTime)) / 1000} seconds`);
             }
         }
     },
