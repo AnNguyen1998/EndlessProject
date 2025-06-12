@@ -193,7 +193,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Star",
+    "_name": "StarContainer",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -259,7 +259,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "IconStar",
+    "_name": "Star3",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -362,7 +362,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "IconStar",
+    "_name": "Star1",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -465,7 +465,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "IconStar",
+    "_name": "Star2",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
