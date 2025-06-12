@@ -5,7 +5,8 @@ const MobTransition = require("../Mob/MobTransition");
 const RoomStateMachine = require('./RoomStateMachine');
 const RoomState = require('./RoomState');
 const RoomTransition = require('./RoomTransition');
-const GameData = require('GameData'); // Thêm dòng này
+const GameData = require('GameData');
+const PlayerData = require('PlayerTemplate');
 
 const GAME_AREA = {
     topLeft: cc.v2(0, 450),
@@ -44,12 +45,14 @@ cc.Class({
         waveInfoBadgeNode: { default: null, type: cc.Node },
         levelNameLabel: { default: null, type: cc.Label },
         gameSciptJsonAsset: cc.JsonAsset,
+        resultPopupNode: { default: null, type: cc.Node },
     },
 
     onLoad() {
 
         this.fsm = RoomStateMachine.createStateMachine(this);
         this.gameScript = this.gameSciptJsonAsset.json;
+        this.resultPopupNode.active = false;
 
         this.eventMap = {
             [Game.GAME_OVER]: this.onGameOver.bind(this),
@@ -62,10 +65,13 @@ cc.Class({
     },
 
     performStartLevel(level) {
+        this.resultPopupNode.active = false;
         this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
+        //debug collision
         cc.director.getCollisionManager().enabledDebugDraw = true;
+        cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         this.currentLevel = parseInt(level) - 1;
         if (this.currentLevel >= this.gameScript.levels.length || this.currentLevel < 0) {
             this.currentLevel = 0;
@@ -79,14 +85,34 @@ cc.Class({
     },
 
     performEndGame(isWin) {
+        console.log(`Game ended: ${isWin ? 'Victory' : 'Defeat'}`);
+        
+        let stars = isWin ? 3 : 0;
+        let coins = isWin ? this.gameScript.levels[this.currentLevel].coinReward || 100 : 0;
+
         if (isWin) {
-            this.goNextLevel();
-        } else {
-            this.performReset();
+            PlayerData.setChapterStar(this.currentLevel + 1, stars);
+            PlayerData.unlockNextChapter(this.currentLevel + 1);
+            PlayerData.save();
+        }
+
+        const popup = this.resultPopupNode.getComponent('GameResultPopup');
+        if (popup) {
+            popup.show(isWin, stars, coins);
+        }
+    },
+
+    restartCurrentLevel() {
+        if (this.fsm.can(RoomTransition.RESET)) {
+            this.fsm.reset();
+        }
+        if (this.fsm.can(RoomTransition.START_LEVEL)) {
+            this.fsm.startLevel(GameData.selectedChapter);
         }
     },
 
     performReset() {
+        this.resultPopupNode.active = false;
         this.currentWave = 0;
         this.mobSpawnQueue = [];
         this.mobsActive = [];
@@ -94,12 +120,11 @@ cc.Class({
         this.prepareWave();
         this.generateFlySword();
         this.updateLabels();
-        if (this.fsm.can(RoomTransition.RESET)) {
-            this.fsm.reset();
-        }
     },
 
     onGameOver() {
+        console.log('Game Over triggered');
+        
         if (this.fsm.can(RoomTransition.END_GAME)) {
             this.fsm.endGame(false);
         }
@@ -307,19 +332,19 @@ cc.Class({
         }
     },
 
-    onDestroy() {
-        if (RoomController.instance === this) {
-            RoomController.instance = null;
-        }
-        Emitter.instance.removeEventsMap(this.eventMap);
-        this.mobs.forEach(mob => {
-            if (mob.destroy) mob.destroy();
-        });
-        this.mobs = [];
-        this.mobsActive = [];
-        this.defenders.forEach(defender => {
-            if (defender.destroy) defender.destroy();
-        });
-        this.defenders = [];
-    }
+    // onDestroy() {
+    //     if (RoomController.instance === this) {
+    //         RoomController.instance = null;
+    //     }
+    //     Emitter.instance.removeEventsMap(this.eventMap);
+    //     this.mobs.forEach(mob => {
+    //         if (mob.destroy) mob.destroy();
+    //     });
+    //     this.mobs = [];
+    //     this.mobsActive = [];
+    //     this.defenders.forEach(defender => {
+    //         if (defender.destroy) defender.destroy();
+    //     });
+    //     this.defenders = [];
+    // }
 });
