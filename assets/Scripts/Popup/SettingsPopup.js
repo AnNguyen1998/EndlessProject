@@ -26,13 +26,15 @@ cc.Class({
         this.soundEffectSlider.node.on('slide', this.onSoundEffectChanged, this);
         if (this.closeButton) this.closeButton.node.on('click', this.hide, this);
         if (this.tutorialButton) this.tutorialButton.node.on('click', this.onTutorialClick, this);
-        if (this.exitButton) this.exitButton.node.on('click', this.onExitClick, this); // Đăng ký event cho exit button
-        Emitter.instance.registerEvent(SoundKeys.SOUND_VOLUME_CHANGED, this.onSoundVolumeChanged.bind(this));
+        if (this.exitButton) this.exitButton.node.on('click', this.onExitClick, this);
+
+        this._boundSoundVolumeChanged = this.onSoundVolumeChanged.bind(this);
+        Emitter.instance.registerEvent(SoundKeys.SOUND_VOLUME_CHANGED, this._boundSoundVolumeChanged);
         this.loadVolume();
     },
     onDestroy() {
-        if (Emitter.instance) {
-            Emitter.instance.removeEvent(SoundKeys.SOUND_VOLUME_CHANGED, this.onSoundVolumeChanged);
+        if (Emitter.instance && this._boundSoundVolumeChanged) {
+            Emitter.instance.removeEvent(SoundKeys.SOUND_VOLUME_CHANGED, this._boundSoundVolumeChanged);
         }
         
         if (this.backgroundMusicSlider && this.backgroundMusicSlider.node) {
@@ -79,15 +81,23 @@ cc.Class({
     },
     
     onSoundVolumeChanged(data) {
+        if (!this.node || !this.node.isValid) {
+            return;
+        }
+        
         console.log(data.value);
         if (data.type === SoundKeys.BACKGROUND_MUSIC) {
-            this.backgroundMusicSlider.progress = data.value;
-            this.updateBackgroundMusicVolumeIcon(data.value);
-            this.updateBackgroundMusicFill(data.value);
+            if (this.backgroundMusicSlider && this.backgroundMusicSlider.isValid) {
+                this.backgroundMusicSlider.progress = data.value;
+                this.updateBackgroundMusicVolumeIcon(data.value);
+                this.updateBackgroundMusicFill(data.value);
+            }
         } else if (data.type === SoundKeys.SOUND_EFFECT) {
-            this.soundEffectSlider.progress = data.value;
-            this.updateSoundEffectVolumeIcon(data.value);
-            this.updateSoundEffectFill(data.value);
+            if (this.soundEffectSlider && this.soundEffectSlider.isValid) {
+                this.soundEffectSlider.progress = data.value;
+                this.updateSoundEffectVolumeIcon(data.value);
+                this.updateSoundEffectFill(data.value);
+            }
         }
     },
     
@@ -116,7 +126,6 @@ cc.Class({
     },
     
     onTutorialClick() {
-        console.log('Tutorial button clicked');
         Emitter.instance.emit(Popup.SHOW_TUTORIAL_POPUP);
     },
     
@@ -125,9 +134,7 @@ cc.Class({
         cc.director.loadScene('Portal', (err) => {
             if (err) {
                 console.error('Failed to load Portal scene:', err);
-            } else {
-                console.log('Portal scene loaded successfully');
-            }
+            } 
         });
         
  
