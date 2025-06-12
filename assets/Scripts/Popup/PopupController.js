@@ -10,9 +10,7 @@ cc.Class({
         },
     },
 
-    onLoad() {
-        this.init();
-    },
+
 
     init() {
 
@@ -23,7 +21,8 @@ cc.Class({
             [Popup.SHOW_TUTORIAL_POPUP]: this.showPopup.bind(this, Popup.SHOW_TUTORIAL_POPUP),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
-        cc.game.addPersistRootNode(this.node);
+        cc.log("PopupController initialized");
+       
     },
 
     onDestroy() {

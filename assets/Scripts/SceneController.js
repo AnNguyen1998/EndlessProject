@@ -3,15 +3,13 @@ const { Game: GameEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
-    onLoad() {
-        this.init();
-        this.registerEvents();
-    },
 
     init() {
         this.eventMaps = {
             [GameEventKeys.SCENE_CHANGE]: this.onSceneChange.bind(this),
         };
+        this.registerEvents();
+        cc.log("SceneController initialized");
     },
 
     registerEvents() {

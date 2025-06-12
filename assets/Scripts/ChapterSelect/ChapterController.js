@@ -27,7 +27,7 @@ cc.Class({
     },
 
     init() {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 12; i++) {
             let chapter = cc.instantiate(this.chapterPreFabs);
             chapter.getChildByName("Level").getComponent(cc.Label).string = (i + 1);
             if(i == 0) {

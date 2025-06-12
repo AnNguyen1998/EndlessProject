@@ -19,6 +19,8 @@ cc.Class({
     },
 
     onClickChapter() {
+        console.log("Chapter clicked: " + this.node.getChildByName("Level").getComponent(cc.Label).string);
+        
         Emitter.instance.emit(GameEventKeys.SCENE_CHANGE, "Room");
         Emitter.instance.emit(GameEventKeys.SELECT_CHAPTER, this.node.getChildByName("Level").getComponent(cc.Label).string);
     },
