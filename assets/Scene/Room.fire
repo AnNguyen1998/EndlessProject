@@ -1474,7 +1474,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "MapNameLabel",
+    "_name": "LevelNameLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 30
@@ -3177,6 +3177,8 @@
     "moveDuration": 0.1,
     "_currentLaneIndex": 1,
     "_lanePositionsY": [],
+    "lastShootTime": 0,
+    "shootInterval": 1,
     "_id": "90tSGRfptDEYP4PfL34vOq"
   },
   {
@@ -3981,7 +3983,7 @@
       "twinfang",
       "drakey"
     ],
-    "wareLabel": {
+    "wareCountLabel": {
       "__id__": 39
     },
     "coinLabel": {
@@ -4010,6 +4012,14 @@
     "mobsActive": [],
     "waveInfoBadgeNode": {
       "__id__": 71
+    },
+    "isWin": false,
+    "isLose": false,
+    "levelNameLabel": {
+      "__id__": 32
+    },
+    "gameSciptJsonAsset": {
+      "__uuid__": "5a999893-684a-4c83-88da-b60a79a10101"
     },
     "_id": "39wtTw8qVD+oWeSg+W7tWT"
   },

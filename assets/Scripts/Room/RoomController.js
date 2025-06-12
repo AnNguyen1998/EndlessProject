@@ -15,7 +15,7 @@ cc.Class({
         mobPrefabs: { default: [], type: [cc.Prefab] },
 
         mobPrefabNames: { default: [], type: [cc.String] },
-        wareLabel: { default: null, type: cc.Label },
+        wareCountLabel: { default: null, type: cc.Label },
         coinLabel: { default: null, type: cc.Label },
         starLabel: { default: null, type: cc.Label },
         mobs: [],
@@ -35,20 +35,25 @@ cc.Class({
         waveInfoBadgeNode: { default: null, type: cc.Node },
         isWin: { default: false, type: cc.Boolean },
         isLose: { default: false, type: cc.Boolean },
+        levelNameLabel: { default: null, type: cc.Label },
+        gameSciptJsonAsset: cc.JsonAsset,
 
     },
 
     onLoad() {
         // wareLabelNode.active = false;
         this.init();
+
+
     },
 
     init() {
+        // console.log("this.gameSciptJsonAsset", this.gameSciptJsonAsset);
+        this.gameScript = this.gameSciptJsonAsset.json;
         this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
-        this.fakeInitGameScript();
         this.currentLevel = 0;
         this.currentWave = 0;
         this.mobSpawnQueue = [];
@@ -56,6 +61,7 @@ cc.Class({
         this.waveInfoBadgeNode.active = false;
         this.prepareWave();
         this.generateFlySword();
+
     },
 
     showWaveStartAnimation() {
@@ -86,40 +92,6 @@ cc.Class({
         }, 2);
     },
 
-    fakeInitGameScript() {
-        const gameScript = {
-            "levels": [
-                {
-                    "levelId": 1,
-                    "duration": 300,
-                    "waveCount": 3,
-                    "enemyWaves": [
-                        {
-                            "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 1 },
-                            ]
-                        },
-                        {
-                            "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 1 },
-                                { "name": "twinfang", "health": 15, "damage": 16, "speed": 160, "number": 1 }
-                            ]
-                        },
-                        {
-                            "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 1 },
-                                { "name": "twinfang", "health": 15, "damage": 1, "speed": 160, "number": 1 },
-                                { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1 }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
-
-        this.gameScript = gameScript;
-    },
-
     update(dt) {
         if (this.isWin || this.isLose) return;
         if (!this.gameScript) return;
@@ -130,7 +102,7 @@ cc.Class({
 
         if (this.mobSpawnQueue.length === 0 && this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
             this.currentWave++;
-            this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
+            this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
             this.prepareWave();
         } else {
             //check win: if all mobs are defeated
@@ -140,7 +112,8 @@ cc.Class({
                 if (this.getAliveMobCount() === 0) {
                     console.log("Win!");
                     this.isWin = true;
-                    this.resetThisLevel();
+                    // this.resetThisLevel();
+                    this.goNextLevel();
                     return
                 }
 
@@ -155,6 +128,7 @@ cc.Class({
             this.spawnTimer = this.spawnInterval;
         }
         this.updateLabels();
+        this.updateLevelNameLabel();
         // this.updateWareLabelBagedNode(dt);
     },
 
@@ -164,19 +138,68 @@ cc.Class({
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.waveInfoBadgeNode.active = false;
-        this.prepareWave();        
+        this.prepareWave();
+        this.generateFlySword();
+        this.updateLabels();
+    },
+
+    goNextLevel() {
+        console.log("Going to next level");
+
+        this.currentLevel++;
+        if (this.currentLevel >= this.gameScript.levels.length) {
+            console.log("Game Over! You have completed all levels!");
+            this.currentLevel = 0; // Reset to first level
+            this.currentWave = 0;
+            this.mobSpawnQueue = [];
+            this.mobsActive = [];
+            this.waveInfoBadgeNode.active = false;
+            this.prepareWave();
+            this.generateFlySword();
+            this.updateLabels();
+            return;
+        }
+        this.isLose = false;
+        this.isWin = false;
+        this.currentWave = 0;
+        this.mobSpawnQueue = [];
+        this.mobsActive = [];
+        this.waveInfoBadgeNode.active = false;
+        this.prepareWave();
         this.generateFlySword();
         this.updateLabels();
     },
 
     updateLabels() {
-        if (!this.wareLabel || !this.coinLabel || !this.starLabel) return;
-        this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
+        if (!this.wareCountLabel || !this.coinLabel || !this.starLabel) return;
+        this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
         // this.coinLabel.string = `Coins: ${this.gameScript.levels[this.currentLevel].coin}`;
         // this.starLabel.string = `Stars: ${this.gameScript.levels[this.currentLevel].star}`;
     },
+    updateLevelNameLabel() {
+        if (!this.levelNameLabel) return;
+
+        const targetName = this.gameScript.levels[this.currentLevel].levelName;
+        if (this.levelNameLabel.string === targetName) return;
+
+        this.levelNameLabel.string = targetName;
+
+        const n = this.levelNameLabel.node;
+        n.stopAllActions();
+
+        cc.tween(n)
+            .set({ scale: 0.5, opacity: 0 })
+            .parallel(
+                cc.tween().to(0.18, { scale: 1.4 }, { easing: 'quadOut' }),
+                cc.tween().to(0.18, { opacity: 255 }, { easing: 'quadOut' })
+            )
+            .to(0.10, { scale: 1 }, { easing: 'backIn' })
+            .start();
+    },
 
     prepareWave() {
+        console.log("this.gameScript.levels", this.gameScript);
+
         const level = this.gameScript.levels[this.currentLevel];
         const wave = level.enemyWaves[this.currentWave];
 
