@@ -212,9 +212,13 @@ const SoundController = cc.Class({
     onGameStart() { },
 
     onGameEnd() {
+        if (!this.node || !this.node.isValid) {
+            return;
+        }
+        
         this.stopMusic(true);
         this.stopAllSoundEffects();
-        this.onDestroy();
+
     },
 
     onGamePause() {
