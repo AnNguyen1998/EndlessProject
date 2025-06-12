@@ -1,8 +1,8 @@
-const Emitter = require('../EventEmitter/Emitter');
-const { Popup } = require('../EventEmitter/EventKeys');
-const LocalStorageUnit = require('../Unit/LocalStorageUnit');
-const LocalStorageKeys = require('../Unit/LocalStorageKeys');
-const SoundKeys = require('../Sound/SoundKeys');
+const Emitter = require('Emitter');
+const { Popup, Game : GameEventKeys } = require('EventKeys');
+const LocalStorageUnit = require('LocalStorageUnit');
+const LocalStorageKeys = require('LocalStorageKeys');
+const SoundKeys = require('SoundKeys');
 
 cc.Class({
     extends: require('./PopupItem'),
@@ -12,6 +12,8 @@ cc.Class({
         backgroundMusicFill: cc.Node,
         soundEffectFill: cc.Node,
         closeButton: cc.Button,
+        tutorialButton: cc.Button, 
+        exitButton: cc.Button, 
         backgroundMusicVolumeIconOn: cc.Sprite,
         backgroundMusicVolumeIconOff: cc.Sprite,
         soundEffectVolumeIconOn: cc.Sprite,
@@ -23,12 +25,34 @@ cc.Class({
         this.backgroundMusicSlider.node.on('slide', this.onBackgroundMusicChanged, this);
         this.soundEffectSlider.node.on('slide', this.onSoundEffectChanged, this);
         if (this.closeButton) this.closeButton.node.on('click', this.hide, this);
-        Emitter.instance.registerEvent(SoundKeys.SOUND_VOLUME_CHANGED, this.onSoundVolumeChanged.bind(this));
+        if (this.tutorialButton) this.tutorialButton.node.on('click', this.onTutorialClick, this);
+        if (this.exitButton) this.exitButton.node.on('click', this.onExitClick, this);
+
+        this._boundSoundVolumeChanged = this.onSoundVolumeChanged.bind(this);
+        Emitter.instance.registerEvent(SoundKeys.SOUND_VOLUME_CHANGED, this._boundSoundVolumeChanged);
         this.loadVolume();
     },
-    
     onDestroy() {
-        Emitter.instance.removeEvent(SoundKeys.SOUND_VOLUME_CHANGED, this.onSoundVolumeChanged);
+        if (Emitter.instance && this._boundSoundVolumeChanged) {
+            Emitter.instance.removeEvent(SoundKeys.SOUND_VOLUME_CHANGED, this._boundSoundVolumeChanged);
+        }
+        
+        if (this.backgroundMusicSlider && this.backgroundMusicSlider.node) {
+            this.backgroundMusicSlider.node.off('slide', this.onBackgroundMusicChanged, this);
+        }
+        if (this.soundEffectSlider && this.soundEffectSlider.node) {
+            this.soundEffectSlider.node.off('slide', this.onSoundEffectChanged, this);
+        }
+        
+        if (this.closeButton && this.closeButton.node) {
+            this.closeButton.node.off('click', this.hide, this);
+        }
+        if (this.tutorialButton && this.tutorialButton.node) {
+            this.tutorialButton.node.off('click', this.onTutorialClick, this);
+        }
+        if (this.exitButton && this.exitButton.node) {
+            this.exitButton.node.off('click', this.onExitClick, this);
+        }
     },
     
     show() {
@@ -57,15 +81,23 @@ cc.Class({
     },
     
     onSoundVolumeChanged(data) {
+        if (!this.node || !this.node.isValid) {
+            return;
+        }
+        
         console.log(data.value);
         if (data.type === SoundKeys.BACKGROUND_MUSIC) {
-            this.backgroundMusicSlider.progress = data.value;
-            this.updateBackgroundMusicVolumeIcon(data.value);
-            this.updateBackgroundMusicFill(data.value);
+            if (this.backgroundMusicSlider && this.backgroundMusicSlider.isValid) {
+                this.backgroundMusicSlider.progress = data.value;
+                this.updateBackgroundMusicVolumeIcon(data.value);
+                this.updateBackgroundMusicFill(data.value);
+            }
         } else if (data.type === SoundKeys.SOUND_EFFECT) {
-            this.soundEffectSlider.progress = data.value;
-            this.updateSoundEffectVolumeIcon(data.value);
-            this.updateSoundEffectFill(data.value);
+            if (this.soundEffectSlider && this.soundEffectSlider.isValid) {
+                this.soundEffectSlider.progress = data.value;
+                this.updateSoundEffectVolumeIcon(data.value);
+                this.updateSoundEffectFill(data.value);
+            }
         }
     },
     
@@ -91,5 +123,14 @@ cc.Class({
         const isOn = value > 0.001;
         if (this.soundEffectVolumeIconOn.node) this.soundEffectVolumeIconOn.node.active = isOn;
         if (this.soundEffectVolumeIconOff.node) this.soundEffectVolumeIconOff.node.active = !isOn;
+    },
+    
+    onTutorialClick() {
+        Emitter.instance.emit(Popup.SHOW_TUTORIAL_POPUP);
+    },
+    
+    onExitClick() {
+        Emitter.instance.emit(GameEventKeys.END_GAME);
+        console.log("Exiting game from settings popup");
     },
 });
