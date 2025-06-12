@@ -1,5 +1,6 @@
 const Emitter = require('Emitter')
 const { Game } = require('EventKeys')
+const PlayerData = require('PlayerTemplate')
 cc.Class({
     extends: cc.Component,
 
@@ -27,12 +28,24 @@ cc.Class({
     },
 
     init() {
+        PlayerData.load();
         for (let i = 0; i < 100; i++) {
-            let chapter = cc.instantiate(this.chapterPreFabs);
-            chapter.getChildByName("Level").getComponent(cc.Label).string = (i + 1);
-            if(i == 0) {
-                chapter.getChildByName("IconLock").active = false;
-                chapter.color = new cc.Color().fromHEX("#CE7504");
+            const chapterNumber = i + 1;
+            const chapter = cc.instantiate(this.chapterPreFabs);
+            const levelLabel = chapter.getChildByName("Level").getComponent(cc.Label);
+            levelLabel.string = chapterNumber;
+            const iconLock = chapter.getChildByName("IconLock");
+            const starContainer = chapter.getChildByName("StarContainer");
+            const isUnlocked = PlayerData.isChapterUnlocked(chapterNumber) || chapterNumber === 1;
+            iconLock.active = !isUnlocked;
+            chapter.color = isUnlocked ? new cc.Color().fromHEX("#CE7504") : cc.Color.GRAY;
+            if (isUnlocked && starContainer) {
+                PlayerData.unlockNextChapter(chapterNumber);
+                const starCount = PlayerData.getChapterStar(chapterNumber);
+                for (let s = 0; s < 3; s++) {
+                    const starNode = starContainer.getChildByName(`Star${s + 1}`);
+                    starNode.color = s < starCount ? cc.Color.YELLOW : cc.Color.BLACK;
+                }
             }
             this.chapterList.push(chapter);
             this.layout.node.addChild(chapter);
@@ -42,6 +55,10 @@ cc.Class({
 
     onClickButtonBack() {
         Emitter.instance.emit(Game.SCENE_CHANGE, "Lobby");
+    },
+
+    onDestroy() {
+        this.chapterList = null;
     }
 
 });
