@@ -18,8 +18,7 @@ cc.Class({
         shootInterval: 0.75,
     },
 
-    onLoad() {
-        PlayerData.load();
+    onLoad() {      
         this.init();
         this.shootInterval /= PlayerData.getAttribute('attackSpeed').value;
     },

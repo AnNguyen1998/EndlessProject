@@ -18,7 +18,6 @@ cc.Class({
     },
 
     init() {
-        PlayerData.load(); //TODO clear
         this.goldLabel.string = PlayerData.getGold();
     },
 
@@ -35,6 +34,7 @@ cc.Class({
     },
 
     onClickPlayButton() {
+
         Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
     },
 

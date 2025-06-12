@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-const { Popup, Game : GameEventKeys, Player, Monster } = require('EventKeys');
+const { Popup, Game: GameEventKeys, Player, Monster } = require('EventKeys');
 const LocalStorageUnit = require('LocalStorageUnit');
 const LocalStorageKeys = require('LocalStorageKeys');
 const SoundKeys = require('./SoundKeys');
@@ -12,7 +12,7 @@ const SoundController = cc.Class({
             default: [],
             type: [cc.AudioClip],
         },
-        
+
         soundEffectClips: {
             default: [],
             type: [cc.AudioClip],
@@ -31,21 +31,18 @@ const SoundController = cc.Class({
         }
     },
 
-    onLoad() {
-        this.init();
-    },
 
     init() {
         this.currentMusicId = -1;
         this.musicClipMap = new Map();
         this.soundClipMap = new Map();
-        
+
         this.loadSettings();
-        
+
         this.setupAudioClips();
-        
+
         this.playDefaultMusic();
-        
+
         this.eventMap = {
             [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
             [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
@@ -60,8 +57,8 @@ const SoundController = cc.Class({
         };
 
         this.registerEvents();
+        cc.log("SoundController initialized");
 
-        cc.game.addPersistRootNode(this.node);
 
     },
 
@@ -93,20 +90,20 @@ const SoundController = cc.Class({
         this.stopMusic();
 
         const finalVolume = this.backgroundMusicVolume;
-        
+
         this.currentMusicId = cc.audioEngine.playMusic(clip, loop);
         cc.audioEngine.setVolume(this.currentMusicId, fadeIn ? 0 : finalVolume);
 
         if (fadeIn) {
-            this.fadeInMusic(finalVolume, 2.0); 
+            this.fadeInMusic(finalVolume, 2.0);
         }
-        
+
     },
 
     stopMusic(fadeOut = false) {
         if (this.currentMusicId !== -1) {
             if (fadeOut) {
-                this.fadeOutMusic(1.0); 
+                this.fadeOutMusic(1.0);
             } else {
                 cc.audioEngine.stopMusic();
                 this.currentMusicId = -1;
@@ -171,7 +168,7 @@ const SoundController = cc.Class({
         }
 
         const finalVolume = this.soundEffectVolume * individualVolume;
-        
+
         return cc.audioEngine.playEffect(clip, false, finalVolume);
     },
 
@@ -199,10 +196,10 @@ const SoundController = cc.Class({
         this.saveSettings();
         Emitter.instance.emit(SoundKeys.SOUND_VOLUME_CHANGED, { type: SoundKeys.SOUND_EFFECT, value: this.soundEffectVolume });
     },
-    
+
     onVolumeChanged(data) {
         console.log(data);
-        switch(data.type) {
+        switch (data.type) {
             case SoundKeys.BACKGROUND_MUSIC:
                 this.setBackgroundMusicVolume(data.value);
                 break;
@@ -212,7 +209,7 @@ const SoundController = cc.Class({
         }
     },
 
-    onGameStart() {},
+    onGameStart() { },
 
     onGameEnd() {
         this.stopMusic(true);
