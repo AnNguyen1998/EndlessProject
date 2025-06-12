@@ -12,9 +12,9 @@ cc.Class({
     },
 
     init() {
-        const isLocked = this.node.getChildByName("IconLock").active;
-        if (!isLocked) {
-            this.node.on(GameEventKeys.CLICK_CHAPTER, this.onClickChapter, this);
+        let checkClear = this.node.getChildByName("IconLock").active;
+        if (!checkClear) {
+            this.node.on('click', this.onClickChapter, this);
         }
     },
 
