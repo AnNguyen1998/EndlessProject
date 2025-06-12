@@ -25,7 +25,7 @@ cc.Class({
 
     onLoad() {
         this.init();
-        this.registerEventsMap();
+        this.registerEvent();
     },
 
     init() {
