@@ -2,6 +2,7 @@ const InputController = require("../Input/InputController");
 const MobState = require("../Mob/MobState");
 const MobTransition = require("../Mob/MobTransition");
 const { Player, Game } = require('../EventEmitter/EventKeys');
+const Emitter = require('../EventEmitter/Emitter');
 const GAME_AREA = {
     topLeft: cc.v2(0, 450),
     topRight: cc.v2(1560, 450),
@@ -51,6 +52,7 @@ cc.Class({
             [Game.SELECT_CHAPTER]: this.onIntChaper.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
+        this.onIntChaper(0);
     },
     onIntChaper(level = 1) {
         console.log("onIntChaper", level);
@@ -65,6 +67,11 @@ cc.Class({
         this.waveInfoBadgeNode.active = false;
         this.prepareWave();
         this.generateFlySword();
+    },
+
+    onGameOver() {
+
+        this.waveInfoBadgeNode.active = false;
     },
 
 
