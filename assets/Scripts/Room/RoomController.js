@@ -49,19 +49,70 @@ cc.Class({
     },
 
     onLoad() {
+        console.log('RoomController onLoad');
+        
+        this.init();
+    },
 
+    init() {
+        // cc.game.addPersistRootNode(this.node);
+        cc.game.addPersistRootNode(this.resultPopupNode);
+        // cc.game.addPersistRootNode(this.waveInfoBadgeNode);
         this.fsm = RoomStateMachine.createStateMachine(this);
-        this.gameScript = this.gameSciptJsonAsset.json;
+        if (!GameData.gameScript) {
+            GameData.gameScript = this.gameSciptJsonAsset.json;
+        }
+        this.gameScript = GameData.gameScript;
         this.resultPopupNode.active = false;
 
         this.eventMap = {
             [Game.GAME_OVER]: this.onGameOver.bind(this),
+            [Game.SCENE_CHANGE]: this.onSceneChanged.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
 
         if (this.fsm.can(RoomTransition.START_LEVEL)) {
             this.fsm.startLevel(GameData.selectedChapter);
         }
+    },
+
+    onSceneChanged(sceneName) {
+        console.log(`Scene changed to: ${sceneName}`);
+
+        if (sceneName === 'Room') {
+           // this.init();
+            if (!this.fsm) {
+                this.fsm = RoomStateMachine.createStateMachine(this);
+            }
+            if (this.fsm.state !== RoomState.PLAYING) {
+                this.restartCurrentLevel();
+                killAllMob();
+                console.log('Restarting current level');
+            }
+        } else {
+            this.node.active = false;
+        }
+    },
+
+    killAllMob() {
+        this.mobsActive.forEach(mob => {
+            if (mob.active && mob.getComponent('MobItem').stateMachine.can(MobTransition.DIE)) {
+                mob.getComponent('MobItem').stateMachine.die();
+            }
+        });
+        // this.mobsActive = [];
+        // this.mobSpawnQueue = [];
+        // this.spawnTimer = 0;
+        // this.spawnInterval = 1.5;
+        // this.waveInfoBadgeNode.active = false;
+        // this.currentWave = 0;
+        // this.updateLabels();
+        // this.generateMobs();
+        // this.generateDefenders();
+        // this.generateFlySword();
+        // this.updateLevelNameLabel();
+        // this.isWin = false;
+        // this.isLose = false;
     },
 
     performStartLevel(level) {
@@ -86,7 +137,7 @@ cc.Class({
 
     performEndGame(isWin) {
         console.log(`Game ended: ${isWin ? 'Victory' : 'Defeat'}`);
-        
+
         let stars = isWin ? 3 : 0;
         let coins = isWin ? this.gameScript.levels[this.currentLevel].coinReward || 100 : 0;
 
@@ -104,9 +155,12 @@ cc.Class({
 
     restartCurrentLevel() {
         if (this.fsm.can(RoomTransition.RESET)) {
+            console.log('Restarting current level');
+
             this.fsm.reset();
         }
         if (this.fsm.can(RoomTransition.START_LEVEL)) {
+            console.log('Starting level:', GameData.selectedChapter);
             this.fsm.startLevel(GameData.selectedChapter);
         }
     },
@@ -120,11 +174,13 @@ cc.Class({
         this.prepareWave();
         this.generateFlySword();
         this.updateLabels();
+        this.isWin = false;
+        this.isLose = false;
     },
 
     onGameOver() {
         console.log('Game Over triggered');
-        
+
         if (this.fsm.can(RoomTransition.END_GAME)) {
             this.fsm.endGame(false);
         }

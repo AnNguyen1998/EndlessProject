@@ -23,7 +23,7 @@ cc.Class({
         const chapterNumber = this.node.getChildByName("Level").getComponent(cc.Label).string;
         GameData.selectedChapter = chapterNumber;
         Emitter.instance.emit(GameEventKeys.SCENE_CHANGE, "Room");
-        Emitter.instance.emit(GameEventKeys.SELECT_CHAPTER, this.node.getChildByName("Level").getComponent(cc.Label).string);
+        // Emitter.instance.emit(GameEventKeys.SELECT_CHAPTER, this.node.getChildByName("Level").getComponent(cc.Label).string);
     },
 
     onDestroy() {

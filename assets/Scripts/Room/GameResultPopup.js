@@ -5,8 +5,6 @@ const GameData = require('GameData');
 
 cc.Class({
     extends: require('PopupItem'),
-    name: "GameResultPopup",
-
     properties: {
         titleLabel: cc.Label,
         starNodes: [cc.Node],
@@ -34,14 +32,13 @@ cc.Class({
         this.node.active = true;
     },
 
-
     onExit() {
         this.hide();
         Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
     },
 
     onDestroy() {
-     
+
         this._super();
     },
 });

@@ -74,6 +74,7 @@ cc.Class({
         Emitter.instance.emit(GameEventKeys.REMOVE_ALL_POPUPS);
         Emitter.instance.emit(GameEventKeys.REMOVE_ALL_SCENES);
         Emitter.instance.emit(GameEventKeys.REMOVE_ALL_CHAPTERS);
+        cc.director.loadScene("Portal");
     },
 
     onSceneChange(sceneName) {

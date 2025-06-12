@@ -18,6 +18,15 @@
       },
       {
         "__id__": 164
+      },
+      {
+        "__id__": 165
+      },
+      {
+        "__id__": 167
+      },
+      {
+        "__id__": 169
       }
     ],
     "_active": false,
@@ -177,7 +186,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 525.6774200971543
+      "z": 401.83578735597956
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -7517,17 +7526,7 @@
     "_parent": {
       "__id__": 1
     },
-    "_children": [
-      {
-        "__id__": 165
-      },
-      {
-        "__id__": 167
-      },
-      {
-        "__id__": 169
-      }
-    ],
+    "_children": [],
     "_active": true,
     "_level": 1,
     "_components": [],
@@ -7579,11 +7578,11 @@
     "_name": "RoomController",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 164
+      "__id__": 1
     },
     "_children": [],
     "_active": true,
-    "_level": 2,
+    "_level": 1,
     "_components": [
       {
         "__id__": 166
@@ -7702,11 +7701,11 @@
     "_name": "SkillController",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 164
+      "__id__": 1
     },
     "_children": [],
     "_active": true,
-    "_level": 2,
+    "_level": 1,
     "_components": [
       {
         "__id__": 168
@@ -7778,11 +7777,11 @@
     "_name": "UIInputHandler",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 164
+      "__id__": 1
     },
     "_children": [],
     "_active": true,
-    "_level": 2,
+    "_level": 1,
     "_components": [
       {
         "__id__": 170
