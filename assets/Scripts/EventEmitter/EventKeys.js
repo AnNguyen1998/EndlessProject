@@ -17,6 +17,7 @@ export const Game = {
     RESUME_GAME: 'resumeGame',
     RESTART_GAME: 'restartGame',
     GAME_OVER: 'gameOver',
+    CHAPTER_FINISH: 'chapterFinish',
     SCENE_CHANGE: 'sceneChange',
     SELECT_CHAPTER: 'selectChapter',
     CLICK_CHAPTER: 'clickChapter',

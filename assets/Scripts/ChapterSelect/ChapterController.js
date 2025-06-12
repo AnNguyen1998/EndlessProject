@@ -25,9 +25,13 @@ cc.Class({
 
     onLoad() {
         this.init();
+        this.registerEvent();
     },
 
     init() {
+        this.eventMap = {
+            [Game.CHAPTER_FINISH]: this.saveChapterFinish.bind(this),
+        }
         PlayerData.load(); //TODO: clear
         for (let i = 0; i < 100; i++) {
             const chapterNumber = i + 1;
@@ -40,7 +44,6 @@ cc.Class({
             iconLock.active = !isUnlocked;
             chapter.color = isUnlocked ? new cc.Color().fromHEX("#CE7504") : cc.Color.GRAY;
             if (isUnlocked && starContainer) {
-                PlayerData.unlockNextChapter(chapterNumber);
                 const starCount = PlayerData.getChapterStar(chapterNumber);
                 for (let s = 0; s < 3; s++) {
                     const starNode = starContainer.getChildByName(`Star${s + 1}`);
@@ -51,6 +54,16 @@ cc.Class({
             this.layout.node.addChild(chapter);
         }
         this.scrollView.scrollToTop(0);
+    },
+
+    registerEvent() {
+        Emitter.instance.registerEventsMap(this.eventMap);
+    },
+
+    saveChapterFinish(chapterFinish) {
+        PlayerData.setChapterStar(chapterFinish.chapterNumber, chapterFinish.starsEarned);
+        PlayerData.unlockNextChapter(chapterFinish.chapterNumber);
+        PlayerData.save();
     },
 
     onClickButtonBack() {
