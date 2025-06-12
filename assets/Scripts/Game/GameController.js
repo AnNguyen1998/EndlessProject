@@ -22,11 +22,7 @@ cc.Class({
         soundController: {
             default: null,
             type: require("SoundController"),
-        },
-        roomController: {
-            default: null,
-            type: require("RoomController"),
-        },
+        }
     },
 
     onLoad() {
@@ -50,19 +46,10 @@ cc.Class({
         cc.game.addPersistRootNode(this.popupController.node);
         cc.game.addPersistRootNode(this.sceneController.node);
         cc.game.addPersistRootNode(this.soundController.node);
-        cc.game.addPersistRootNode(this.roomController.node);
-
-
-
         this.sceneController.init();
         this.popupController.init();
         this.soundController.init();
-        this.roomController.init();
-
-
         this.node.active = false;
-
-
         this.eventMap = {
             [GameEventKeys.END_GAME]: this.triggerEndGame.bind(this),
             [GameEventKeys.SCENE_CHANGED]: this.onSceneChange.bind(this),

@@ -1,5 +1,6 @@
 const Emitter = require("Emitter");
 const { Game: GameEventKeys } = require('EventKeys');
+const GameData = require('GameData'); 
 cc.Class({
     extends: cc.Component,
 
@@ -19,8 +20,8 @@ cc.Class({
     },
 
     onClickChapter() {
-        console.log("Chapter clicked: " + this.node.getChildByName("Level").getComponent(cc.Label).string);
-        
+        const chapterNumber = this.node.getChildByName("Level").getComponent(cc.Label).string;
+        GameData.selectedChapter = chapterNumber;
         Emitter.instance.emit(GameEventKeys.SCENE_CHANGE, "Room");
         Emitter.instance.emit(GameEventKeys.SELECT_CHAPTER, this.node.getChildByName("Level").getComponent(cc.Label).string);
     },
