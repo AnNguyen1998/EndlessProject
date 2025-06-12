@@ -32,7 +32,6 @@ cc.Class({
         this.eventMap = {
             [Game.CHAPTER_FINISH]: this.saveChapterFinish.bind(this),
         }
-        PlayerData.load(); //TODO: clear
         for (let i = 0; i < 100; i++) {
             const chapterNumber = i + 1;
             const chapter = cc.instantiate(this.chapterPreFabs);
