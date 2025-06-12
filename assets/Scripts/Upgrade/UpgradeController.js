@@ -13,6 +13,10 @@ cc.Class({
 
     onLoad() {
         this.init();
+        this.toast.getComponent(cc.Animation).on('finished', () => {
+            this.toast.active = false;
+        });
+        this.toast.active = false;
     },
 
     init() {
@@ -91,10 +95,10 @@ cc.Class({
                 this.showToast("Not enough gold!");
                 return;
             }
-            // if (playerLevel < upgradeInfo.condition.required_player_level) {
-            //     this.showToast(`Player level must be ${upgradeInfo.condition.required_player_level}!`);
-            //     return;
-            // }
+            if (playerLevel < upgradeInfo.condition.required_player_level) {
+                this.showToast(`Player level must be ${upgradeInfo.condition.required_player_level}!`);
+                return;
+            }
             if (highestChapter < upgradeInfo.condition.chapter) {
                 this.showToast(`Chapter must be ${upgradeInfo.condition.chapter}!`);
                 return;

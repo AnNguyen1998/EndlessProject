@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-const { Popup, Game: GameEventKeys, Player } = require('EventKeys');
+const { Popup, Game: GameEventKeys, Player, Monster } = require('EventKeys');
 const LocalStorageUnit = require('LocalStorageUnit');
 const LocalStorageKeys = require('LocalStorageKeys');
 const SoundKeys = require('./SoundKeys');
@@ -47,15 +47,18 @@ const SoundController = cc.Class({
             [Popup.CHANGED_SLIDER]: this.onVolumeChanged.bind(this),
             [GameEventKeys.START_GAME]: this.onGameStart.bind(this),
             [GameEventKeys.END_GAME]: this.onGameEnd.bind(this),
-            [Player.SHOOT]: () => this.playSoundEffect(SoundKeys.SHOOT),
-            [Player.HEAVY_SHOT]: () => this.playSoundEffect(SoundKeys.HEAVY_SHOT),
-            [Player.TRIPLE_SHOT]: () => this.playSoundEffect(SoundKeys.TRIPLE_SHOT),
-            [GameEventKeys.GAME_OVER]: () => this.playSoundEffect(SoundKeys.GAME_OVER),    
+            [GameEventKeys.PAUSE_GAME]: this.onGamePause.bind(this),
+            [GameEventKeys.RESUME_GAME]: this.onGameResume.bind(this),
+            [Player.JUMP]: () => this.playSoundEffect(SoundKeys.JUMP),
+            [Player.ATTACK]: () => this.playSoundEffect(SoundKeys.ATTACK),
+            [Monster.MONSTER_DIE]: () => this.playSoundEffect(SoundKeys.MONSTER_DIE),
+            [Monster.MONSTER_HIT]: () => this.playSoundEffect(SoundKeys.MONSTER_HIT),
             [SoundKeys.CLICK]: () => this.playSoundEffect(SoundKeys.CLICK),
         };
 
         this.registerEvents();
         cc.log("SoundController initialized");
+
 
     },
 
@@ -209,7 +212,6 @@ const SoundController = cc.Class({
     onGameStart() { },
 
     onGameEnd() {
-<<<<<<< HEAD
         if (!this.node || !this.node.isValid) {
             return;
         }
@@ -217,9 +219,6 @@ const SoundController = cc.Class({
         this.stopMusic(true);
         this.stopAllSoundEffects();
 
-=======
-        this.onDestroy();
->>>>>>> dev
     },
 
     onGamePause() {
