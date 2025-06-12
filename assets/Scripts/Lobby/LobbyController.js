@@ -1,8 +1,24 @@
 const Emitter = require('Emitter');
 const { Popup, Game } = require('EventKeys');
+const PlayerData = require('PlayerTemplate');
 
 cc.Class({
     extends: cc.Component,
+
+    properties: {
+        goldLabel: {
+            default: null,
+            type: cc.Label
+        }
+    },
+
+    onLoad() {
+        this.init();
+    },
+
+    init() {
+        this.goldLabel.string = PlayerData.getGold();
+    },
 
     onSettingsClick() {
         Emitter.instance.emit(Popup.SHOW_SETTING_POPUP);

@@ -28,7 +28,6 @@ cc.Class({
     },
 
     init() {
-        PlayerData.load();
         for (let i = 0; i < 100; i++) {
             const chapterNumber = i + 1;
             const chapter = cc.instantiate(this.chapterPreFabs);

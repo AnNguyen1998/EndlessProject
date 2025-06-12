@@ -21,7 +21,7 @@
             {
                 "name": "critChance",
                 "title": "Crit Chance",
-                "defaultAttribute": 0.05,
+                "defaultAttribute": 5,
                 "maxLevel": 5
             },
             {
@@ -41,7 +41,7 @@
                             "required_player_level": 1,
                             "chapter": 1
                         },
-                        "price": 5000,
+                        "price": 0,
                         "bonus": 1
                     },
                     {
@@ -50,7 +50,7 @@
                             "required_player_level": 2,
                             "chapter": 2
                         },
-                        "price": 12000,
+                        "price": 100,
                         "bonus": 1
                     },
                     {
@@ -59,7 +59,7 @@
                             "required_player_level": 10,
                             "chapter": 4
                         },
-                        "price": 25000,
+                        "price": 500,
                         "bonus": 1
                     },
                     {
@@ -68,7 +68,7 @@
                             "required_player_level": 30,
                             "chapter": 5
                         },
-                        "price": 50000,
+                        "price": 2500,
                         "bonus": 1
                     },
                     {
@@ -77,7 +77,7 @@
                             "required_player_level": 40,
                             "chapter": 6
                         },
-                        "price": 99999,
+                        "price": 10000,
                         "bonus": 1
                     }
                 ]
@@ -91,7 +91,7 @@
                             "required_player_level": 1,
                             "chapter": 1
                         },
-                        "price": 200,
+                        "price": 0,
                         "multiplier": 1.1
                     },
                     {
@@ -100,7 +100,7 @@
                             "required_player_level": 3,
                             "chapter": 1
                         },
-                        "price": 450,
+                        "price": 50,
                         "multiplier": 1.11
                     },
                     {
@@ -109,7 +109,7 @@
                             "required_player_level": 6,
                             "chapter": 1
                         },
-                        "price": 900,
+                        "price": 200,
                         "multiplier": 1.12
                     },
                     {
@@ -118,7 +118,7 @@
                             "required_player_level": 9,
                             "chapter": 2
                         },
-                        "price": 1800,
+                        "price": 800,
                         "multiplier": 1.13
                     },
                     {
@@ -127,7 +127,7 @@
                             "required_player_level": 12,
                             "chapter": 2
                         },
-                        "price": 3500,
+                        "price": 1500,
                         "multiplier": 1.14
                     },
                     {
@@ -136,7 +136,7 @@
                             "required_player_level": 16,
                             "chapter": 3
                         },
-                        "price": 6000,
+                        "price": 2500,
                         "multiplier": 1.15
                     },
                     {
@@ -145,7 +145,7 @@
                             "required_player_level": 20,
                             "chapter": 3
                         },
-                        "price": 9500,
+                        "price": 5000,
                         "multiplier": 1.16
                     },
                     {
@@ -154,7 +154,7 @@
                             "required_player_level": 24,
                             "chapter": 4
                         },
-                        "price": 15000,
+                        "price": 6000,
                         "multiplier": 1.17
                     },
                     {
@@ -163,7 +163,7 @@
                             "required_player_level": 28,
                             "chapter": 5
                         },
-                        "price": 22000,
+                        "price": 7000,
                         "multiplier": 1.18
                     },
                     {
@@ -172,7 +172,7 @@
                             "required_player_level": 35,
                             "chapter": 5
                         },
-                        "price": 30000,
+                        "price": 10000,
                         "multiplier": 1.2
                     }
                 ]
@@ -186,7 +186,7 @@
                             "required_player_level": 1,
                             "chapter": 1
                         },
-                        "price": 1000,
+                        "price": 0,
                         "multiplier": 1.08
                     },
                     {
@@ -195,7 +195,7 @@
                             "required_player_level": 3,
                             "chapter": 2
                         },
-                        "price": 2500,
+                        "price": 150,
                         "multiplier": 1.18
                     },
                     {
@@ -204,7 +204,7 @@
                             "required_player_level": 18,
                             "chapter": 3
                         },
-                        "price": 6000,
+                        "price": 800,
                         "multiplier": 1.30
                     },
                     {
@@ -213,7 +213,7 @@
                             "required_player_level": 25,
                             "chapter": 4
                         },
-                        "price": 14000,
+                        "price": 2500,
                         "multiplier": 1.45
                     },
                     {
@@ -222,8 +222,8 @@
                             "required_player_level": 32,
                             "chapter": 5
                         },
-                        "price": 28000,
-                        "multiplier": 1.65
+                        "price": 10000,
+                        "multiplier": 1.8
                     }
                 ]
             },
@@ -236,8 +236,8 @@
                             "required_player_level": 1,
                             "chapter": 1
                         },
-                        "price": 1500,
-                        "multiplier": 1.2
+                        "price": 0,
+                        "multiplier": 2
                     },
                     {
                         "level": 2,
@@ -245,8 +245,8 @@
                             "required_player_level": 3,
                             "chapter": 2
                         },
-                        "price": 3000,
-                        "multiplier": 1.5
+                        "price": 150,
+                        "multiplier": 2
                     },
                     {
                         "level": 3,
@@ -254,26 +254,26 @@
                             "required_player_level": 14,
                             "chapter": 2
                         },
-                        "price": 5500,
+                        "price": 1500,
                         "multiplier": 2
                     },
                     {
                         "level": 4,
                         "condition": {
                             "required_player_level": 19,
-                            "chapter": 3
+                            "chapter": 4
                         },
-                        "price": 9000,
-                        "multiplier": 2.5
+                        "price": 3000,
+                        "multiplier": 2
                     },
                     {
                         "level": 5,
                         "condition": {
                             "required_player_level": 23,
-                            "chapter": 4
+                            "chapter": 5
                         },
-                        "price": 13500,
-                        "multiplier": 3
+                        "price": 9000,
+                        "multiplier": 2
                     }
                 ]
             },
@@ -286,7 +286,7 @@
                             "required_player_level": 1,
                             "chapter": 1
                         },
-                        "price": 1200,
+                        "price": 0,
                         "multiplier": 1.1
                     },
                     {
@@ -295,7 +295,7 @@
                             "required_player_level": 2,
                             "chapter": 2
                         },
-                        "price": 2800,
+                        "price": 50,
                         "multiplier": 1.22
                     },
                     {
@@ -304,7 +304,7 @@
                             "required_player_level": 14,
                             "chapter": 2
                         },
-                        "price": 5000,
+                        "price": 150,
                         "multiplier": 1.35
                     },
                     {
@@ -313,7 +313,7 @@
                             "required_player_level": 19,
                             "chapter": 3
                         },
-                        "price": 8500,
+                        "price": 800,
                         "multiplier": 1.50
                     },
                     {
@@ -322,7 +322,7 @@
                             "required_player_level": 23,
                             "chapter": 4
                         },
-                        "price": 13000,
+                        "price": 2000,
                         "multiplier": 1.68
                     },
                     {
@@ -331,7 +331,7 @@
                             "required_player_level": 27,
                             "chapter": 4
                         },
-                        "price": 18000,
+                        "price": 3000,
                         "multiplier": 1.88
                     },
                     {
@@ -340,7 +340,7 @@
                             "required_player_level": 33,
                             "chapter": 5
                         },
-                        "price": 25000,
+                        "price": 6000,
                         "multiplier": 2.1
                     },
                     {
@@ -349,7 +349,7 @@
                             "required_player_level": 38,
                             "chapter": 6
                         },
-                        "price": 34000,
+                        "price": 12000,
                         "multiplier": 2.35
                     }
                 ]
