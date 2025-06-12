@@ -1,7 +1,7 @@
-const Emitter = require('../EventEmitter/Emitter');
-const { Popup, Game : GameEventKeys, Player, Monster } = require('../EventEmitter/EventKeys');
-const LocalStorageUnit = require('../Unit/LocalStorageUnit');
-const LocalStorageKeys = require('../Unit/LocalStorageKeys');
+const Emitter = require('Emitter');
+const { Popup, Game : GameEventKeys, Player, Monster } = require('EventKeys');
+const LocalStorageUnit = require('LocalStorageUnit');
+const LocalStorageKeys = require('LocalStorageKeys');
 const SoundKeys = require('./SoundKeys');
 
 const SoundController = cc.Class({
