@@ -1,7 +1,7 @@
 const StateMachine = require('javascript-state-machine');
 const Emitter = require('Emitter');
 const { SkillEvent, SkillState, SkillAction } = require('SkillKeys');
-
+const { Player: PlayerEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
@@ -28,7 +28,7 @@ cc.Class({
         },
         progressSprite: {
             default: null,
-            type: cc.Sprite, 
+            type: cc.Sprite,
         },
         backgroundProgressSprite: {
             default: null,
@@ -83,9 +83,9 @@ cc.Class({
         }
     },
 
-    registerEvents() {},
+    registerEvents() { },
 
-    unregisterEvents() {},
+    unregisterEvents() { },
 
     _initStateMachine() {
         this.fsm = new StateMachine({
@@ -101,20 +101,31 @@ cc.Class({
                 onActivate: () => {
                     this.isActive = true;
                     this.onActivate();
-                    this.setButtonState(false); 
+                    this.setButtonState(false);
                     Emitter.instance.emit(SkillEvent.SKILL_ACTIVATED, this.skillIndex);
+                    switch (this.skillIndex) {
+                        case 0: // Heavy Shot
+                            Emitter.instance.emit(PlayerEventKeys.HEAVY_SHOT);
+                            break;
+                        case 1: // Gatling Shot
+                            Emitter.instance.emit(PlayerEventKeys.TRIPLE_SHOT);
+                            break;
+
+                        default:
+                            break;
+                    }
                     this.scheduleOnce(this._onDurationEnd, this.duration);
                 },
                 onDeactivate: () => {
                     this.isActive = false;
                     this.onDeactivate();
                     this._cooldownTimer = this.cooldown;
-                    this.startProgressBar(); 
+                    this.startProgressBar();
                     Emitter.instance.emit(SkillEvent.SKILL_COOLDOWN_START, this.skillIndex);
                 },
                 onCooldownEnd: () => {
-                    this.setButtonState(true); 
-                    this.stopProgressBar(); 
+                    this.setButtonState(true);
+                    this.stopProgressBar();
                     Emitter.instance.emit(SkillEvent.SKILL_COOLDOWN_END, this.skillIndex);
                 },
                 onDisable: () => {
@@ -167,7 +178,7 @@ cc.Class({
         if (this.fsm && this.fsm.state !== SkillState.DISABLED) {
             this.fsm.disable();
         }
-        
+
     },
 
     enable() {
@@ -178,28 +189,28 @@ cc.Class({
 
     setButtonState(enabled) {
         if (!this.skillButton) return;
-        
+
         this.skillButton.interactable = enabled;
-        
+
         if (enabled) {
             this.skillButton.transition = this._originalTransition || cc.Button.Transition.SCALE;
-            this.skillButton.node.active = true; 
+            this.skillButton.node.active = true;
             this.skillButton.node.scale = this._originalScale || 1;
             this.backgroundProgressSprite.node.active = false;
         } else {
             this.skillButton.transition = cc.Button.Transition.NONE;
-            this.skillButton.node.active = false; 
-            this.backgroundProgressSprite.node.active = true;  
+            this.skillButton.node.active = false;
+            this.backgroundProgressSprite.node.active = true;
         }
     },
 
     startProgressBar() {
         if (!this.progressSprite) return;
 
-        this.stopProgressBar(); 
+        this.stopProgressBar();
         this._progressTimer = setInterval(() => {
             this.updateProgress();
-        }, 16); 
+        }, 16);
     },
 
     stopProgressBar() {
@@ -207,7 +218,7 @@ cc.Class({
             clearInterval(this._progressTimer);
             this._progressTimer = null;
         }
-        
+
         if (this.progressSprite) {
             this.progressSprite.fillRange = 0;
         }
@@ -215,12 +226,12 @@ cc.Class({
 
     updateProgress() {
         if (!this.progressSprite || !this.fsm) return;
-        
+
         if (this.fsm.state !== SkillState.COOLDOWN) {
             this.stopProgressBar();
             return;
         }
-        
+
         const percent = this._cooldownTimer / this.cooldown;
         this.progressSprite.fillRange = percent;
     },

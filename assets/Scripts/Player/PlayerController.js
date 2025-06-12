@@ -14,11 +14,14 @@ cc.Class({
         moveDuration: 0.1,
         _currentLaneIndex: 1,
         _lanePositionsY: [],
+        lastShootTime: 0,
+        shootInterval: 0.75,
     },
 
     onLoad() {
         PlayerData.load();
         this.init();
+        this.shootInterval /= PlayerData.getAttribute('attackSpeed').value;
     },
 
     init() {
@@ -28,7 +31,7 @@ cc.Class({
 
         this.calculateLanePositions();
         this.node.y = this._lanePositionsY[this._currentLaneIndex];
-
+        this.node.x += 100;
         this.spine.setCompleteListener((trackEntry) => {
             const animationName = trackEntry.animation ? trackEntry.animation.name : '';
             if (animationName === 'portal') {
@@ -41,13 +44,23 @@ cc.Class({
         this.eventMap = {
             [PlayerEventKeys.MOVE_UP]: this.onMoveUp.bind(this),
             [PlayerEventKeys.MOVE_DOWN]: this.onMoveDown.bind(this),
-            //[PlayerEventKeys.SHOOT]: this.onShoot.bind(this),
-            //[PlayerEventKeys.HEAVY_SHOT]: this.onShoot.bind(this),
-            //[PlayerEventKeys.TRIPLE_SHOT]: this.onShoot.bind(this),
+            [PlayerEventKeys.PRE_SHOOT]: this.onPreShoot.bind(this),
+            // [PlayerEventKeys.HEAVY_SHOT]: this.onShoot.bind(this),
+            // [PlayerEventKeys.TRIPLE_SHOT]: this.onShoot.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
 
         this.handleAnimation();
+    },
+
+    onPreShoot() {
+        if (this.fsm.can('shoot')) {
+            const currentTime = Date.now();
+            if (currentTime - this.lastShootTime >= this.shootInterval * 1000) {
+                Emitter.instance.emit(PlayerEventKeys.SHOOT);
+                this.lastShootTime = currentTime;
+            }
+        }
     },
 
     onDestroy() {
@@ -113,7 +126,7 @@ cc.Class({
         if (other.node.group === "MobGroup") {
             if (this.fsm.can(PlayerTransition.DIE)) {
                 this.fsm.die();
-            } 
+            }
         }
     },
 
@@ -128,7 +141,7 @@ cc.Class({
     },
 
     onStartShoot() {
-        this.spine.setAnimation(1, 'shoot', false);
+        // this.spine.setAnimation(1, 'shoot', false);
         // this.spine.addAnimation(0, 'hoverboard', true);
     },
 

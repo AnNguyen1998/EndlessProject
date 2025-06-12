@@ -2,7 +2,9 @@ const MobStateMachine = require('./MobStateMachine');
 const MobState = require('./MobState');
 const MobTransition = require('./MobTransition');
 const DefenderState = require('../Defender/DefenderState');
-
+const { Player, Game } = require('../EventEmitter/EventKeys');
+const PlayerData = require('../Player/PlayerTemplate');
+const mEmitter = require('../EventEmitter/Emitter');
 cc.Class({
   extends: cc.Component,
   properties: {
@@ -25,14 +27,29 @@ cc.Class({
     this.maxHealth = this.health;
     this.stateMachine = MobStateMachine.createStateMachine(this);
     this.effectTimers = {};
+
   },
 
   onCollisionEnter(other, self) {
     if (other.node.group === 'BulletGroup') {
-        const bulletItem = other.getComponent('BulletItem');
-        if (bulletItem) {
-            this.takeDamage(bulletItem.damage);
-        }
+      const bulletItem = other.getComponent('BulletItem');
+      if (bulletItem) {
+        this.takeDamage(bulletItem.damage);
+      }
+    }
+    if (other.node.group === 'DefenderGroup') {
+      this.attackDefender(other.node);
+    }
+    if (other.node.group === 'PlayerGroup') {
+      this.attackDefender(other.node);
+    }
+    if (other.node.group === 'FlySwordGroup') {
+      if (this.stateMachine.can(MobTransition.DIE)) {
+        this.stateMachine.die();
+      }
+    }
+    if (other.node.group === 'GameOverGroup') {
+      mEmitter.instance.emit(Game.GAME_OVER);
     }
   },
 
@@ -118,7 +135,7 @@ cc.Class({
     this.node.x -= this.speed * dt;
   },
 
-  onAttack() {},
+  onAttack() { },
 
   onTakeDamage() {
     let sprite = this.node.getComponent(cc.Sprite);
@@ -148,14 +165,27 @@ cc.Class({
   },
 
   onDie() {
+    // Stop any active tweens/actions to avoid overlap
+    this.node.stopAllActions();
+    const origColor = this.node.color.clone();
+    const backward = -50;
+
     cc.tween(this.node)
       .parallel(
-        cc.tween().to(0.4, { scale: 0.1 }, { easing: 'quadIn' }),
-        cc.tween().to(0.4, { opacity: 0 }, { easing: 'quadIn' })
+        //thu nhỏ lại
+        cc.tween().to(0.3, { scale: 0.1 }, { easing: 'quadOut' }),
+        cc.tween()
+          .to(0.1, { color: cc.color(255, 60, 60) })
+          .to(0.2, { color: cc.color(120, 120, 120) }),
+        cc.tween()
+          .by(0.1, { y: 28 }, { easing: 'quadOut' })
+          .by(0.2, { y: -40, x: backward }, { easing: 'quadIn' }),
+        cc.tween().to(0.2, { opacity: 0 }, { easing: 'quadIn' })
       )
       .call(() => {
-        this.node.scale = 1;
         this.node.opacity = 255;
+        this.node.color = origColor;
+        // this.node.x -= backward;
         if (this.stateMachine.can(MobTransition.DEAD)) {
           this.stateMachine.dead();
         }

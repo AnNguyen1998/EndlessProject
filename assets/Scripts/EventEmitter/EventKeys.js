@@ -25,6 +25,7 @@ export const Game = {
 export const Player = {
     MOVE_UP: 'moveUp',
     MOVE_DOWN: 'moveDown',
+    PRE_SHOOT: 'preShoot',
     SHOOT: 'shoot',
     HEAVY_SHOT: 'heavyShot',
     TRIPLE_SHOT: 'tripleShot',
