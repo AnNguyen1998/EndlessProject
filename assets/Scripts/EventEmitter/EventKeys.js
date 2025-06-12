@@ -5,6 +5,8 @@ export const Popup = {
     HIDE_RANK_POPUP: 'hideRank',
     SHOW_UPGRADE_POPUP: 'showUpgrade',
     HIDE_UPGRADE_POPUP: 'hideUpgrade',
+    SHOW_TUTORIAL_POPUP: 'showTutorial',
+    HIDE_TUTORIAL_POPUP: 'hideTutorial',
     CHANGED_SLIDER: 'changedSlider',
 }
 
