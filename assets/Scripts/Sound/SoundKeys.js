@@ -2,11 +2,11 @@ const SoundKeys = cc.Enum({
     SOUND_VOLUME_CHANGED: 'soundVolumeChanged',
     BACKGROUND_MUSIC: 'backgroundMusic',
     SOUND_EFFECT: 'soundEffect',
-    JUMP: 'jump',
-    ATTACK: 'attack',
-    MONSTER_DIE: 'monsterDie',
-    MONSTER_HIT: 'monsterHit',
+    SHOOT: 'shoot',
+    HEAVY_SHOT: 'heavyShot',
+    TRIPLE_SHOT: 'tripleShot',
     CLICK: 'click',
+
 });
 
 module.exports = SoundKeys;
