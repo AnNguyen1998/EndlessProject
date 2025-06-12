@@ -15,7 +15,13 @@ const DEFAULT_PLAYER_DATA = {
         critChance: { value: 5, level: 1 },
         critRate: { value: 1.5, level: 1 },
         attackSpeed: { value: 1.0, level: 1 },
-    }
+    },
+    chapterHistory: [
+        {
+            chapter: 1,
+            star: 0
+        }
+    ]
 };
 
 class PlayerTemplate {
