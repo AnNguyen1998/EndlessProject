@@ -912,6 +912,12 @@
       "__id__": 1
     },
     "_enabled": true,
+    "lockIcon": {
+      "__id__": 20
+    },
+    "levelLabel": {
+      "__id__": 17
+    },
     "_id": ""
   },
   {

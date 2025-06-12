@@ -4,6 +4,7 @@ const { Game: GameEventKeys } = require('EventKeys');
 const LocalStorageUnit = require("LocalStorageUnit");
 const LocalStorageKeys = require("LocalStorageKeys");
 const SoundKeys = require("SoundKeys");
+const PlayerData = require('PlayerTemplate');
 cc.Class({
     extends: cc.Component,
 
@@ -26,6 +27,7 @@ cc.Class({
         this.init();
     },
     init() {
+        PlayerData.load();
         this.eventMap = {
             [GameEventKeys.END_GAME]: this.onDestroy.bind(this),
         };
