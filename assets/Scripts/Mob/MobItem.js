@@ -2,8 +2,9 @@ const MobStateMachine = require('./MobStateMachine');
 const MobState = require('./MobState');
 const MobTransition = require('./MobTransition');
 const DefenderState = require('../Defender/DefenderState');
-const { Player } = require('../EventEmitter/EventKeys');
+const { Player, Game } = require('../EventEmitter/EventKeys');
 const PlayerData = require('../Player/PlayerTemplate');
+const mEmitter = require('../EventEmitter/Emitter');
 cc.Class({
   extends: cc.Component,
   properties: {
@@ -26,7 +27,7 @@ cc.Class({
     this.maxHealth = this.health;
     this.stateMachine = MobStateMachine.createStateMachine(this);
     this.effectTimers = {};
-   
+
   },
 
   onCollisionEnter(other, self) {
@@ -46,6 +47,9 @@ cc.Class({
       if (this.stateMachine.can(MobTransition.DIE)) {
         this.stateMachine.die();
       }
+    }
+    if (other.node.group === 'GameOverGroup') {
+      mEmitter.instance.emit(Game.GAME_OVER);
     }
   },
 

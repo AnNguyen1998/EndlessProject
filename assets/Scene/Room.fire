@@ -17,7 +17,7 @@
         "__id__": 2
       },
       {
-        "__id__": 88
+        "__id__": 90
       }
     ],
     "_active": false,
@@ -74,20 +74,20 @@
         "__id__": 63
       },
       {
-        "__id__": 71
-      },
-      {
-        "__id__": 83
+        "__id__": 73
       },
       {
         "__id__": 85
+      },
+      {
+        "__id__": 87
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 87
+        "__id__": 89
       }
     ],
     "_prefab": null,
@@ -2928,6 +2928,9 @@
       },
       {
         "__id__": 69
+      },
+      {
+        "__id__": 71
       }
     ],
     "_active": true,
@@ -3258,6 +3261,85 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "GameOverNode",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 63
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 3,
+    "_components": [
+      {
+        "__id__": 72
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 10,
+      "height": 720
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 6,
+    "_id": "02zaR7/2xK/JELmfad2N9N"
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 71
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 5,
+      "y": 360
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 10,
+      "height": 720
+    },
+    "_id": "e18De35ZJOcbWtyxI8si1f"
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "WaveInfoBadgeNode",
     "_objFlags": 0,
     "_parent": {
@@ -3265,17 +3347,17 @@
     },
     "_children": [
       {
-        "__id__": 72
+        "__id__": 74
       },
       {
-        "__id__": 80
+        "__id__": 82
       }
     ],
     "_active": true,
     "_level": 2,
     "_components": [
       {
-        "__id__": 82
+        "__id__": 84
       }
     ],
     "_prefab": null,
@@ -3326,21 +3408,21 @@
     "_name": "Background",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 71
+      "__id__": 73
     },
     "_children": [
       {
-        "__id__": 73
+        "__id__": 75
       },
       {
-        "__id__": 76
+        "__id__": 78
       }
     ],
     "_active": true,
     "_level": 3,
     "_components": [
       {
-        "__id__": 79
+        "__id__": 81
       }
     ],
     "_prefab": null,
@@ -3391,17 +3473,17 @@
     "_name": "RightWing",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 72
+      "__id__": 74
     },
     "_children": [],
     "_active": true,
     "_level": 4,
     "_components": [
       {
-        "__id__": 74
+        "__id__": 76
       },
       {
-        "__id__": 75
+        "__id__": 77
       }
     ],
     "_prefab": null,
@@ -3452,7 +3534,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 73
+      "__id__": 75
     },
     "_enabled": true,
     "_materials": [
@@ -3484,7 +3566,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 73
+      "__id__": 75
     },
     "_enabled": true,
     "_defaultClip": {
@@ -3503,17 +3585,17 @@
     "_name": "LeftWing",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 72
+      "__id__": 74
     },
     "_children": [],
     "_active": true,
     "_level": 4,
     "_components": [
       {
-        "__id__": 77
+        "__id__": 79
       },
       {
-        "__id__": 78
+        "__id__": 80
       }
     ],
     "_prefab": null,
@@ -3564,7 +3646,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 76
+      "__id__": 78
     },
     "_enabled": true,
     "_materials": [
@@ -3596,7 +3678,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 76
+      "__id__": 78
     },
     "_enabled": true,
     "_defaultClip": {
@@ -3615,7 +3697,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 72
+      "__id__": 74
     },
     "_enabled": true,
     "_materials": [
@@ -3647,14 +3729,14 @@
     "_name": "Label",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 71
+      "__id__": 73
     },
     "_children": [],
     "_active": true,
     "_level": 3,
     "_components": [
       {
-        "__id__": 81
+        "__id__": 83
       }
     ],
     "_prefab": null,
@@ -3705,7 +3787,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 80
+      "__id__": 82
     },
     "_enabled": true,
     "_materials": [
@@ -3737,7 +3819,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 71
+      "__id__": 73
     },
     "_enabled": true,
     "_defaultClip": {
@@ -3759,7 +3841,7 @@
     },
     "_id": "c2Jlpq76pEmZuLHXlfJiD/",
     "_prefab": {
-      "__id__": 84
+      "__id__": 86
     },
     "_name": "GatlingShotSkill",
     "_active": true,
@@ -3779,7 +3861,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 83
+      "__id__": 85
     },
     "asset": {
       "__uuid__": "33e4f229-2592-42d1-b7ca-30dacae5f9f1"
@@ -3795,7 +3877,7 @@
     },
     "_id": "7dCAQj/+BEgok/LVT4nCbK",
     "_prefab": {
-      "__id__": 86
+      "__id__": 88
     },
     "_name": "HeavyShotSkill",
     "_active": true,
@@ -3815,7 +3897,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 85
+      "__id__": 87
     },
     "asset": {
       "__uuid__": "1ae67c16-d57a-47ec-b292-aa2aa0269425"
@@ -3849,10 +3931,10 @@
     },
     "_children": [
       {
-        "__id__": 89
+        "__id__": 91
       },
       {
-        "__id__": 91
+        "__id__": 93
       }
     ],
     "_active": true,
@@ -3906,129 +3988,7 @@
     "_name": "RoomController",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 88
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 2,
-    "_components": [
-      {
-        "__id__": 90
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "groupIndex": 0,
-    "_id": "2doeuRAh5GTahtaA0o6sn9"
-  },
-  {
-    "__type__": "1fd58ZnGbZGhIO066nkxq1/",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 89
-    },
-    "_enabled": true,
-    "mobPrefabs": [
-      {
-        "__uuid__": "7e714388-31de-4b96-a933-f7147656feba"
-      },
-      {
-        "__uuid__": "6d8e2be2-e5d7-461d-924a-95fe2aa06ead"
-      },
-      {
-        "__uuid__": "78cc354f-fb17-4805-876b-fccd0a56136a"
-      }
-    ],
-    "mobPrefabNames": [
-      "wolf",
-      "twinfang",
-      "drakey"
-    ],
-    "wareCountLabel": {
-      "__id__": 39
-    },
-    "coinLabel": {
-      "__id__": 44
-    },
-    "starLabel": {
-      "__id__": 49
-    },
-    "mobs": [],
-    "defender": {
-      "__uuid__": "679394c3-1951-48b3-a302-628659b12d3d"
-    },
-    "defenders": [],
-    "flySwordPrefab": {
-      "__uuid__": "48f3c3ce-1e96-49c7-a62a-ffc0dab124a7"
-    },
-    "flySwords": [],
-    "lastLane": 0,
-    "laneCount": 3,
-    "spawnInterval": 1000,
-    "spawnTimer": 0,
-    "gameScript": null,
-    "currentLevel": 0,
-    "currentWave": 0,
-    "mobSpawnQueue": [],
-    "mobsActive": [],
-    "waveInfoBadgeNode": {
-      "__id__": 71
-    },
-    "isWin": false,
-    "isLose": false,
-    "levelNameLabel": {
-      "__id__": 32
-    },
-    "gameSciptJsonAsset": {
-      "__uuid__": "5a999893-684a-4c83-88da-b60a79a10101"
-    },
-    "_id": "39wtTw8qVD+oWeSg+W7tWT"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "SkillController",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 88
+      "__id__": 90
     },
     "_children": [],
     "_active": true,
@@ -4079,6 +4039,128 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
+    "_id": "2doeuRAh5GTahtaA0o6sn9"
+  },
+  {
+    "__type__": "1fd58ZnGbZGhIO066nkxq1/",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 91
+    },
+    "_enabled": true,
+    "mobPrefabs": [
+      {
+        "__uuid__": "7e714388-31de-4b96-a933-f7147656feba"
+      },
+      {
+        "__uuid__": "6d8e2be2-e5d7-461d-924a-95fe2aa06ead"
+      },
+      {
+        "__uuid__": "78cc354f-fb17-4805-876b-fccd0a56136a"
+      }
+    ],
+    "mobPrefabNames": [
+      "wolf",
+      "twinfang",
+      "drakey"
+    ],
+    "wareCountLabel": {
+      "__id__": 39
+    },
+    "coinLabel": {
+      "__id__": 44
+    },
+    "starLabel": {
+      "__id__": 49
+    },
+    "mobs": [],
+    "defender": {
+      "__uuid__": "679394c3-1951-48b3-a302-628659b12d3d"
+    },
+    "defenders": [],
+    "flySwordPrefab": {
+      "__uuid__": "48f3c3ce-1e96-49c7-a62a-ffc0dab124a7"
+    },
+    "flySwords": [],
+    "lastLane": 0,
+    "laneCount": 3,
+    "spawnInterval": 1000,
+    "spawnTimer": 0,
+    "gameScript": null,
+    "currentLevel": 0,
+    "currentWave": 0,
+    "mobSpawnQueue": [],
+    "mobsActive": [],
+    "waveInfoBadgeNode": {
+      "__id__": 73
+    },
+    "isWin": false,
+    "isLose": false,
+    "levelNameLabel": {
+      "__id__": 32
+    },
+    "gameSciptJsonAsset": {
+      "__uuid__": "5a999893-684a-4c83-88da-b60a79a10101"
+    },
+    "_id": "39wtTw8qVD+oWeSg+W7tWT"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "SkillController",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 90
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 94
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
     "_id": "caTCxmnLhHxJiWRF8hcA8E"
   },
   {
@@ -4086,15 +4168,15 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 91
+      "__id__": 93
     },
     "_enabled": true,
     "skills": [
       {
-        "__id__": 83
+        "__id__": 85
       },
       {
-        "__id__": 85
+        "__id__": 87
       }
     ],
     "_id": "480yIL7VJFnK1UDlPgMWK4"

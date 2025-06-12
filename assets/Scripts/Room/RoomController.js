@@ -1,7 +1,7 @@
 const InputController = require("../Input/InputController");
 const MobState = require("../Mob/MobState");
 const MobTransition = require("../Mob/MobTransition");
-
+const { Player, Game } = require('../EventEmitter/EventKeys');
 const GAME_AREA = {
     topLeft: cc.v2(0, 450),
     topRight: cc.v2(1560, 450),
@@ -45,19 +45,28 @@ cc.Class({
     init() {
         // console.log("this.gameSciptJsonAsset", this.gameSciptJsonAsset);
         this.gameScript = this.gameSciptJsonAsset.json;
+
+        this.eventMap = {
+            [Game.GAME_OVER]: this.onGameOver.bind(this),
+            [Game.SELECT_CHAPTER]: this.onIntChaper.bind(this),
+        };
+        Emitter.instance.registerEventsMap(this.eventMap);
+    },
+    onIntChaper(level = 1) {
+        console.log("onIntChaper", level);
+        this.currentLevel = level;
+        this.currentWave = 0;
         this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
-        this.currentLevel = 0;
-        this.currentWave = 0;
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.waveInfoBadgeNode.active = false;
         this.prepareWave();
         this.generateFlySword();
-
     },
+
 
     showWaveStartAnimation() {
         if (!this.waveInfoBadgeNode) return;
