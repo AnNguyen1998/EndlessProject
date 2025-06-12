@@ -4,10 +4,10 @@ const LocalStorageKeys = require('../Unit/LocalStorageKeys');
 const DEFAULT_PLAYER_DATA = {
     metaData: {
         playerName: "Player",
-        playerLevel: 100,
+        playerLevel: 1,
         playerExperience: 0,
-        playerGold: 10000,
-        highestChapter: 100,
+        playerGold: 100,
+        highestChapter: 1,
     },
     attributes: {
         hpLevel: { value: 1, level: 1 },
