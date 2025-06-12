@@ -19,5 +19,5 @@ cc.Class({
     onClickPlayButton() {
         Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
     }
-
+    
 });
