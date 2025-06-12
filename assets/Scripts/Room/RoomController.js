@@ -50,7 +50,7 @@ cc.Class({
 
     onLoad() {
         console.log('RoomController onLoad');
-        
+
         this.init();
     },
 
@@ -80,7 +80,7 @@ cc.Class({
         console.log(`Scene changed to: ${sceneName}`);
 
         if (sceneName === 'Room') {
-           // this.init();
+            // this.init();
             if (!this.fsm) {
                 this.fsm = RoomStateMachine.createStateMachine(this);
             }
@@ -137,8 +137,13 @@ cc.Class({
 
     performEndGame(isWin) {
         console.log(`Game ended: ${isWin ? 'Victory' : 'Defeat'}`);
-
-        let stars = isWin ? 3 : 0;
+        //số sao == số fly sword còn lại 
+        var stars = 0;
+        if (isWin) {
+            stars = this.flySwords.filter(sword => sword.active).length;
+        } else {
+            stars = 0; // Thua thì không có sao
+        }
         let coins = isWin ? this.gameScript.levels[this.currentLevel].coinReward || 100 : 0;
 
         if (isWin) {
