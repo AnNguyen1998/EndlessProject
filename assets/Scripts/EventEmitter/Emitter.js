@@ -5,6 +5,8 @@ class mEmitter {
         this._emiter.setMaxListeners(100);
     }
     emit(...args) {
+        console.log(`Event emitted: ${args[0]}`, args.slice(1));
+
         this._emiter.emit(...args);
     }
     registerEvent(event, listener) {
@@ -17,12 +19,14 @@ class mEmitter {
         this._emiter.removeListener(event, listener);
     }
     registerEventsMap(eventsMap) {
-        for(const event in eventsMap) {
+        for (const event in eventsMap) {
+            console.log(`Registering event: ${event}`);
+
             this.registerEvent(event, eventsMap[event]);
         }
     }
     removeEventsMap(eventsMap) {
-        for(const event in eventsMap) {
+        for (const event in eventsMap) {
             this.removeEvent(event, eventsMap[event]);
         }
     }

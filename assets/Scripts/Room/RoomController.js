@@ -1,7 +1,11 @@
-const InputController = require("../Input/InputController");
+const { Player, Game } = require('../EventEmitter/EventKeys');
+const Emitter = require('../EventEmitter/Emitter');
 const MobState = require("../Mob/MobState");
 const MobTransition = require("../Mob/MobTransition");
-const { Player, Game } = require('../EventEmitter/EventKeys');
+const RoomStateMachine = require('./RoomStateMachine');
+const RoomState = require('./RoomState');
+const RoomTransition = require('./RoomTransition');
+
 const GAME_AREA = {
     topLeft: cc.v2(0, 450),
     topRight: cc.v2(1560, 450),
@@ -32,34 +36,44 @@ cc.Class({
         mobSpawnQueue: [],
         mobsActive: [],
         waveInfoBadgeNode: { default: null, type: cc.Node },
-        isWin: { default: false, type: cc.Boolean },
-        isLose: { default: false, type: cc.Boolean },
         levelNameLabel: { default: null, type: cc.Label },
         gameSciptJsonAsset: cc.JsonAsset,
     },
 
     onLoad() {
-        this.init();
-    },
-
-    init() {
-        // console.log("this.gameSciptJsonAsset", this.gameSciptJsonAsset);
+        this.fsm = RoomStateMachine.createStateMachine(this);
         this.gameScript = this.gameSciptJsonAsset.json;
-
+        console.log("Game script loaded:", this.gameScript);
+        
         this.eventMap = {
             [Game.GAME_OVER]: this.onGameOver.bind(this),
-            [Game.SELECT_CHAPTER]: this.onIntChaper.bind(this),
+            [Game.SELECT_CHAPTER]: this.onSelectChapter.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
+        console.log("RoomController onLoad");
+        
     },
-    onIntChaper(level = 1) {
-        console.log("onIntChaper", level);
-        this.currentLevel = level;
-        this.currentWave = 0;
+
+    onSelectChapter(level) {
+        console.log(`Selected chapter: ${level}`);
+        
+        if (this.fsm.can(RoomTransition.START_LEVEL)) {
+            this.fsm.startLevel(level);
+        }
+    },
+
+    performStartLevel(level) {
+        console.log(`Starting level: ${level}`);
+        
         this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
         cc.director.getCollisionManager().enabledDebugDraw = true;
+        this.currentLevel = parseInt(level) - 1;
+        if (this.currentLevel >= this.gameScript.levels.length || this.currentLevel < 0) {
+            this.currentLevel = 0;
+        }
+        this.currentWave = 0;
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.waveInfoBadgeNode.active = false;
@@ -67,11 +81,77 @@ cc.Class({
         this.generateFlySword();
     },
 
+    performEndGame(isWin) {
+        if (isWin) {
+            console.log("Win!");
+            this.goNextLevel();
+        } else {
+            console.log("Lose!");
+            this.performReset();
+        }
+    },
 
-    showWaveStartAnimation() {
+    performReset() {
+        this.currentWave = 0;
+        this.mobSpawnQueue = [];
+        this.mobsActive = [];
+        this.waveInfoBadgeNode.active = false;
+        this.prepareWave();
+        this.generateFlySword();
+        this.updateLabels();
+        if (this.fsm.can(RoomTransition.RESET)) {
+            this.fsm.reset();
+        }
+    },
+
+    onGameOver() {
+        if (this.fsm.can(RoomTransition.END_GAME)) {
+            this.fsm.endGame(false);
+        }
+    },
+
+    update(dt) {
+        if (this.fsm.state !== RoomState.PLAYING) return;
+        if (!this.gameScript || this.currentLevel >= this.gameScript.levels.length) return;
+
+        this.spawnTimer -= dt;
+
+        if (this.mobSpawnQueue.length === 0) {
+            if (this.getAliveMobCount() === 0) {
+                if (this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
+                    this.currentWave++;
+                    this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
+                    this.prepareWave();
+                } else {
+                    if (this.fsm.can(RoomTransition.END_GAME)) {
+                        this.fsm.endGame(true);
+                    }
+                    return;
+                }
+            }
+        }
+
+        if (this.mobSpawnQueue.length > 0 && this.spawnTimer <= 0) {
+            this.trySpawnMob();
+            this.spawnTimer = this.spawnInterval;
+        }
+
+        this.updateLabels();
+        this.updateLevelNameLabel();
+    },
+
+    goNextLevel() {
+        this.currentLevel++;
+        if (this.currentLevel >= this.gameScript.levels.length) {
+            console.log("All levels completed!");
+            this.currentLevel = 0;
+        }
+        this.performReset();
+    },
+
+       showWaveStartAnimation() {
         if (!this.waveInfoBadgeNode) return;
 
-        // const labelNode = this.waveInfoBadgeNode.getChildByName('Background').getChildByName('Label');
         const labelNode = this.waveInfoBadgeNode.getChildByName('Label');
         const label = labelNode.getComponent(cc.Label);
         label.string = `WAVE ${this.currentWave + 1}`;
@@ -89,96 +169,15 @@ cc.Class({
 
         }
 
-        //đợi 2s sau đó ẩn đi. dùng tween
         this.scheduleOnce(() => {
             this.waveInfoBadgeNode.active = false;
             label.string = '';
         }, 2);
     },
 
-    update(dt) {
-        if (this.isWin || this.isLose) return;
-        if (!this.gameScript) return;
-        if (this.currentLevel >= this.gameScript.levels.length) return;
-        if (this.currentWave >= this.gameScript.levels[this.currentLevel].waveCount) return;
-
-        this.spawnTimer -= dt;
-
-        if (this.mobSpawnQueue.length === 0 && this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
-            this.currentWave++;
-            this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
-            this.prepareWave();
-        } else {
-            //check win: if all mobs are defeated
-            if (this.mobSpawnQueue.length === 0 && this.currentWave === this.gameScript.levels[this.currentLevel].waveCount - 1) {
-                console.log("this.getAliveMobCount()", this.getAliveMobCount());
-
-                if (this.getAliveMobCount() === 0) {
-                    console.log("Win!");
-                    this.isWin = true;
-                    // this.resetThisLevel();
-                    this.goNextLevel();
-                    return
-                }
-
-
-            }
-        }
-
-        if (this.mobSpawnQueue.length === 0) return;
-
-        if (this.spawnTimer <= 0) {
-            this.trySpawnMob();
-            this.spawnTimer = this.spawnInterval;
-        }
-        this.updateLabels();
-        this.updateLevelNameLabel();
-        // this.updateWareLabelBagedNode(dt);
-    },
-
-
-    resetThisLevel() {
-        this.currentWave = 0;
-        this.mobSpawnQueue = [];
-        this.mobsActive = [];
-        this.waveInfoBadgeNode.active = false;
-        this.prepareWave();
-        this.generateFlySword();
-        this.updateLabels();
-    },
-
-    goNextLevel() {
-        console.log("Going to next level");
-
-        this.currentLevel++;
-        if (this.currentLevel >= this.gameScript.levels.length) {
-            console.log("Game Over! You have completed all levels!");
-            this.currentLevel = 0; // Reset to first level
-            this.currentWave = 0;
-            this.mobSpawnQueue = [];
-            this.mobsActive = [];
-            this.waveInfoBadgeNode.active = false;
-            this.prepareWave();
-            this.generateFlySword();
-            this.updateLabels();
-            return;
-        }
-        this.isLose = false;
-        this.isWin = false;
-        this.currentWave = 0;
-        this.mobSpawnQueue = [];
-        this.mobsActive = [];
-        this.waveInfoBadgeNode.active = false;
-        this.prepareWave();
-        this.generateFlySword();
-        this.updateLabels();
-    },
-
     updateLabels() {
         if (!this.wareCountLabel || !this.coinLabel || !this.starLabel) return;
         this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
-        // this.coinLabel.string = `Coins: ${this.gameScript.levels[this.currentLevel].coin}`;
-        // this.starLabel.string = `Stars: ${this.gameScript.levels[this.currentLevel].star}`;
     },
     updateLevelNameLabel() {
         if (!this.levelNameLabel) return;
@@ -202,12 +201,9 @@ cc.Class({
     },
 
     prepareWave() {
-        console.log("this.gameScript.levels", this.gameScript);
-
         const level = this.gameScript.levels[this.currentLevel];
         const wave = level.enemyWaves[this.currentWave];
 
-        // gom quái vào queue
         this.mobSpawnQueue = [];
         wave.types.forEach(t => {
             for (let i = 0; i < t.number; i++) {
@@ -223,11 +219,6 @@ cc.Class({
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
-        let activeMobs = this.mobsActive.filter(mob => mob.active);
-        // if (activeMobs.length >= 6) {
-        //     let int = Math.floor(Math.random() * 100);
-        //     if (int < 30) return;
-        // }
         let mobInfo = this.mobSpawnQueue.shift();
         let prefabIndex = this.mobPrefabNames.indexOf(mobInfo.name);
         if (prefabIndex === -1) return;
@@ -269,16 +260,7 @@ cc.Class({
     },
 
     getAliveMobCount() {
-        var activeMobs = 0;
-        for (let index = 0; index < this.mobsActive.length; index++) {
-            const element = this.mobsActive[index];
-            const mobItem = element.getComponent('MobItem');
-            if (mobItem && mobItem.stateMachine.can(MobTransition.DIE)) {
-                activeMobs++;
-            }
-
-        }
-        return activeMobs;
+        return this.mobsActive.filter(mob => mob.active && mob.getComponent('MobItem').stateMachine.can(MobTransition.DIE)).length;
     },
 
     getLane(lastLane) {
@@ -352,9 +334,6 @@ cc.Class({
                 flySwordItem.node.group = "FlySwordGroup";
             }
             flySwordItem.name = `FlySword ${i}`;
-            console.log(`FlySword ${i} position: ${flySword.position}`);
-
-            // flySwordItem.node.scaleY = 0;
             flySword.active = true;
             this.flySwords.push(flySword);
         }
@@ -368,9 +347,7 @@ cc.Class({
     },
 
     onDestroy() {
-        if (this.inputController) {
-            this.inputController.unregisterInputEvents();
-        }
+        Emitter.instance.removeEventsMap(this.eventMap);
         this.mobs.forEach(mob => {
             if (mob.destroy) mob.destroy();
         });

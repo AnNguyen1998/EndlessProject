@@ -40,6 +40,7 @@ class PlayerTemplate {
         } else {
             this._data = JSON.parse(JSON.stringify(DEFAULT_PLAYER_DATA));
             cc.log("No saved data found. Created new player data.");
+            this.save();
         }
     }
 
