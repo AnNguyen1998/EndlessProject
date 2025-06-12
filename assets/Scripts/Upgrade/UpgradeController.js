@@ -81,26 +81,22 @@ cc.Class({
         if (!currentAttrData) return;
         this.provideUpgradeInfo(attributeName, currentAttrData.level, (upgradeInfo) => {
             if (!upgradeInfo) {
-                this.toast.getChildByName("Content").getComponent(cc.Label).string = `Cannot upgrade ${attributeName}: Max level reached or no upgrade info found.`;
-                this.toast.getComponent(cc.Animation).play();
+                this.showToast(`Cannot upgrade ${attributeName}: Max level reached or no upgrade info found.`);
                 return;
             }
             const playerGold = PlayerData.getGold();
             const playerLevel = PlayerData.getLevel();
             const highestChapter = PlayerData.getHighestChapter();
             if (playerGold < upgradeInfo.price) {
-                this.toast.getChildByName("Content").getComponent(cc.Label).string = "Not enough gold!";
-                this.toast.getComponent(cc.Animation).play();
+                this.showToast("Not enough gold!");
                 return;
             }
             if (playerLevel < upgradeInfo.condition.required_player_level) {
-                this.toast.getChildByName("Content").getComponent(cc.Label).string = `Player level must be ${upgradeInfo.condition.required_player_level}!`;
-                this.toast.getComponent(cc.Animation).play();
+                this.showToast(`Player level must be ${upgradeInfo.condition.required_player_level}!`);
                 return;
             }
             if (highestChapter < upgradeInfo.condition.chapter) {
-                this.toast.getChildByName("Content").getComponent(cc.Label).string = `Chapter must be ${upgradeInfo.condition.chapter}!`;
-                this.toast.getComponent(cc.Animation).play();
+                this.showToast(`Chapter must be ${upgradeInfo.condition.chapter}!`);
                 return;
             }
             PlayerData.addGold(-upgradeInfo.price);
@@ -114,9 +110,14 @@ cc.Class({
             }
             PlayerData.updateAttributeValue(attributeName, newValue);
             PlayerData.save();
-            this.toast.getChildByName("Content").getComponent(cc.Label).string = `Upgraded ${attributeName} successfully!`;
-            this.toast.getComponent(cc.Animation).play();
+            this.showToast(`Upgraded ${attributeName} successfully!`);
             Emitter.instance.emit(PlayerEventKeys.UPDATE_ATTRIBUTE_UI, attributeName);
         });
     },
+
+    showToast(message) {
+        this.toast.getChildByName("Content").getComponent(cc.Label).string = message;
+        this.toast.getComponent(cc.Animation).play();
+    }
+
 });
