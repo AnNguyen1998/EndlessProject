@@ -1,5 +1,5 @@
 const Emitter = require('Emitter');
-const { Player: PlayerEventKeys } = require('EventKeys');
+const { Popup, Player: PlayerEventKeys } = require('EventKeys');
 const PlayerData = require('PlayerTemplate');
 
 cc.Class({
@@ -14,6 +14,10 @@ cc.Class({
         currentChapter: cc.Label,
         _attributeNodeList: [],
         _attributeConfig: null,
+        backButton: {
+            default: null,
+            type: cc.Node
+        }
     },
 
     onLoad() {
@@ -28,7 +32,11 @@ cc.Class({
         Emitter.instance.registerEventsMap(this.eventMap);
         this._attributeConfig = this.attributeJsonAsset.json;
         this.initializeUI();
+        this.backButton.on('click', this.onClickBackButton.bind(this), this);
+    },
 
+    onClickBackButton() {
+        Emitter.instance.emit(Popup.HIDE_UPGRADE_POPUP);
     },
 
     onEnable() {

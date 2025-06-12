@@ -29,10 +29,6 @@ cc.Class({
         Emitter.instance.emit(Popup.SHOW_UPGRADE_POPUP);
     },
 
-    hideUpgradePopup() {
-        Emitter.instance.emit(Popup.HIDE_UPGRADE_POPUP);
-    },
-
     onClickPlayButton() {
 
         Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
