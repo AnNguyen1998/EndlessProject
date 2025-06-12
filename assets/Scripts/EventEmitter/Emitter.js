@@ -17,12 +17,12 @@ class mEmitter {
         this._emiter.removeListener(event, listener);
     }
     registerEventsMap(eventsMap) {
-        for(const event in eventsMap) {
+        for (const event in eventsMap) {
             this.registerEvent(event, eventsMap[event]);
         }
     }
     removeEventsMap(eventsMap) {
-        for(const event in eventsMap) {
+        for (const event in eventsMap) {
             this.removeEvent(event, eventsMap[event]);
         }
     }

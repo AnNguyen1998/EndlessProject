@@ -5,6 +5,7 @@ const Emitter = require('Emitter');
 const { Player: PlayerEventKeys } = require('EventKeys');
 const PlayerData = require('PlayerTemplate');
 const PlayerTransition = require('./PlayerTransition');
+const Game = require('../EventEmitter/EventKeys').Game;
 cc.Class({
     extends: cc.Component,
     properties: {
@@ -150,5 +151,6 @@ cc.Class({
 
     onDie() {
         this.handleAnimation();
+         Emitter.instance.emit(Game.GAME_OVER);
     },
 });

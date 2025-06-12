@@ -22,7 +22,7 @@ cc.Class({
         soundController: {
             default: null,
             type: require("SoundController"),
-        },
+        }
     },
 
     onLoad() {
@@ -46,17 +46,10 @@ cc.Class({
         cc.game.addPersistRootNode(this.popupController.node);
         cc.game.addPersistRootNode(this.sceneController.node);
         cc.game.addPersistRootNode(this.soundController.node);
-
-
-
         this.sceneController.init();
         this.popupController.init();
         this.soundController.init();
-
-
         this.node.active = false;
-
-
         this.eventMap = {
             [GameEventKeys.END_GAME]: this.triggerEndGame.bind(this),
             [GameEventKeys.SCENE_CHANGED]: this.onSceneChange.bind(this),
@@ -81,6 +74,7 @@ cc.Class({
         Emitter.instance.emit(GameEventKeys.REMOVE_ALL_POPUPS);
         Emitter.instance.emit(GameEventKeys.REMOVE_ALL_SCENES);
         Emitter.instance.emit(GameEventKeys.REMOVE_ALL_CHAPTERS);
+        cc.director.loadScene("Portal");
     },
 
     onSceneChange(sceneName) {

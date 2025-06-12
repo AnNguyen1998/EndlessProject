@@ -1,7 +1,13 @@
-const InputController = require("../Input/InputController");
+const { Player, Game } = require('../EventEmitter/EventKeys');
+const Emitter = require('../EventEmitter/Emitter');
 const MobState = require("../Mob/MobState");
 const MobTransition = require("../Mob/MobTransition");
-const { Player, Game } = require('../EventEmitter/EventKeys');
+const RoomStateMachine = require('./RoomStateMachine');
+const RoomState = require('./RoomState');
+const RoomTransition = require('./RoomTransition');
+const GameData = require('GameData');
+const PlayerData = require('PlayerTemplate');
+
 const GAME_AREA = {
     topLeft: cc.v2(0, 450),
     topRight: cc.v2(1560, 450),
@@ -11,6 +17,11 @@ const GAME_AREA = {
 
 cc.Class({
     extends: cc.Component,
+
+    statics: {
+        instance: null,
+    },
+
     properties: {
         mobPrefabs: { default: [], type: [cc.Prefab] },
         mobPrefabNames: { default: [], type: [cc.String] },
@@ -32,34 +43,91 @@ cc.Class({
         mobSpawnQueue: [],
         mobsActive: [],
         waveInfoBadgeNode: { default: null, type: cc.Node },
-        isWin: { default: false, type: cc.Boolean },
-        isLose: { default: false, type: cc.Boolean },
         levelNameLabel: { default: null, type: cc.Label },
         gameSciptJsonAsset: cc.JsonAsset,
+        resultPopupNode: { default: null, type: cc.Node },
     },
 
     onLoad() {
+        console.log('RoomController onLoad');
+        
         this.init();
     },
 
     init() {
-        // console.log("this.gameSciptJsonAsset", this.gameSciptJsonAsset);
-        this.gameScript = this.gameSciptJsonAsset.json;
+        // cc.game.addPersistRootNode(this.node);
+        cc.game.addPersistRootNode(this.resultPopupNode);
+        // cc.game.addPersistRootNode(this.waveInfoBadgeNode);
+        this.fsm = RoomStateMachine.createStateMachine(this);
+        if (!GameData.gameScript) {
+            GameData.gameScript = this.gameSciptJsonAsset.json;
+        }
+        this.gameScript = GameData.gameScript;
+        this.resultPopupNode.active = false;
 
         this.eventMap = {
             [Game.GAME_OVER]: this.onGameOver.bind(this),
-            [Game.SELECT_CHAPTER]: this.onIntChaper.bind(this),
+            [Game.SCENE_CHANGE]: this.onSceneChanged.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
+
+        if (this.fsm.can(RoomTransition.START_LEVEL)) {
+            this.fsm.startLevel(GameData.selectedChapter);
+        }
     },
-    onIntChaper(level = 1) {
-        console.log("onIntChaper", level);
-        this.currentLevel = level;
-        this.currentWave = 0;
+
+    onSceneChanged(sceneName) {
+        console.log(`Scene changed to: ${sceneName}`);
+
+        if (sceneName === 'Room') {
+           // this.init();
+            if (!this.fsm) {
+                this.fsm = RoomStateMachine.createStateMachine(this);
+            }
+            if (this.fsm.state !== RoomState.PLAYING) {
+                this.restartCurrentLevel();
+                killAllMob();
+                console.log('Restarting current level');
+            }
+        } else {
+            this.node.active = false;
+        }
+    },
+
+    killAllMob() {
+        this.mobsActive.forEach(mob => {
+            if (mob.active && mob.getComponent('MobItem').stateMachine.can(MobTransition.DIE)) {
+                mob.getComponent('MobItem').stateMachine.die();
+            }
+        });
+        // this.mobsActive = [];
+        // this.mobSpawnQueue = [];
+        // this.spawnTimer = 0;
+        // this.spawnInterval = 1.5;
+        // this.waveInfoBadgeNode.active = false;
+        // this.currentWave = 0;
+        // this.updateLabels();
+        // this.generateMobs();
+        // this.generateDefenders();
+        // this.generateFlySword();
+        // this.updateLevelNameLabel();
+        // this.isWin = false;
+        // this.isLose = false;
+    },
+
+    performStartLevel(level) {
+        this.resultPopupNode.active = false;
         this.spawnInterval = 1.5;
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true;
+        //debug collision
+        // cc.director.getCollisionManager().enabledDebugDraw = true;
+        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
+        this.currentLevel = parseInt(level) - 1;
+        if (this.currentLevel >= this.gameScript.levels.length || this.currentLevel < 0) {
+            this.currentLevel = 0;
+        }
+        this.currentWave = 0;
         this.mobSpawnQueue = [];
         this.mobsActive = [];
         this.waveInfoBadgeNode.active = false;
@@ -67,130 +135,123 @@ cc.Class({
         this.generateFlySword();
     },
 
+    performEndGame(isWin) {
+        console.log(`Game ended: ${isWin ? 'Victory' : 'Defeat'}`);
+
+        let stars = isWin ? 3 : 0;
+        let coins = isWin ? this.gameScript.levels[this.currentLevel].coinReward || 100 : 0;
+
+        if (isWin) {
+            PlayerData.setChapterStar(this.currentLevel + 1, stars);
+            PlayerData.unlockNextChapter(this.currentLevel + 1);
+            PlayerData.save();
+        }
+
+        const popup = this.resultPopupNode.getComponent('GameResultPopup');
+        if (popup) {
+            popup.show(isWin, stars, coins);
+        }
+    },
+
+    restartCurrentLevel() {
+        if (this.fsm.can(RoomTransition.RESET)) {
+            console.log('Restarting current level');
+
+            this.fsm.reset();
+        }
+        if (this.fsm.can(RoomTransition.START_LEVEL)) {
+            console.log('Starting level:', GameData.selectedChapter);
+            this.fsm.startLevel(GameData.selectedChapter);
+        }
+    },
+
+    performReset() {
+        this.resultPopupNode.active = false;
+        this.currentWave = 0;
+        this.mobSpawnQueue = [];
+        this.mobsActive = [];
+        this.waveInfoBadgeNode.active = false;
+        this.prepareWave();
+        this.generateFlySword();
+        this.updateLabels();
+        this.isWin = false;
+        this.isLose = false;
+    },
+
+    onGameOver() {
+        console.log('Game Over triggered');
+
+        if (this.fsm.can(RoomTransition.END_GAME)) {
+            this.fsm.endGame(false);
+        }
+    },
+
+    update(dt) {
+        if (this.fsm.state !== RoomState.PLAYING) return;
+        if (!this.gameScript || this.currentLevel >= this.gameScript.levels.length) return;
+
+        this.spawnTimer -= dt;
+
+        if (this.mobSpawnQueue.length === 0) {
+            if (this.getAliveMobCount() === 0) {
+                if (this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
+                    this.currentWave++;
+                    this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
+                    this.prepareWave();
+                } else {
+                    if (this.fsm.can(RoomTransition.END_GAME)) {
+                        this.fsm.endGame(true);
+                    }
+                    return;
+                }
+            }
+        }
+
+        if (this.mobSpawnQueue.length > 0 && this.spawnTimer <= 0) {
+            this.trySpawnMob();
+            this.spawnTimer = this.spawnInterval;
+        }
+
+        this.updateLabels();
+        this.updateLevelNameLabel();
+    },
+
+    goNextLevel() {
+        this.currentLevel++;
+        if (this.currentLevel >= this.gameScript.levels.length) {
+            this.currentLevel = 0;
+        }
+        this.performReset();
+    },
 
     showWaveStartAnimation() {
         if (!this.waveInfoBadgeNode) return;
-
-        // const labelNode = this.waveInfoBadgeNode.getChildByName('Background').getChildByName('Label');
         const labelNode = this.waveInfoBadgeNode.getChildByName('Label');
         const label = labelNode.getComponent(cc.Label);
         label.string = `WAVE ${this.currentWave + 1}`;
-
         const animation = this.waveInfoBadgeNode.getComponent(cc.Animation);
         if (animation) {
             this.waveInfoBadgeNode.active = true;
             animation.play();
-            this.waveInfoBadgeNode.children.forEach(child => {
-                if (child.getComponent(cc.Animation)) {
-                    child.active = true;
-                    child.getComponent(cc.Animation).play();
-                }
-            });
-
         }
-
-        //đợi 2s sau đó ẩn đi. dùng tween
         this.scheduleOnce(() => {
             this.waveInfoBadgeNode.active = false;
             label.string = '';
         }, 2);
     },
 
-    update(dt) {
-        if (this.isWin || this.isLose) return;
-        if (!this.gameScript) return;
-        if (this.currentLevel >= this.gameScript.levels.length) return;
-        if (this.currentWave >= this.gameScript.levels[this.currentLevel].waveCount) return;
-
-        this.spawnTimer -= dt;
-
-        if (this.mobSpawnQueue.length === 0 && this.currentWave < this.gameScript.levels[this.currentLevel].waveCount - 1) {
-            this.currentWave++;
-            this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
-            this.prepareWave();
-        } else {
-            //check win: if all mobs are defeated
-            if (this.mobSpawnQueue.length === 0 && this.currentWave === this.gameScript.levels[this.currentLevel].waveCount - 1) {
-                console.log("this.getAliveMobCount()", this.getAliveMobCount());
-
-                if (this.getAliveMobCount() === 0) {
-                    console.log("Win!");
-                    this.isWin = true;
-                    // this.resetThisLevel();
-                    this.goNextLevel();
-                    return
-                }
-
-
-            }
-        }
-
-        if (this.mobSpawnQueue.length === 0) return;
-
-        if (this.spawnTimer <= 0) {
-            this.trySpawnMob();
-            this.spawnTimer = this.spawnInterval;
-        }
-        this.updateLabels();
-        this.updateLevelNameLabel();
-        // this.updateWareLabelBagedNode(dt);
-    },
-
-
-    resetThisLevel() {
-        this.currentWave = 0;
-        this.mobSpawnQueue = [];
-        this.mobsActive = [];
-        this.waveInfoBadgeNode.active = false;
-        this.prepareWave();
-        this.generateFlySword();
-        this.updateLabels();
-    },
-
-    goNextLevel() {
-        console.log("Going to next level");
-
-        this.currentLevel++;
-        if (this.currentLevel >= this.gameScript.levels.length) {
-            console.log("Game Over! You have completed all levels!");
-            this.currentLevel = 0; // Reset to first level
-            this.currentWave = 0;
-            this.mobSpawnQueue = [];
-            this.mobsActive = [];
-            this.waveInfoBadgeNode.active = false;
-            this.prepareWave();
-            this.generateFlySword();
-            this.updateLabels();
-            return;
-        }
-        this.isLose = false;
-        this.isWin = false;
-        this.currentWave = 0;
-        this.mobSpawnQueue = [];
-        this.mobsActive = [];
-        this.waveInfoBadgeNode.active = false;
-        this.prepareWave();
-        this.generateFlySword();
-        this.updateLabels();
-    },
-
     updateLabels() {
-        if (!this.wareCountLabel || !this.coinLabel || !this.starLabel) return;
+        if (!this.wareCountLabel) return;
         this.wareCountLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
-        // this.coinLabel.string = `Coins: ${this.gameScript.levels[this.currentLevel].coin}`;
-        // this.starLabel.string = `Stars: ${this.gameScript.levels[this.currentLevel].star}`;
     },
+
     updateLevelNameLabel() {
         if (!this.levelNameLabel) return;
-
         const targetName = this.gameScript.levels[this.currentLevel].levelName;
         if (this.levelNameLabel.string === targetName) return;
-
         this.levelNameLabel.string = targetName;
-
         const n = this.levelNameLabel.node;
         n.stopAllActions();
-
         cc.tween(n)
             .set({ scale: 0.5, opacity: 0 })
             .parallel(
@@ -202,12 +263,8 @@ cc.Class({
     },
 
     prepareWave() {
-        console.log("this.gameScript.levels", this.gameScript);
-
         const level = this.gameScript.levels[this.currentLevel];
         const wave = level.enemyWaves[this.currentWave];
-
-        // gom quái vào queue
         this.mobSpawnQueue = [];
         wave.types.forEach(t => {
             for (let i = 0; i < t.number; i++) {
@@ -215,7 +272,6 @@ cc.Class({
             }
         });
         this.shuffleArray(this.mobSpawnQueue);
-        this.spawnInterval = this.spawnInterval;
         this.spawnTimer = 0;
         this.generateMobs();
         this.showWaveStartAnimation();
@@ -223,11 +279,6 @@ cc.Class({
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
-        let activeMobs = this.mobsActive.filter(mob => mob.active);
-        // if (activeMobs.length >= 6) {
-        //     let int = Math.floor(Math.random() * 100);
-        //     if (int < 30) return;
-        // }
         let mobInfo = this.mobSpawnQueue.shift();
         let prefabIndex = this.mobPrefabNames.indexOf(mobInfo.name);
         if (prefabIndex === -1) return;
@@ -251,14 +302,6 @@ cc.Class({
                 return mob;
             }
         }
-        for (let i = 0; i < this.mobs.length; i++) {
-            let mob = this.mobs[i];
-            if (!mob.active) {
-                mob.mobTypeIndex = prefabIndex;
-                mob.getComponent('MobItem').setType(this.mobPrefabNames[prefabIndex]);
-                return mob;
-            }
-        }
         let mob = cc.instantiate(this.mobPrefabs[prefabIndex]);
         mob.parent = this.node;
         mob.active = false;
@@ -269,16 +312,7 @@ cc.Class({
     },
 
     getAliveMobCount() {
-        var activeMobs = 0;
-        for (let index = 0; index < this.mobsActive.length; index++) {
-            const element = this.mobsActive[index];
-            const mobItem = element.getComponent('MobItem');
-            if (mobItem && mobItem.stateMachine.can(MobTransition.DIE)) {
-                activeMobs++;
-            }
-
-        }
-        return activeMobs;
+        return this.mobsActive.filter(mob => mob.active && mob.getComponent('MobItem').stateMachine.can(MobTransition.DIE)).length;
     },
 
     getLane(lastLane) {
@@ -293,17 +327,17 @@ cc.Class({
     getLanePosition(laneIndex) {
         const startY = GAME_AREA.bottomLeft.y + 70;
         const endY = GAME_AREA.bottomLeft.y + 450;
-        const step = (endY - startY) / (this.laneCount - 1);
+        const step = (endY - startY) / (this.laneCount > 1 ? this.laneCount - 1 : 1);
         return startY + laneIndex * step;
     },
 
     generateMobs() {
+        this.mobs.forEach(mob => mob.destroy && mob.destroy());
         this.mobs = [];
         let wave = this.gameScript.levels[this.currentLevel].enemyWaves[this.currentWave];
-        for (let i = 0; i < wave.types.length; i++) {
-            let mobType = wave.types[i];
+        wave.types.forEach(mobType => {
             let prefabIndex = this.mobPrefabNames.indexOf(mobType.name);
-            if (prefabIndex === -1) continue;
+            if (prefabIndex === -1) return;
             for (let j = 0; j < mobType.number; j++) {
                 let mob = cc.instantiate(this.mobPrefabs[prefabIndex]);
                 mob.parent = this.node;
@@ -312,10 +346,9 @@ cc.Class({
                 mob.getComponent('MobItem').setType(this.mobPrefabNames[prefabIndex]);
                 this.mobs.push(mob);
             }
-        }
+        });
         this.mobsActive = [];
     },
-
 
     generateDefenders() {
         this.defenders.forEach(d => d.destroy && d.destroy());
@@ -329,32 +362,20 @@ cc.Class({
             let defender = cc.instantiate(this.defender);
             defender.parent = this.node;
             defender.setPosition(cc.v2(xList[i], this.getLanePosition(i)));
-            let defenderItem = defender.getComponent('DefenderItem');
-            if (defenderItem) {
-                defenderItem.node.group = "DefenderGroup";
-            }
-            defenderItem.name = `Defender ${i}`;
-            defenderItem.node.scaleY = 0;
+            defender.getComponent('DefenderItem').node.group = "DefenderGroup";
             defender.active = true;
             this.defenders.push(defender);
         }
     },
+
     generateFlySword() {
         this.flySwords.forEach(s => s.destroy && s.destroy());
         this.flySwords = [];
-
         for (let i = 0; i < this.laneCount; i++) {
             let flySword = cc.instantiate(this.flySwordPrefab);
             flySword.parent = this.node;
             flySword.setPosition(cc.v2(GAME_AREA.bottomLeft.x + 20, this.getLanePosition(i) + 50));
-            let flySwordItem = flySword.getComponent('FlySwordItem');
-            if (flySwordItem) {
-                flySwordItem.node.group = "FlySwordGroup";
-            }
-            flySwordItem.name = `FlySword ${i}`;
-            console.log(`FlySword ${i} position: ${flySword.position}`);
-
-            // flySwordItem.node.scaleY = 0;
+            flySword.getComponent('FlySwordItem').node.group = "FlySwordGroup";
             flySword.active = true;
             this.flySwords.push(flySword);
         }
@@ -367,18 +388,19 @@ cc.Class({
         }
     },
 
-    onDestroy() {
-        if (this.inputController) {
-            this.inputController.unregisterInputEvents();
-        }
-        this.mobs.forEach(mob => {
-            if (mob.destroy) mob.destroy();
-        });
-        this.mobs = [];
-        this.mobsActive = [];
-        this.defenders.forEach(defender => {
-            if (defender.destroy) defender.destroy();
-        });
-        this.defenders = [];
-    }
+    // onDestroy() {
+    //     if (RoomController.instance === this) {
+    //         RoomController.instance = null;
+    //     }
+    //     Emitter.instance.removeEventsMap(this.eventMap);
+    //     this.mobs.forEach(mob => {
+    //         if (mob.destroy) mob.destroy();
+    //     });
+    //     this.mobs = [];
+    //     this.mobsActive = [];
+    //     this.defenders.forEach(defender => {
+    //         if (defender.destroy) defender.destroy();
+    //     });
+    //     this.defenders = [];
+    // }
 });

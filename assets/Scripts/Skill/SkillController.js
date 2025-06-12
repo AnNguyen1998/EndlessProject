@@ -63,13 +63,22 @@ cc.Class({
     },
 
     cleanupSkills() {
+        if (!this.skills || !Array.isArray(this.skills)) {
+            console.log('SkillController: No skills to cleanup');
+            return;
+        }
+        
         for (let i = 0; i < this.skills.length; i++) {
             const skillNode = this.skills[i];
-            if (skillNode) {
+            if (skillNode && skillNode.isValid) {
                 const skillComponent = this.getSkillComponent(skillNode);
                 if (skillComponent) {
-                    skillComponent.disable();
-                    skillComponent.onDestroy();
+                    if (skillComponent.disable) {
+                        skillComponent.disable();
+                    }
+                    if (skillComponent.onDestroy) {
+                        skillComponent.onDestroy();
+                    }
                 }
             }
         }
