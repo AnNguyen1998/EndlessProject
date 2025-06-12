@@ -22,14 +22,12 @@ cc.Class({
     },
 
     init() {
-        PlayerData.load(); //TODO: Xoá đi sau khi có gameController hoàn chỉnh
         this.eventMap = {
             [PlayerEventKeys.UPDATE_ATTRIBUTE_UI]: this.refreshDisplay.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
         this._attributeConfig = this.attributeJsonAsset.json;
         this.initializeUI();
-        PlayerData.save(); //TODO: Xoá đi sau khi có gameController hoàn chỉnh
 
     },
 
@@ -66,7 +64,7 @@ cc.Class({
         for (const attributeNode of this._attributeNodeList) {
             this.updateSingleAttributeDisplay(attributeNode);
         }
-        const spineBoy = cc.find("MainCanvas/Popup/UpgradePopup/SpineBoy").getComponent(sp.Skeleton);
+        const spineBoy = cc.find("PopupController/Popup/UpgradePopup/SpineBoy").getComponent(sp.Skeleton);
         spineBoy.setAnimation(0, "portal", false);
         spineBoy.setCompleteListener(() => {
             spineBoy.setAnimation(0, "idle", true);

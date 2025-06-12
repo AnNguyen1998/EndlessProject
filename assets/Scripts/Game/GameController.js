@@ -40,24 +40,28 @@ cc.Class({
     },
 
     performInit() {
+        console.log("performInit GameController");
         PlayerData.load();
+        cc.game.addPersistRootNode(this.node);
+        cc.game.addPersistRootNode(this.popupController.node);
+        cc.game.addPersistRootNode(this.sceneController.node);
+        cc.game.addPersistRootNode(this.soundController.node);
+
+
+
+        this.sceneController.init();
+        this.popupController.init();
+        this.soundController.init();
+
+
+        this.node.active = false;
+
 
         this.eventMap = {
             [GameEventKeys.END_GAME]: this.triggerEndGame.bind(this),
             [GameEventKeys.SCENE_CHANGED]: this.onSceneChange.bind(this),
         };
         Emitter.instance.registerEventsMap(this.eventMap);
-
-        cc.game.addPersistRootNode(this.node);
-        cc.game.addPersistRootNode(this.popupController.node);
-        cc.game.addPersistRootNode(this.sceneController.node);
-        cc.game.addPersistRootNode(this.soundController.node);
-
-        this.popupController.init();
-        this.sceneController.init();
-        this.soundController.init();
-
-        this.node.active = false;
     },
 
     triggerEndGame() {

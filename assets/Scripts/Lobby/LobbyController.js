@@ -5,6 +5,8 @@ const SoundKeys = require('SoundKeys');
 cc.Class({
     extends: cc.Component,
 
+    init() { },
+
     onSettingsClick() {
         Emitter.instance.emit(Popup.SHOW_SETTING_POPUP);
     },
@@ -18,6 +20,7 @@ cc.Class({
     },
 
     onClickPlayButton() {
+
         Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
     },
 

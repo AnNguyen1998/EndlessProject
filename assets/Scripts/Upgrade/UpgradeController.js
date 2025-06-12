@@ -13,6 +13,10 @@ cc.Class({
 
     onLoad() {
         this.init();
+        this.toast.getComponent(cc.Animation).on('finished', () => {
+            this.toast.active = false;
+        });
+        this.toast.active = false;
     },
 
     init() {
