@@ -1,10 +1,10 @@
 const Emitter = require("Emitter");
-const { Game : GameEventKeys } = require('EventKeys');
+const { Game: GameEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        
+
     },
 
     onLoad() {
@@ -12,10 +12,10 @@ cc.Class({
     },
 
     init() {
-            let checkClear = this.node.getChildByName("IconLock").active;
-            if (!checkClear) {
-                this.node.on(GameEventKeys.CLICK_CHAPTER, this.onClickChapter, this);
-            }
+        let checkClear = this.node.getChildByName("IconLock").active;
+        if (!checkClear) {
+            this.node.on('click', this.onClickChapter, this);
+        }
     },
 
     onClickChapter() {
