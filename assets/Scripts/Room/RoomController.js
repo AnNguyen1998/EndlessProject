@@ -121,8 +121,8 @@ cc.Class({
         this.spawnTimer = 0;
         cc.director.getCollisionManager().enabled = true;
         //debug collision
-        cc.director.getCollisionManager().enabledDebugDraw = true;
-        cc.director.getCollisionManager().enabledDrawBoundingBox = true;
+        // cc.director.getCollisionManager().enabledDebugDraw = true;
+        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         this.currentLevel = parseInt(level) - 1;
         if (this.currentLevel >= this.gameScript.levels.length || this.currentLevel < 0) {
             this.currentLevel = 0;
