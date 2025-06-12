@@ -1,0 +1,353 @@
+{
+    "levels": [
+        {
+            "levelId": 1,
+            "levelName": "First Contact",
+            "waveCount": 2,
+            "enemyWaves": [
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 10,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 10
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 12,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 15
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 15,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "levelId": 2,
+            "levelName": "Accelerated Threat",
+            "waveCount": 3,
+            "enemyWaves": [
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 15,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 12
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 20,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 3
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "twinfang",
+                            "health": 22,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 6
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 15,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 18
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 22,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 4
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "levelId": 3,
+            "levelName": "Unstoppable Force",
+            "waveCount": 3,
+            "enemyWaves": [
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 20,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 25
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 150,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 1
+                        },
+                        {
+                            "name": "wolf",
+                            "health": 20,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 12
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 160,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 1
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 28,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 6
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "levelId": 4,
+            "levelName": "Combined Arms",
+            "waveCount": 3,
+            "enemyWaves": [
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 180,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 2
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 25,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 20
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 35,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 8
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 200,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 1
+                        },
+                        {
+                            "name": "wolf",
+                            "health": 25,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 15
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 35,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "levelId": 5,
+            "levelName": "The Gauntlet",
+            "waveCount": 4,
+            "enemyWaves": [
+                {
+                    "types": [
+                        {
+                            "name": "twinfang",
+                            "health": 40,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 12
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 220,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 2
+                        },
+                        {
+                            "name": "wolf",
+                            "health": 30,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 20
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 30,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 30
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 40,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 8
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 240,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 2
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 42,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 7
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "levelId": 6,
+            "levelName": "Extinction Event",
+            "waveCount": 4,
+            "enemyWaves": [
+                {
+                    "types": [
+                        {
+                            "name": "wolf",
+                            "health": 40,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 40
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "twinfang",
+                            "health": 50,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 15
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 300,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 3
+                        },
+                        {
+                            "name": "wolf",
+                            "health": 40,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 15
+                        }
+                    ]
+                },
+                {
+                    "types": [
+                        {
+                            "name": "drakey",
+                            "health": 320,
+                            "damage": 2,
+                            "speed": 120,
+                            "number": 2
+                        },
+                        {
+                            "name": "twinfang",
+                            "health": 55,
+                            "damage": 16,
+                            "speed": 160,
+                            "number": 10
+                        },
+                        {
+                            "name": "wolf",
+                            "health": 45,
+                            "damage": 1,
+                            "speed": 150,
+                            "number": 25
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

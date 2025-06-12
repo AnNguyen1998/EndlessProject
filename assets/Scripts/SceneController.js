@@ -1,22 +1,32 @@
 const Emitter = require('Emitter');
-const { Game : GameEventKeys } = require('EventKeys');
+const { Game: GameEventKeys } = require('EventKeys');
 cc.Class({
     extends: cc.Component,
 
-    onLoad() {
+
+    init() {
+        this.eventMaps = {
+            [GameEventKeys.SCENE_CHANGE]: this.onSceneChange.bind(this),
+        };
         this.registerEvents();
+        cc.log("SceneController initialized");
     },
 
     registerEvents() {
-        Emitter.instance.registerEvent(GameEventKeys.SCENE_CHANGE, this.onSceneChange.bind(this));
+        Emitter.instance.registerEventsMap(this.eventMaps);
+
     },
 
     onSceneChange(nameScene) {
         cc.director.loadScene(nameScene);
     },
 
+    removeEventsMap() {
+        Emitter.instance.removeEventsMap(this.eventMaps);
+    },
+
     onDestroy() {
-        Emitter.instance.removeEvent(GameEventKeys.SCENE_CHANGE, this.onSceneChange.bind(this));
+        this.removeEventsMap();
     },
 
 });

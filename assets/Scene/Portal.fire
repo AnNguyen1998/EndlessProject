@@ -159,7 +159,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 623.5382907247958
+      "z": 585.4331729582806
     },
     "_scale": {
       "__type__": "cc.Vec3",
@@ -1246,7 +1246,7 @@
     },
     "component": "",
     "_componentId": "faa405GhDBJU4w9o8OuiNqY",
-    "handler": "onClick",
+    "handler": "launchGame",
     "customEventData": ""
   },
   {
