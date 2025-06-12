@@ -6,13 +6,13 @@ const DEFAULT_PLAYER_DATA = {
         playerName: "Player",
         playerLevel: 1,
         playerExperience: 0,
-        playerGold: 10000,
+        playerGold: 100,
         highestChapter: 1,
     },
     attributes: {
         hpLevel: { value: 1, level: 1 },
         damage: { value: 10, level: 1 },
-        critChance: { value: 0.05, level: 1 },
+        critChance: { value: 5, level: 1 },
         critRate: { value: 1.5, level: 1 },
         attackSpeed: { value: 1.0, level: 1 },
     }
@@ -27,6 +27,9 @@ class PlayerTemplate {
         const savedData = LocalStorageUnit.get(LocalStorageKeys.PLAYER_DATA);
         if (savedData) {
             this._data = savedData;
+            this._data.chapterHistory = savedData.chapterHistory || [
+                { chapter: 1, star: 0 }
+            ];
             cc.log("Player data loaded from storage.");
         } else {
             this._data = JSON.parse(JSON.stringify(DEFAULT_PLAYER_DATA));
@@ -115,6 +118,37 @@ class PlayerTemplate {
             cc.warn(`Attribute "${attributeName}" does not exist.`);
         }
     }
+
+    getChapterStar(chapterNumber) {
+        const record = this._data.chapterHistory.find(c => c.chapter === chapterNumber);
+        return record ? record.star : 0;
+    }
+
+    setChapterStar(chapterNumber, stars) {
+        let record = this._data.chapterHistory.find(c => c.chapter === chapterNumber);
+        if (record) {
+            record.star = Math.max(record.star, stars);
+        } else {
+            this._data.chapterHistory.push({ chapter: chapterNumber, star: stars });
+        }
+    }
+
+    isChapterUnlocked(chapterNumber) {
+        return this._data.chapterHistory.some(c => c.chapter === chapterNumber);
+    }
+
+    unlockNextChapter(chapterNumber) {
+        if (!this._data || !this._data.chapterHistory) return;
+        const current = this._data.chapterHistory.find(c => c.chapter === chapterNumber);
+        if (current && current.star > 0) {
+            const nextChapter = chapterNumber + 1;
+            const exists = this._data.chapterHistory.some(c => c.chapter === nextChapter);
+            if (!exists) {
+                this._data.chapterHistory.push({ chapter: nextChapter, star: 0 });
+            }
+        }
+    }
+
 }
 
 const instance = new PlayerTemplate();

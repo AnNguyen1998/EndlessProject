@@ -88,7 +88,7 @@ cc.Class({
                 return;
             }
             titleLabel.string = attrConfig.title;
-            valueLabel.string = this._formatValue(attrConfig.name, data.currentValue);
+            valueLabel.string = this.formatValue(attrConfig.name, data.currentValue);
             if (data.isMaxLevel) {
                 levelLabel.string = "MAX";
                 upgradeButtonNode.active = false;
@@ -98,7 +98,7 @@ cc.Class({
                 levelLabel.string = `${data.currentLevel}`;
                 upgradeButtonNode.active = true;
                 goldLabel.string = data.upgradeInfo.price;
-                upgradeValueLabel.string = `${this._formatValue(attrConfig.name, data.nextValue)}`;
+                upgradeValueLabel.string = `${this.formatValue(attrConfig.name, data.nextValue)}`;
                 upgradeButtonNode.color = data.canUpgrade ? cc.Color.GREEN : cc.Color.GRAY;
                 goldLabel.node.color = data.canUpgrade ? cc.Color.GREEN : cc.Color.RED;
                 conditionLevel.getComponent(cc.Label).string = `Lv. ${data.upgradeInfo.condition.required_player_level}`;
@@ -107,7 +107,7 @@ cc.Class({
         });
     },
 
-    _formatValue(attrName, value) {
+    formatValue(attrName, value) {
         if (attrName === 'hpLevel') {
             return value.toFixed(0);
         }
