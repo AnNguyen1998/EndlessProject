@@ -1,4 +1,5 @@
 const InputController = require("../Input/InputController");
+const MobState = require("../Mob/MobState");
 const MobTransition = require("../Mob/MobTransition");
 
 const GAME_AREA = {
@@ -12,6 +13,7 @@ cc.Class({
     extends: cc.Component,
     properties: {
         mobPrefabs: { default: [], type: [cc.Prefab] },
+
         mobPrefabNames: { default: [], type: [cc.String] },
         wareLabel: { default: null, type: cc.Label },
         coinLabel: { default: null, type: cc.Label },
@@ -19,6 +21,8 @@ cc.Class({
         mobs: [],
         defender: { default: null, type: cc.Prefab },
         defenders: [],
+        flySwordPrefab: { default: null, type: cc.Prefab },
+        flySwords: [],
         lastLane: { default: 0, type: cc.Integer },
         laneCount: { default: 3, type: cc.Integer },
         spawnInterval: { default: 3.5, type: cc.Float },
@@ -29,6 +33,9 @@ cc.Class({
         mobSpawnQueue: [],
         mobsActive: [],
         waveInfoBadgeNode: { default: null, type: cc.Node },
+        isWin: { default: false, type: cc.Boolean },
+        isLose: { default: false, type: cc.Boolean },
+
     },
 
     onLoad() {
@@ -48,6 +55,7 @@ cc.Class({
         this.mobsActive = [];
         this.waveInfoBadgeNode.active = false;
         this.prepareWave();
+        this.generateFlySword();
     },
 
     showWaveStartAnimation() {
@@ -61,7 +69,7 @@ cc.Class({
         const animation = this.waveInfoBadgeNode.getComponent(cc.Animation);
         if (animation) {
             this.waveInfoBadgeNode.active = true;
-            animation.play();           
+            animation.play();
             this.waveInfoBadgeNode.children.forEach(child => {
                 if (child.getComponent(cc.Animation)) {
                     child.active = true;
@@ -77,7 +85,7 @@ cc.Class({
             label.string = '';
         }, 2);
     },
-    
+
     fakeInitGameScript() {
         const gameScript = {
             "levels": [
@@ -88,19 +96,19 @@ cc.Class({
                     "enemyWaves": [
                         {
                             "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 10 },
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 1 },
                             ]
                         },
                         {
                             "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 10 },
-                                { "name": "twinfang", "health": 15, "damage": 16, "speed": 160, "number": 4 }
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 1 },
+                                { "name": "twinfang", "health": 15, "damage": 16, "speed": 160, "number": 1 }
                             ]
                         },
                         {
                             "types": [
-                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 8 },
-                                { "name": "twinfang", "health": 15, "damage": 1, "speed": 160, "number": 4 },
+                                { "name": "wolf", "health": 10, "damage": 1, "speed": 150, "number": 1 },
+                                { "name": "twinfang", "health": 15, "damage": 1, "speed": 160, "number": 1 },
                                 { "name": "drakey", "health": 100, "damage": 2, "speed": 120, "number": 1 }
                             ]
                         }
@@ -113,6 +121,7 @@ cc.Class({
     },
 
     update(dt) {
+        if (this.isWin || this.isLose) return;
         if (!this.gameScript) return;
         if (this.currentLevel >= this.gameScript.levels.length) return;
         if (this.currentWave >= this.gameScript.levels[this.currentLevel].waveCount) return;
@@ -123,6 +132,20 @@ cc.Class({
             this.currentWave++;
             this.wareLabel.string = `${this.currentWave + 1}/${this.gameScript.levels[this.currentLevel].waveCount}`;
             this.prepareWave();
+        } else {
+            //check win: if all mobs are defeated
+            if (this.mobSpawnQueue.length === 0 && this.currentWave === this.gameScript.levels[this.currentLevel].waveCount - 1) {
+                console.log("this.getAliveMobCount()", this.getAliveMobCount());
+
+                if (this.getAliveMobCount() === 0) {
+                    console.log("Win!");
+                    this.isWin = true;
+                    this.resetThisLevel();
+                    return
+                }
+
+
+            }
         }
 
         if (this.mobSpawnQueue.length === 0) return;
@@ -133,6 +156,17 @@ cc.Class({
         }
         this.updateLabels();
         // this.updateWareLabelBagedNode(dt);
+    },
+
+
+    resetThisLevel() {
+        this.currentWave = 0;
+        this.mobSpawnQueue = [];
+        this.mobsActive = [];
+        this.waveInfoBadgeNode.active = false;
+        this.prepareWave();        
+        this.generateFlySword();
+        this.updateLabels();
     },
 
     updateLabels() {
@@ -158,7 +192,7 @@ cc.Class({
         this.spawnTimer = 0;
         this.generateMobs();
         this.showWaveStartAnimation();
-    }    ,
+    },
 
     trySpawnMob() {
         if (this.mobSpawnQueue.length === 0) return;
@@ -205,6 +239,19 @@ cc.Class({
         mob.getComponent('MobItem').setType(this.mobPrefabNames[prefabIndex]);
         this.mobs.push(mob);
         return mob;
+    },
+
+    getAliveMobCount() {
+        var activeMobs = 0;
+        for (let index = 0; index < this.mobsActive.length; index++) {
+            const element = this.mobsActive[index];
+            const mobItem = element.getComponent('MobItem');
+            if (mobItem && mobItem.stateMachine.can(MobTransition.DIE)) {
+                activeMobs++;
+            }
+
+        }
+        return activeMobs;
     },
 
     getLane(lastLane) {
@@ -263,6 +310,26 @@ cc.Class({
             defenderItem.node.scaleY = 0;
             defender.active = true;
             this.defenders.push(defender);
+        }
+    },
+    generateFlySword() {
+        this.flySwords.forEach(s => s.destroy && s.destroy());
+        this.flySwords = [];
+
+        for (let i = 0; i < this.laneCount; i++) {
+            let flySword = cc.instantiate(this.flySwordPrefab);
+            flySword.parent = this.node;
+            flySword.setPosition(cc.v2(GAME_AREA.bottomLeft.x + 20, this.getLanePosition(i) + 50));
+            let flySwordItem = flySword.getComponent('FlySwordItem');
+            if (flySwordItem) {
+                flySwordItem.node.group = "FlySwordGroup";
+            }
+            flySwordItem.name = `FlySword ${i}`;
+            console.log(`FlySword ${i} position: ${flySword.position}`);
+
+            // flySwordItem.node.scaleY = 0;
+            flySword.active = true;
+            this.flySwords.push(flySword);
         }
     },
 

@@ -21,7 +21,7 @@ class InputController {
                 Emitter.instance.emit(PlayerEventKeys.MOVE_DOWN);
                 break;
             case cc.macro.KEY.space:
-                Emitter.instance.emit(PlayerEventKeys.SHOOT);
+                Emitter.instance.emit(PlayerEventKeys.PRE_SHOOT);
                 break;
             case cc.macro.KEY.j:
                 Emitter.instance.emit(SkillEvent.SKILL_BUTTON_CLICK, 1);

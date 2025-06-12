@@ -3995,6 +3995,10 @@
       "__uuid__": "679394c3-1951-48b3-a302-628659b12d3d"
     },
     "defenders": [],
+    "flySwordPrefab": {
+      "__uuid__": "48f3c3ce-1e96-49c7-a62a-ffc0dab124a7"
+    },
+    "flySwords": [],
     "lastLane": 0,
     "laneCount": 3,
     "spawnInterval": 1000,
