@@ -1,5 +1,6 @@
 const Emitter = require('Emitter');
 const { Popup, Game } = require('EventKeys');
+const SoundKeys = require('SoundKeys');
 
 cc.Class({
     extends: cc.Component,
@@ -18,6 +19,10 @@ cc.Class({
 
     onClickPlayButton() {
         Emitter.instance.emit(Game.SCENE_CHANGE, "Chapter");
-    }
-    
+    },
+
+    onClickSound() {
+        Emitter.instance.emit(SoundKeys.CLICK);
+    },
+
 });
