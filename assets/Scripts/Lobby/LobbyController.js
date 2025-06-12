@@ -18,7 +18,6 @@ cc.Class({
     },
 
     init() {
-        PlayerData.load(); //TODO clear
         this.goldLabel.string = PlayerData.getGold();
     },
 
