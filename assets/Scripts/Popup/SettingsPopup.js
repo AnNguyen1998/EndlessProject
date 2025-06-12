@@ -131,13 +131,6 @@ cc.Class({
     
     onExitClick() {
         Emitter.instance.emit(GameEventKeys.END_GAME);
-        cc.director.loadScene('Portal', (err) => {
-            if (err) {
-                console.error('Failed to load Portal scene:', err);
-            } 
-        });
-        
- 
-
+        console.log("Exiting game from settings popup");
     },
 });
